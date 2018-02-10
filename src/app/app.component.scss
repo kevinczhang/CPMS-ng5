@@ -1,0 +1,81 @@
+.example-icon {
+  padding: 0 14px;
+}
+
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+$gray: #eee;
+
+mat-content.mat-default-theme {
+  background-color: $gray;
+}
+mat-card {
+  background-color: #fff;
+  h2:first-of-type {
+    margin-top: 0;
+  }
+}
+mat-toolbar {
+  .mat-button.mat-default-theme {
+    border-radius: 99%; // round toolbar buttons
+  }
+}
+h2 {
+  font-weight: 400;
+}
+.mat-toolbar-tools-bottom {
+  font-size: small;
+  & :last-child {
+    opacity: 0.8;
+  }
+}
+mat-toolbar:not(.mat-hue-1),
+.mat-fab {
+  fill: #fff;
+}
+mat-sidenav {
+  fill: #737373;
+  mat-icon {
+    position: relative;
+    left: -10px; // adjust for svg viewbox
+  }
+}
+.user-icon {
+  border-radius: 10%;
+  padding-top: 100px;
+}
+
+mat-list {
+  padding-top: 100px;
+  .item-text {
+    padding-left:20px;
+    position: relative;
+    top: -25px; // adjust for svg viewbox
+  }
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+a.active {
+  color: mediumpurple;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+footer {
+    height: 3em;
+    color: white;
+    background-color: #3f51b5;
+    font: 16px/1.5 sans-serif;
+    padding: 0.5em;
+    margin: 20px;
+}
+
+.example-sidenav-fab-container {
+  min-height: 20em;
+}

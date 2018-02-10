@@ -1,0 +1,100 @@
+<div class="problem-description">
+  <form class="example-form" [formGroup]="rForm" (ngSubmit)="addOrUpdateProblem(rForm.value)">
+    <button mat-raised-button color="primary" type="submit" [disabled]="!rForm.valid">Save</button>
+    <table class="example-full-width" cellspacing="0">
+      <tr>
+        <mat-form-field class="example-full-width">
+          <input matInput placeholder="Problem Id" formControlName="problemId" readonly>
+        </mat-form-field>
+      </tr>
+      <tr>
+        <mat-form-field class="example-full-width">
+          <input matInput placeholder="LeetCode Number" formControlName="problemNumber">
+        </mat-form-field>
+      </tr>
+      <tr>
+        <mat-form-field>
+        <mat-select placeholder="Difficulty level" class="example-full-width" formControlName="problemDifficulty">
+          <mat-option *ngFor="let difficulty of difficultyOptions" [value]="difficulty.value">
+            {{ difficulty.viewValue }}
+          </mat-option>
+        </mat-select>
+        </mat-form-field>
+      </tr>
+      <tr>
+        <mat-form-field class="example-full-width">
+          <input matInput placeholder="Title" formControlName="problemTitle">
+        </mat-form-field>
+      </tr>
+      <tr>
+        <mat-form-field>
+        <mat-select multiple placeholder="Tags" class="example-full-width" formControlName="problemTags">
+          <mat-input-container>
+            <input matInput>
+          </mat-input-container>
+          <mat-option *ngFor="let option of tagOptions" [value]="option.ID">
+            {{ option.displayName }}
+          </mat-option>
+        </mat-select>
+        </mat-form-field>
+      </tr>
+      <tr>
+        <mat-form-field>
+        <mat-select multiple placeholder="Companies" class="example-full-width" formControlName="problemCompanies">
+          <mat-input-container>
+            <input matInput>
+          </mat-input-container>
+          <mat-option *ngFor="let option of companyOptions" [value]="option.ID">
+            {{ option.displayName }}
+          </mat-option>
+        </mat-select>
+        </mat-form-field>
+      </tr>
+      <tr>
+        <mat-form-field>
+        <mat-select multiple placeholder="Special Tags" class="example-full-width" formControlName="problemSpecialTags">
+          <mat-input-container>
+            <input matInput>
+          </mat-input-container>
+          <mat-option *ngFor="let option of specialTagOptions" [value]="option.ID">
+            {{ option.displayName }}
+          </mat-option>
+        </mat-select>
+        </mat-form-field>
+      </tr>
+    </table>
+
+    <br>
+
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Description
+        </mat-panel-title>
+        <mat-panel-description>
+          Edit problem description
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <ckeditor [config]="{uiColor: '#505f77'}" [readonly]="false" debounce="500" formControlName="problemDescription">
+      </ckeditor>
+    </mat-expansion-panel>
+
+    <br>
+
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Solution
+        </mat-panel-title>
+        <mat-panel-description>
+          Edit problem solution
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <ckeditor [config]="{uiColor: '#505f77'}" [readonly]="false" debounce="500" formControlName="problemSolution">
+      </ckeditor>
+    </mat-expansion-panel>
+
+  </form>
+</div>
