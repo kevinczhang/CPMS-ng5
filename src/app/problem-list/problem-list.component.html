@@ -1,10 +1,41 @@
-<div class="example-container mat-elevation-z8">
-  <div class="example-header">
-    <mat-form-field floatPlaceholder="never"  class="mat-input-element">
+<div class="problem-list-container mat-elevation-z8">
+  <div class="problem-list-header">
+    <mat-form-field floatPlaceholder="never" class="mat-input-element">
       <input matInput #filter placeholder="Filter problems">
-    </mat-form-field>    
+    </mat-form-field>
     <button mat-raised-button color="primary" [routerLink]="['/description', -1]">New Problem</button>
-  </div>  
+  </div>
+  <div class="advanced-search-header">
+    <mat-accordion>
+      <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Advanced Search
+          </mat-panel-title>
+          <mat-panel-description>
+            Currently I am {{panelOpenState ? 'open' : 'closed'}}
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <mat-form-field>
+          <input matInput placeholder="First name">
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="Age">
+        </mat-form-field>
+        <br />
+        <mat-form-field>
+          <input matInput placeholder="First name">
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="Age">
+        </mat-form-field>
+        <br/>
+        <button mat-raised-button color="primary" [routerLink]="['/description', -1]" class="mdl-button">
+          Search
+        </button>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
   <mat-table #table [dataSource]="dataSource">
 
     <!--- Note that these columns can be defined in any order.

@@ -1,4 +1,4 @@
-.example-container {
+  .problem-list-container {
     display: flex;
     flex-direction: column;
     min-width: 300px;
@@ -8,21 +8,19 @@
     margin-bottom: 20px;
   }
   
-  .example-header {
-    min-height: 64px;
-    display: flex;
-    align-items: center;
-    padding-left: 24px;
-    font-size: 20px;
-  }
-  
-  .example-header {
+  .problem-list-header {
     min-height: 64px;
     display: flex;
     align-items: baseline;
     padding: 8px 24px 0;
     font-size: 20px;
     justify-content: space-between;
+  }
+
+  .advanced-search-header {
+    display: flex;
+    padding-bottom:20px;
+    justify-content: space-between center;
   }
   
   .mat-form-field {
@@ -40,3 +38,6 @@
     margin-right: 10px;
   }
   
+  .mdl-button {
+    margin-left: 300px;
+  }

@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, 
   ElementRef, ChangeDetectionStrategy } from '@angular/core';
-import {MatPaginator} from '@angular/material';
+import {MatPaginator, MatAccordion, MatExpansionPanel, 
+  MatExpansionPanelHeader, MatExpansionPanelTitle} from '@angular/material';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/startWith';

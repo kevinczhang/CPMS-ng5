@@ -92,8 +92,11 @@
         </mat-panel-description>
       </mat-expansion-panel-header>
 
-      <ckeditor [config]="{uiColor: '#505f77'}" [readonly]="false" debounce="500" formControlName="problemSolution">
-      </ckeditor>
+      <!-- <ckeditor [config]="{uiColor: '#505f77'}" [readonly]="false" debounce="500" formControlName="problemSolution">
+      </ckeditor> -->
+      <ace-editor
+        formControlName="problemSolution" [mode] = "'java'"
+        #editor style="height:150px;"></ace-editor>
     </mat-expansion-panel>
 
   </form>

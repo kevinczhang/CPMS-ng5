@@ -1,5 +1,5 @@
 import 'rxjs/add/operator/switchMap';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Location } from '@angular/common';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
@@ -17,6 +17,9 @@ import { Tag } from "../model/tag";
 export class DescriptionComponent implements OnInit {
   problem: Problem;
   passedInId: number;
+
+  @ViewChild('editor') editor;
+  text: string = "Selcet * From myDatabase;";
 
   difficultyOptions = [
     { value: 'Easy', viewValue: 'Easy' },
@@ -115,6 +118,22 @@ export class DescriptionComponent implements OnInit {
       }
     });
 
+  }
+
+  ngAfterViewInit() {
+    this.editor.setTheme("eclipse");
+
+    this.editor.getEditor().setOptions({
+        enableBasicAutocompletion: true
+    });
+
+    this.editor.getEditor().commands.addCommand({
+        name: "showOtherCompletions",
+        bindKey: "Ctrl-.",
+        exec: function (editor) {
+
+        }
+    })
   }
 
   addOrUpdateProblem(problem: any) {

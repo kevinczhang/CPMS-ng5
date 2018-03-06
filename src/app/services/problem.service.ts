@@ -10,8 +10,8 @@ export class ProblemService {
   }
 
   getProblems(): Observable<Problem[]> {
-    let problems = this.http.get('../../assets/problems.json')
-    //let problems = this.http.get('http://localhost:8081/api/problems')
+    //let problems = this.http.get('../../assets/problems.json')
+    let problems = this.http.get('http://localhost:8081/api/problems')
       .map((res: Response) => {
         return res.json().map((r: any) => {
           return <Problem>({
