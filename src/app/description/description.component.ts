@@ -93,15 +93,15 @@ export class DescriptionComponent implements OnInit {
         this.problem = this._exampleDatabase.data.find(x => x.ID === this.passedInId);
         if (this.problem) {
           // Set default values by converting to array
-          let tagNums = this.problem.TAGS.split(',');
+          let tagNums = this.problem.TAGS;
           for (var i in tagNums) {
-            this.defaultTags.push(tagNums[i].trim());
+            this.defaultTags.push(tagNums[i]);
           }
-          let companyNums = this.problem.COMPANIES.split(',');
+          let companyNums = this.problem.COMPANIES;
           for (var i in companyNums) {
             this.defaultCompanies.push(companyNums[i].trim());
           }
-          let specialTagNums = this.problem.SPECIALTAGS.split(',');
+          let specialTagNums = this.problem.SPECIALTAGS;
           for (var i in specialTagNums) {
             this.defaultSpecialTags.push(specialTagNums[i].trim());
           }

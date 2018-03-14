@@ -5,8 +5,8 @@ export class Problem {
     DIFFICULTY: string;
     DESCRIPTION: string;
     SOLUTION: string;
-    TAGS: string;
-    COMPANIES: string;
-    SPECIALTAGS: string;
+    TAGS: string[];
+    COMPANIES: string[];
+    SPECIALTAGS: string[];
   }
   
