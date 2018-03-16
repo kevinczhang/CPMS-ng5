@@ -32,7 +32,7 @@ export class Problem {
   getTags(topics: string[]): string[] {
     let res:string[] = [];
     topics.forEach(i => {
-      res.push(this.topics[i]);
+      res.push(i.toString());
     });
     return res;
   }
@@ -40,7 +40,7 @@ export class Problem {
   getCompanies(companies: string[]): string[] {
     let res:string[] = [];
     companies.forEach(i => {
-      res.push(this.companies[i]);
+      res.push(i.toString());
     });
     return res;
   }
@@ -48,7 +48,7 @@ export class Problem {
   getSpecialTags(specialTags: string[]): string[] {
     let res:string[] = [];
     specialTags.forEach(i => {
-      res.push(this.specialTags[i]);
+      res.push(i.toString());
     });
     return res;
   }
@@ -63,7 +63,7 @@ export class Problem {
     this.SOLUTION = r.solution;
     this.TAGS = r.topics ? this.getTags(r.topics) : [] ;
     this.COMPANIES = r.companies ? this.getCompanies(r.companies) : [];
-    this.SPECIALTAGS = r.specialTags ? this.getSpecialTags(r.specialTags) : [];
+    this.SPECIALTAGS = r.tags ? this.getSpecialTags(r.tags) : [];
   }
     
 }
