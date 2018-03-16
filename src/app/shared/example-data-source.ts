@@ -44,7 +44,7 @@ export class ExampleDataSource extends DataSource<any> {
       // Filter data
       this.filteredData = data.filter((item: Problem) => {
         if(item){
-          let searchStr = (item.NUMBER + item.TITLE).toLowerCase();        
+          let searchStr = (item.NUMBER + item.TITLE);        
           return this.filter.trim() === "" || searchStr.indexOf(this.filter.toLowerCase()) != -1;
         }
         return false;

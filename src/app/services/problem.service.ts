@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/Rx';
 @Injectable()
 export class ProblemService {
   baseUrl : string;
+  
   constructor(private http: Http) {
     this.baseUrl = 'http://localhost:8081/SpringBootCRUDApp/api/problem/';
   }
@@ -14,17 +15,7 @@ export class ProblemService {
     let problems = this.http.get(this.baseUrl)
       .map((res: Response) => {
         return res.json().payload.map((r: any) => {
-          return <Problem>({
-            ID: r.source,
-            NUMBER: r.number,
-            TITLE: r.title,
-            DIFFICULTY: r.difficulty,
-            DESCRIPTION: r.description,
-            SOLUTION: r.solution,
-            TAGS: r.topics,
-            COMPANIES: r.companies,
-            SPECIALTAGS: r.tags
-          });
+          return new Problem(r);
         });
       });
     return problems;

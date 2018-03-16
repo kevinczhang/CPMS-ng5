@@ -86,32 +86,32 @@ export class DescriptionComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      this.passedInId = +params['id'];
+      this.passedInId = params['id'];
       if (this.passedInId === -1) {
         this.rForm.get('problemId').setValue(this._exampleDatabase.data.length);
       } else {
-        this.problem = this._exampleDatabase.data.find(x => x.ID === this.passedInId);
+        this.problem = this._exampleDatabase.data.find(x => x.ID === this.passedInId.toString());
         if (this.problem) {
           // Set default values by converting to array
           let tagNums = this.problem.TAGS;
           for (var i in tagNums) {
-            this.defaultTags.push(tagNums[i]);
+            this.defaultTags.push(this.tags[+i]);
           }
           let companyNums = this.problem.COMPANIES;
           for (var i in companyNums) {
-            this.defaultCompanies.push(companyNums[i].trim());
+            this.defaultCompanies.push(this.companies[+i].trim());
           }
           let specialTagNums = this.problem.SPECIALTAGS;
           for (var i in specialTagNums) {
-            this.defaultSpecialTags.push(specialTagNums[i].trim());
+            this.defaultSpecialTags.push(this.specialTags[+i].trim());
           }
           this.rForm.get('problemId').setValue(this.problem.ID);
           this.rForm.get('problemNumber').setValue(this.problem.NUMBER);
           this.rForm.get('problemDifficulty').setValue(this.problem.DIFFICULTY);
           this.rForm.get('problemTitle').setValue(this.problem.TITLE);
-          this.rForm.get('problemTags').setValue(this.defaultTags);
-          this.rForm.get('problemCompanies').setValue(this.defaultCompanies);
-          this.rForm.get('problemSpecialTags').setValue(this.defaultSpecialTags);
+          this.rForm.get('problemTags').setValue(this.problem.TAGS);
+          this.rForm.get('problemCompanies').setValue(this.problem.COMPANIES);
+          this.rForm.get('problemSpecialTags').setValue(this.problem.SPECIALTAGS);
           this.rForm.get('problemDescription').setValue(this.problem.DESCRIPTION);
           this.rForm.get('problemSolution').setValue(this.problem.SOLUTION);
         }
@@ -137,7 +137,7 @@ export class DescriptionComponent implements OnInit {
   }
 
   addOrUpdateProblem(problem: any) {
-    let newProblem: Problem = new Problem();
+    let newProblem: Problem = new Problem(problem);
     newProblem.ID = problem.problemId;
     newProblem.NUMBER = problem.problemNumber;
     newProblem.TITLE = problem.problemTitle;
