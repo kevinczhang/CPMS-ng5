@@ -14,9 +14,11 @@ export class CPMSDatabase {
     this.dataChange = new BehaviorSubject<Problem[]>([]);
     // Fill up the database with 100 users.
     this.problemService.getProblems().subscribe(problems => {
-      for (let i = 0; i < problems.length; i++) { 
-        this.addProblem(problems[i]);   
+      const copiedData = this.data.slice();
+      for (let i = 0; i < problems.length; i++) {        
+        copiedData.push(problems[i]);  
       }
+      this.dataChange.next(copiedData);
     });
   }
 
