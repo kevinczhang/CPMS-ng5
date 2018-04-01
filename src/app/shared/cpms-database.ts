@@ -1,15 +1,17 @@
 import { BehaviorSubject } from "rxjs";
 import { Injectable }    from '@angular/core';
+
 import { Problem } from "../model/problem";
 import { ProblemService }  from '../services/problem.service';
 
 @Injectable()
-export class ExampleDatabase {
+export class CPMSDatabase {
   /** Stream that emits whenever the data has been modified. */
-  dataChange: BehaviorSubject<Problem[]> = new BehaviorSubject<Problem[]>([]);
+  dataChange: BehaviorSubject<Problem[]>;
   get data(): Problem[] { return this.dataChange.value; }
 
   constructor(private problemService: ProblemService) {
+    this.dataChange = new BehaviorSubject<Problem[]>([]);
     // Fill up the database with 100 users.
     this.problemService.getProblems().subscribe(problems => {
       for (let i = 0; i < problems.length; i++) { 

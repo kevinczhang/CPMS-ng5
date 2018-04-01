@@ -2,6 +2,7 @@ export class Problem {
   
   ID: string;
   SOURCE: string;
+  TYPE: string;
   NUMBER: number;
   TITLE: string;
   DIFFICULTY: string;
@@ -10,24 +11,10 @@ export class Problem {
   TAGS: string[];
   COMPANIES: string[];
   SPECIALTAGS: string[];
-  
-  topics: string[] = ["Array", "Hash Table", "Linked List", "Math", "Two Pointer", 
-    "String", "Binary Search", "Divide and Conquer", "Backtracking", "Dynamic Programming", 
-    "Design", "Trie", "Tree", "Sort", "Depth-first Search", 
-    "Stack",  "Union Find", "Greedy", "Queue", "Breath-first Search", 
-    "Heap", "Matrix", "Bit Manipulation", "Graph", "Topological Sort",
-    "Binary Indexed Tree", "Segment Tree", "Binary Search Tree", "Memorization", "Minimax", 
-    "Recursion", "Reservoir Sampling"];
-  
+    
   sources: string[] = ['LeetCode', 'Facebook', 'CodeSnippet', 'LintCode'];
-
   types: string[] = ['Algorithm', 'Database', 'OODesign', 'SystemDesign'];
-
   levels: string[] = ['Easy', 'Medium', 'Hard' ];
-
-  companies: string[] = ["Facebook", "Amazon", 'Bloomberg', 'Google', "Microsoft", "Yelp"];
-
-  specialTags: string[] = ["Remember", "CodeSnippet", "Recent"];
 
   getTags(topics: string[]): string[] {
     let res:string[] = [];
@@ -56,6 +43,7 @@ export class Problem {
   constructor(r : any) {
     this.ID = r.id;
     this.SOURCE = this.sources[r.source];
+    this.TYPE = this.types[r.type];
     this.NUMBER = r.number;
     this.TITLE = r.title;
     this.DIFFICULTY = this.levels[r.difficulty];

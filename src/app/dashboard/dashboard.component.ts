@@ -1,26 +1,29 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
   // Doughnut
-  public doughnutChartLabels:string[] = ['Download Sales', 'In-Store Sales', 'Mail-Order Sales'];
-  public doughnutChartData:number[] = [350, 450, 100];
-  public doughnutChartType:string = 'doughnut';
+  doughnutChartLabels:string[] = ['Download Sales', 'In-Store Sales', 'Mail-Order Sales'];
+  doughnutChartData:number[] = [350, 450, 100];
+  doughnutChartType:string = 'doughnut';
  
   // events
-  public chartClicked(e:any):void {
-    console.log(e);
+  chartClicked(e:any):void {
+    console.log("chartClicked");
   }
  
-  public chartHovered(e:any):void {
-    console.log(e);
+  chartHovered(e:any):void {
+    console.log("chartHovered");
   }
 
-  constructor() { }
+  constructor() {
+    this.doughnutChartLabels = ['Download Sales', 'In-Store Sales', 'Mail-Order Sales'];
+    this.doughnutChartData = [350, 450, 100];
+    this.doughnutChartType = 'doughnut';
+   }
 
   ngOnInit() {
   }

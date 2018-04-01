@@ -5,7 +5,7 @@ import { Location } from '@angular/common';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 
-import { ExampleDatabase } from "../shared/example-database";
+import { CPMSDatabase } from "../shared/cpms-database";
 import { Problem } from "../model/problem";
 import { Tag } from "../model/tag";
 
@@ -48,7 +48,7 @@ export class DescriptionComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private location: Location,
-    private _exampleDatabase: ExampleDatabase,
+    private _exampleDatabase: CPMSDatabase,
     private fb: FormBuilder
   ) {
     // construct tagOptions
