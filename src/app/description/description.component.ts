@@ -45,6 +45,15 @@ export class DescriptionComponent implements OnInit {
 
   rForm: FormGroup;
 
+  editorConfig = {
+    editable: true,
+    spellcheck: false,
+    height: '10rem',
+    minHeight: '5rem',
+    placeholder: 'Type something. Test the Editor... ヽ(^。^)丿',
+    translate: 'no'
+  };
+
   constructor(
     private route: ActivatedRoute,
     private location: Location,
