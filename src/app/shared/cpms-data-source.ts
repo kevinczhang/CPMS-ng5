@@ -16,6 +16,7 @@ import { CPMSDatabase } from "./cpms-database";
 export class CPMSDataSource extends DataSource<any> {
   _filterChange = new BehaviorSubject('');
   _sorterChange = new BehaviorSubject('');
+  _advancedFilterChange = new BehaviorSubject<[string, string, number, string]>(null);
 
   get filter(): string {
     return this._filterChange.value;
@@ -33,6 +34,14 @@ export class CPMSDataSource extends DataSource<any> {
     this._sorterChange.next(sorter);
   }
 
+  get advancedFilter(): [string, string, number, string] {
+    return this._advancedFilterChange.value;
+  }
+
+  set advancedFilter(filter: [string, string, number, string]) {
+    this._advancedFilterChange.next(filter);
+  }
+
   filteredData: Problem[] = [];
   problemsCount = 0;
 
@@ -47,19 +56,20 @@ export class CPMSDataSource extends DataSource<any> {
       this._cpmsDatabase.dataChange,
       this._paginator.page,
       this._filterChange,
-      this._sorterChange
+      this._sorterChange,
+      this._advancedFilterChange
     ];
 
     return Observable.merge(...displayDataChanges).map(() => {
       const data = this._cpmsDatabase.data.slice();
 
-      console.log("Sort clicked in data source with name of " + this.sorter);
+      console.log("Advanced filter trigger " + this._advancedFilterChange.value);
 
       // Filter data
       this.filteredData = data.filter((item: Problem) => {
         if(item){
           let searchStr = (item.NUMBER + item.TITLE);        
-          return this.filter.trim() === "" || searchStr.indexOf(this.filter.toLowerCase()) != -1;
+          return this.filter.trim() === "" || searchStr.toLowerCase().indexOf(this.filter.toLowerCase()) != -1;
         }
         return false;
       });

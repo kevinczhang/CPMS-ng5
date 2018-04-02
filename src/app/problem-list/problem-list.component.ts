@@ -23,6 +23,10 @@ export class ProblemListComponent implements OnInit {
 
   displayedColumns: string[];
   dataSource: CPMSDataSource;
+  problemSource: string;
+  problemTitle: string;  
+  problemNumber: number;
+  problemDifficulty: string;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('filter') filter: ElementRef;
@@ -41,6 +45,7 @@ export class ProblemListComponent implements OnInit {
       .subscribe(() => {
         this.dataSource.filter = this.filter.nativeElement.value;
       });
+      
   }
 
   sortData(sort: Sort) {
@@ -48,4 +53,11 @@ export class ProblemListComponent implements OnInit {
     this.dataSource.sorter = sort.active;
   }
   
+  applyAdvancedFilter(){
+    console.log("Problem Source: " + this.problemSource);
+    console.log("Problem Title: " + this.problemTitle);
+    console.log("Problem Number: " + this.problemNumber);
+    console.log("Problem Difficulty: " + this.problemDifficulty);
+    this.dataSource.advancedFilter = [this.problemSource, this.problemTitle, this.problemNumber, this.problemDifficulty];
+  }
 }

@@ -17,20 +17,20 @@
           </mat-panel-description>
         </mat-expansion-panel-header>
         <mat-form-field>
-          <input matInput placeholder="First name">
+          <input matInput placeholder="Source" [(ngModel)]="problemSource">
         </mat-form-field>
         <mat-form-field>
-          <input matInput placeholder="Age">
+          <input matInput placeholder="Title" [(ngModel)]="problemTitle">
         </mat-form-field>
         <br />
         <mat-form-field>
-          <input matInput placeholder="First name">
+          <input matInput placeholder="Number" [(ngModel)]="problemNumber">
         </mat-form-field>
         <mat-form-field>
-          <input matInput placeholder="Age">
+          <input matInput placeholder="Difficulty" [(ngModel)]="problemDifficulty">
         </mat-form-field>
         <br/>
-        <button mat-raised-button color="primary" [routerLink]="['/description', -1]" class="mdl-button">
+        <button (click)="applyAdvancedFilter()" mat-raised-button color="primary" class="mdl-button">
           Search
         </button>
       </mat-expansion-panel>
