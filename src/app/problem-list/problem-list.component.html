@@ -17,7 +17,11 @@
           </mat-panel-description>
         </mat-expansion-panel-header>
         <mat-form-field>
-          <input matInput placeholder="Source" [(ngModel)]="problemSource">
+          <mat-select placeholder="Source" [(ngModel)]="problemSource">
+            <mat-option *ngFor="let source of sourceOptions" [value]="source.value">
+              {{ source.viewValue }}
+            </mat-option>
+          </mat-select>
         </mat-form-field>
         <mat-form-field>
           <input matInput placeholder="Title" [(ngModel)]="problemTitle">
@@ -27,7 +31,11 @@
           <input matInput placeholder="Number" [(ngModel)]="problemNumber">
         </mat-form-field>
         <mat-form-field>
-          <input matInput placeholder="Difficulty" [(ngModel)]="problemDifficulty">
+          <mat-select placeholder="Difficulty" [(ngModel)]="problemDifficulty">
+            <mat-option *ngFor="let difficulty of difficultyOptions" [value]="difficulty.value">
+              {{ difficulty.viewValue }}
+            </mat-option>
+          </mat-select>
         </mat-form-field>
         <br/>
         <button (click)="applyAdvancedFilter()" mat-raised-button color="primary" class="mdl-button">
@@ -43,7 +51,7 @@
 
     <!-- SOURCE Column -->
     <ng-container matColumnDef="Source">
-      <mat-header-cell *matHeaderCellDef> Source </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Source </mat-header-cell>
       <mat-cell *matCellDef="let row"> {{row.SOURCE}} </mat-cell>
     </ng-container>
 
@@ -55,13 +63,13 @@
 
     <!-- Name Column -->
     <ng-container matColumnDef="Title">
-      <mat-header-cell *matHeaderCellDef> Title </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Title </mat-header-cell>
       <mat-cell *matCellDef="let row"> {{row.TITLE}} </mat-cell>
     </ng-container>
 
     <!-- Color Column -->
     <ng-container matColumnDef="Difficulty">
-      <mat-header-cell *matHeaderCellDef> Difficulty </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Difficulty </mat-header-cell>
       <mat-cell *matCellDef="let row"> {{row.DIFFICULTY}} </mat-cell>
     </ng-container>
 

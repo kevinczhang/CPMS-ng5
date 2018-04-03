@@ -14,24 +14,24 @@ import { CPMSDatabase } from "./cpms-database";
  * should be rendered.
  */
 export class CPMSDataSource extends DataSource<any> {
-
+  
   _filterChange = new BehaviorSubject('');
-  _sorterChange = new BehaviorSubject('');
+  _sorterChange = new BehaviorSubject<[string, string]>(null);
   _advancedFilterChange = new BehaviorSubject<[string, string, number, string]>(null);
 
   filteredData: Problem[] = [];
   problemsCount = 0;
 
-  findInGeneralFilter(item: Problem): boolean{
+  private findInGeneralFilter(item: Problem): boolean{
     let searchStr = (item.SOURCE + item.TITLE + item.NUMBER + item.DIFFICULTY);
     return this.filter.trim() === "" || searchStr.toLowerCase().indexOf(this.filter.toLowerCase()) != -1;
   }
 
-  findInAdvancedFilter(item: Problem): boolean {
+  private findInAdvancedFilter(item: Problem): boolean {
     if(this._advancedFilterChange.value){
       return this._advancedFilterChange.value[0] && item.SOURCE === this._advancedFilterChange.value[0] ||
       this._advancedFilterChange.value[1] && item.TITLE === this._advancedFilterChange.value[1] ||
-      this._advancedFilterChange.value[2] && item.NUMBER === this._advancedFilterChange.value[2] ||
+      this._advancedFilterChange.value[2] && item.NUMBER === Number(this._advancedFilterChange.value[2]) ||
       this._advancedFilterChange.value[3] && item.DIFFICULTY === this._advancedFilterChange.value[3];
     }
     return false;
@@ -56,7 +56,7 @@ export class CPMSDataSource extends DataSource<any> {
       const data = this._cpmsDatabase.data.slice();
       this.filteredData = data;
 
-      console.log("Advanced filter trigger " + this._advancedFilterChange.value);
+      console.log("Sorter triggered " + this.sorter);
 
       // Filter data
       if (this._advancedFilterChange.value && (this._advancedFilterChange.value[0] || 
@@ -75,10 +75,18 @@ export class CPMSDataSource extends DataSource<any> {
           }
           return false;
         });
-      }      
-      
-      if(this.sorter === 'Number'){
-        this.filteredData.sort((a, b) => a.NUMBER - b.NUMBER);
+      }
+      // Sort data
+      if(this.sorter){
+        if(this.sorter[0] === 'Number'){
+          this.filteredData.sort((a, b) => this.sorter[1] === 'asc' ? a.NUMBER - b.NUMBER : b.NUMBER - a.NUMBER);
+        } else if(this.sorter[0] === 'Source'){
+          this.sortSource();
+        } else if(this.sorter[0] === 'Title'){
+          this.sortTitle();
+        } else if(this.sorter[0] === 'Difficulty'){
+          this.sortDifficulty();
+        }
       }      
 
       this.problemsCount = this.filteredData.length;
@@ -89,6 +97,69 @@ export class CPMSDataSource extends DataSource<any> {
       let pageSize = problemsLeft < this._paginator.pageSize ? problemsLeft : this._paginator.pageSize;
       return this.filteredData.splice(startIndex, pageSize);
     });
+  }
+
+  private sortSource(): void {
+    if (this.sorter[1] === 'asc') {
+      this.filteredData.sort((a, b) => {
+        if (a.SOURCE > b.SOURCE)
+          return 1;
+        if (a.SOURCE < b.SOURCE)
+          return -1;
+        return 0;
+      });
+    }
+    else if (this.sorter[1] === 'desc') {
+      this.filteredData.sort((a, b) => {
+        if (b.SOURCE > a.SOURCE)
+          return 1;
+        if (b.SOURCE < a.SOURCE)
+          return -1;
+        return 0;
+      });
+    }
+  }
+
+  private sortTitle(): void {
+    if (this.sorter[1] === 'asc') {
+      this.filteredData.sort((a, b) => {
+        if (a.TITLE > b.TITLE)
+          return 1;
+        if (a.TITLE < b.TITLE)
+          return -1;
+        return 0;
+      });
+    }
+    else if (this.sorter[1] === 'desc') {
+      this.filteredData.sort((a, b) => {
+        if (b.TITLE > a.TITLE)
+          return 1;
+        if (b.TITLE < a.TITLE)
+          return -1;
+        return 0;
+      });
+    }
+  }
+
+  private sortDifficulty(): void {
+    if (this.sorter[1] === 'asc') {
+      this.filteredData.sort((a, b) => {
+        if (a.DIFFICULTY > b.DIFFICULTY)
+          return 1;
+        if (a.DIFFICULTY < b.DIFFICULTY)
+          return -1;
+        return 0;
+      });
+    }
+    else if (this.sorter[1] === 'desc') {
+      this.filteredData.sort((a, b) => {
+        if (b.DIFFICULTY > a.DIFFICULTY)
+          return 1;
+        if (b.DIFFICULTY < a.DIFFICULTY)
+          return -1;
+        return 0;
+      });
+    }
   }
 
   disconnect() {
@@ -102,11 +173,11 @@ export class CPMSDataSource extends DataSource<any> {
     this._filterChange.next(filter);
   }
 
-  get sorter(): string {
+  get sorter(): [string, string] {
     return this._sorterChange.value;
   }
 
-  set sorter(sorter: string) {
+  set sorter(sorter: [string, string]) {
     this._sorterChange.next(sorter);
   }
 

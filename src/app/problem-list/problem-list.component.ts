@@ -29,6 +29,21 @@ export class ProblemListComponent implements OnInit {
   problemDifficulty: string;
   advancedSearchDescription: string;
 
+  difficultyOptions = [
+    { value: null, viewValue: 'None' },
+    { value: 'Easy', viewValue: 'Easy' },
+    { value: 'Medium', viewValue: 'Medium' },
+    { value: 'Hard', viewValue: 'Hard' }
+  ];
+
+  sourceOptions = [
+    { value: null, viewValue: 'None' },
+    { value: 'LeetCode', viewValue: 'LeetCode' },
+    { value: 'Facebook', viewValue: 'Facebook' },
+    { value: 'CodeSnippet', viewValue: 'CodeSnippet' },
+    { value: 'LintCode', viewValue: 'LintCode' }
+  ];
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('filter') filter: ElementRef;
 
@@ -49,7 +64,7 @@ export class ProblemListComponent implements OnInit {
   }
 
   sortData(sort: Sort) {
-    this.dataSource.sorter = sort.active;
+    this.dataSource.sorter = [sort.active, sort.direction];
   }
   
   applyAdvancedFilter(){
