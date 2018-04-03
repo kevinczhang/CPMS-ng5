@@ -98,6 +98,9 @@ export class CPMSDataSource extends DataSource<any> {
       return this.filteredData.splice(startIndex, pageSize);
     });
   }
+  
+  disconnect() {
+  }  
 
   private sortSource(): void {
     if (this.sorter[1] === 'asc') {
@@ -161,9 +164,6 @@ export class CPMSDataSource extends DataSource<any> {
       });
     }
   }
-
-  disconnect() {
-  }  
 
   get filter(): string {
     return this._filterChange.value;

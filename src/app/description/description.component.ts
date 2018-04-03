@@ -19,7 +19,6 @@ export class DescriptionComponent implements OnInit {
   passedInId: number;
 
   @ViewChild('editor') editor;
-  text: string = "Selcet * From myDatabase;";
 
   difficultyOptions = [
     { value: 'Easy', viewValue: 'Easy' },
@@ -41,7 +40,10 @@ export class DescriptionComponent implements OnInit {
 
   tagOptions: Tag[] = [];
   companyOptions: Tag[] = [];
-  specialTagOptions: Tag[] = [];
+  specialTagOptions: Tag[] = [];  
+  defaultTags: string[] = [];
+  defaultCompanies: string[] = [];
+  defaultSpecialTags: string[] = [];
 
   rForm: FormGroup;
 
@@ -88,10 +90,6 @@ export class DescriptionComponent implements OnInit {
       'problemSolution': new FormControl('', [Validators.required])
     });
   }
-
-  defaultTags: string[] = [];
-  defaultCompanies: string[] = [];
-  defaultSpecialTags: string[] = [];
 
   ngOnInit() {
     this.route.params.subscribe(params => {
