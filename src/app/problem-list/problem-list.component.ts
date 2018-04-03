@@ -27,6 +27,7 @@ export class ProblemListComponent implements OnInit {
   problemTitle: string;  
   problemNumber: number;
   problemDifficulty: string;
+  advancedSearchDescription: string;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('filter') filter: ElementRef;
@@ -37,27 +38,23 @@ export class ProblemListComponent implements OnInit {
 
   ngOnInit() {
     this.dataSource = new CPMSDataSource(this.cpmsDatabase, this.paginator);
-    if(this.dataSource === null)
+    if(!this.dataSource)
       return;
     Observable.fromEvent(this.filter.nativeElement, 'keyup')
       .debounceTime(150)
       .distinctUntilChanged()
       .subscribe(() => {
         this.dataSource.filter = this.filter.nativeElement.value;
-      });
-      
+      });      
   }
 
   sortData(sort: Sort) {
-    console.log("Name " + sort.active + " direction " + sort.direction);
     this.dataSource.sorter = sort.active;
   }
   
   applyAdvancedFilter(){
-    console.log("Problem Source: " + this.problemSource);
-    console.log("Problem Title: " + this.problemTitle);
-    console.log("Problem Number: " + this.problemNumber);
-    console.log("Problem Difficulty: " + this.problemDifficulty);
     this.dataSource.advancedFilter = [this.problemSource, this.problemTitle, this.problemNumber, this.problemDifficulty];
+    this.advancedSearchDescription = (this.problemSource || this.problemTitle || 
+      this.problemNumber || this.problemDifficulty) ? 'Has options' : '';
   }
 }
