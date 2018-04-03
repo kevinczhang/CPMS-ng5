@@ -15,46 +15,22 @@ import { Tag } from "../model/tag";
   styleUrls: ['./description.component.css']
 })
 export class DescriptionComponent implements OnInit {
+  
   problem: Problem;
-  passedInId: number;
-
-  @ViewChild('editor') editor;
-
-  difficultyOptions = [
-    { value: 'Easy', viewValue: 'Easy' },
-    { value: 'Medium', viewValue: 'Medium' },
-    { value: 'Hard', viewValue: 'Hard' }
-  ];
-
-  tags: string[] = ["Array", "Hash Table", "Linked List", "Math", "Two Pointer", "String",
-    "Binary Search", "Divide and Conquer", "Backtracking", "Dynamic Programming", "Design",
-    "Trie", "Tree", "Sort", "Depth-first Search", "Stack",
-    "Union Find", "Greedy", "Queue", "Breath-first Search", "Heap",
-    "Matrix", "Bit Manipulation", "Graph", "Topological Sort", "Queue",
-    "Binary Indexed Tree", "Segment Tree", "Binary Search Tree", "Memorization",
-    "Minimax", "Recursion", "Reservoir Sampling", "Minimax"];
-
-  companies: string[] = ["Facebook", "Amazon", "Microsoft", "Linkedin"];
-
-  specialTags: string[] = ["Remember", "CodeSnippet", "Recent"];
-
+  difficultyOptions: any[];
+  tags: string[];
+  companies: string[];
+  specialTags: string[];
   tagOptions: Tag[] = [];
   companyOptions: Tag[] = [];
   specialTagOptions: Tag[] = [];  
   defaultTags: string[] = [];
   defaultCompanies: string[] = [];
   defaultSpecialTags: string[] = [];
+  editorConfig: any;
 
   rForm: FormGroup;
-
-  editorConfig = {
-    editable: true,
-    spellcheck: false,
-    height: '10rem',
-    minHeight: '5rem',
-    placeholder: 'Type something. Test the Editor... ヽ(^。^)丿',
-    translate: 'no'
-  };
+  @ViewChild('editor') editor;
 
   constructor(
     private route: ActivatedRoute,
@@ -62,6 +38,29 @@ export class DescriptionComponent implements OnInit {
     private _exampleDatabase: CPMSDatabase,
     private fb: FormBuilder
   ) {
+    // Initialize the variables
+    this.difficultyOptions = [
+      { value: 'Easy', viewValue: 'Easy' },
+      { value: 'Medium', viewValue: 'Medium' }, 
+      { value: 'Hard', viewValue: 'Hard' }];
+    this.tags = ["Array", "Hash Table", "Linked List", "Math", "Two Pointer", "String",
+    "Binary Search", "Divide and Conquer", "Backtracking", "Dynamic Programming", "Design",
+    "Trie", "Tree", "Sort", "Depth-first Search", "Stack",
+    "Union Find", "Greedy", "Queue", "Breath-first Search", "Heap",
+    "Matrix", "Bit Manipulation", "Graph", "Topological Sort", "Queue",
+    "Binary Indexed Tree", "Segment Tree", "Binary Search Tree", "Memorization",
+    "Minimax", "Recursion", "Reservoir Sampling", "Minimax"];
+    this.companies = ["Facebook", "Amazon", "Microsoft", "Linkedin"];
+    this.specialTags = ["Remember", "CodeSnippet", "Recent"];
+    this.editorConfig = {
+      editable: true,
+      spellcheck: false,
+      height: '10rem',
+      minHeight: '5rem',
+      placeholder: 'Type something. Test the Editor... ヽ(^。^)丿',
+      translate: 'no'
+    };
+
     // construct tagOptions
     for (var i in this.tags) {
       let newTag = new Tag(i, this.tags[i]);
@@ -93,11 +92,11 @@ export class DescriptionComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      this.passedInId = params['id'];
-      if (this.passedInId === -1) {
+      let passedInId = params['id'];
+      if (passedInId === -1) {
         this.rForm.get('problemId').setValue(this._exampleDatabase.data.length);
       } else {
-        this.problem = this._exampleDatabase.data.find(x => x.ID === this.passedInId.toString());
+        this.problem = this._exampleDatabase.data.find(x => x.ID === passedInId.toString());
         if (this.problem) {
           // Set default values by converting to array
           let tagNums = this.problem.TAGS;
