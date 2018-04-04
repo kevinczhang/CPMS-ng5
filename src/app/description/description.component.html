@@ -4,17 +4,27 @@
     <table class="example-full-width" cellspacing="0">
       <tr>
         <mat-form-field class="example-full-width">
-          <input matInput placeholder="Problem Id" formControlName="problemId" readonly>
+          <input matInput placeholder="Problem Id" formControlName="id" readonly>
         </mat-form-field>
       </tr>
       <tr>
         <mat-form-field class="example-full-width">
-          <input matInput placeholder="LeetCode Number" formControlName="problemNumber">
+          <input matInput placeholder="Source" formControlName="source">
+        </mat-form-field>
+      </tr>
+      <tr>
+        <mat-form-field class="example-full-width">
+          <input matInput placeholder="Type" formControlName="type">
+        </mat-form-field>
+      </tr>
+      <tr>
+        <mat-form-field class="example-full-width">
+          <input matInput placeholder="Number" formControlName="number">
         </mat-form-field>
       </tr>
       <tr>
         <mat-form-field>
-        <mat-select placeholder="Difficulty level" class="example-full-width" formControlName="problemDifficulty">
+        <mat-select placeholder="Difficulty level" class="example-full-width" formControlName="difficulty">
           <mat-option *ngFor="let difficulty of difficultyOptions" [value]="difficulty.value">
             {{ difficulty.viewValue }}
           </mat-option>
@@ -23,12 +33,12 @@
       </tr>
       <tr>
         <mat-form-field class="example-full-width">
-          <input matInput placeholder="Title" formControlName="problemTitle">
+          <input matInput placeholder="Title" formControlName="title">
         </mat-form-field>
       </tr>
       <tr>
         <mat-form-field>
-        <mat-select multiple placeholder="Tags" class="example-full-width" formControlName="problemTags">
+        <mat-select multiple placeholder="Tags" class="example-full-width" formControlName="topics">
           <mat-input-container>
             <input matInput>
           </mat-input-container>
@@ -40,7 +50,7 @@
       </tr>
       <tr>
         <mat-form-field>
-        <mat-select multiple placeholder="Companies" class="example-full-width" formControlName="problemCompanies">
+        <mat-select multiple placeholder="Companies" class="example-full-width" formControlName="companies">
           <mat-input-container>
             <input matInput>
           </mat-input-container>
@@ -52,7 +62,7 @@
       </tr>
       <tr>
         <mat-form-field>
-        <mat-select multiple placeholder="Special Tags" class="example-full-width" formControlName="problemSpecialTags">
+        <mat-select multiple placeholder="Special Tags" class="example-full-width" formControlName="tags">
           <mat-input-container>
             <input matInput>
           </mat-input-container>
@@ -78,7 +88,7 @@
 
       <!-- <ckeditor [config]="{uiColor: '#505f77'}" [readonly]="false" debounce="500" formControlName="problemDescription">
       </ckeditor> -->
-      <app-ngx-editor [config]="editorConfig" [spellcheck]="true" formControlName="problemDescription"></app-ngx-editor>
+      <app-ngx-editor [config]="editorConfig" [spellcheck]="true" formControlName="description"></app-ngx-editor>
     </mat-expansion-panel>
 
     <br>
@@ -96,7 +106,7 @@
       <!-- <ckeditor [config]="{uiColor: '#505f77'}" [readonly]="false" debounce="500" formControlName="problemSolution">
       </ckeditor> -->
       <ace-editor
-        formControlName="problemSolution" [mode] = "'java'"
+        formControlName="solution" [mode] = "'java'"
         #editor style="height:150px;"></ace-editor>
     </mat-expansion-panel>
 

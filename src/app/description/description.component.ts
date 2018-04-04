@@ -4,10 +4,12 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Location } from '@angular/common';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
+import { Guid } from "guid-typescript";
 
 import { CPMSDatabase } from "../shared/cpms-database";
 import { Problem } from "../model/problem";
 import { Tag } from "../model/tag";
+import { AppConstants } from '../shared/app-constants';
 
 @Component({
   selector: 'app-description',
@@ -35,31 +37,16 @@ export class DescriptionComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private location: Location,
-    private _exampleDatabase: CPMSDatabase,
-    private fb: FormBuilder
+    private _cpmsDatabase: CPMSDatabase,
+    private fb: FormBuilder,
+    private app_constants: AppConstants
   ) {
     // Initialize the variables
-    this.difficultyOptions = [
-      { value: 'Easy', viewValue: 'Easy' },
-      { value: 'Medium', viewValue: 'Medium' }, 
-      { value: 'Hard', viewValue: 'Hard' }];
-    this.tags = ["Array", "Hash Table", "Linked List", "Math", "Two Pointer", "String",
-    "Binary Search", "Divide and Conquer", "Backtracking", "Dynamic Programming", "Design",
-    "Trie", "Tree", "Sort", "Depth-first Search", "Stack",
-    "Union Find", "Greedy", "Queue", "Breath-first Search", "Heap",
-    "Matrix", "Bit Manipulation", "Graph", "Topological Sort", "Queue",
-    "Binary Indexed Tree", "Segment Tree", "Binary Search Tree", "Memorization",
-    "Minimax", "Recursion", "Reservoir Sampling", "Minimax"];
-    this.companies = ["Facebook", "Amazon", "Microsoft", "Linkedin"];
-    this.specialTags = ["Remember", "CodeSnippet", "Recent"];
-    this.editorConfig = {
-      editable: true,
-      spellcheck: false,
-      height: '10rem',
-      minHeight: '5rem',
-      placeholder: 'Type something. Test the Editor... ヽ(^。^)丿',
-      translate: 'no'
-    };
+    this.difficultyOptions = this.app_constants.difficultyOptions;
+    this.tags = this.app_constants.tags;
+    this.companies = this.app_constants.companies;
+    this.specialTags = this.app_constants.specialTags;
+    this.editorConfig = this.app_constants.editorConfig;
 
     // construct tagOptions
     for (var i in this.tags) {
@@ -78,25 +65,27 @@ export class DescriptionComponent implements OnInit {
     }
     // Define FormControl and formGroup
     this.rForm = fb.group({
-      'problemId': new FormControl('', [Validators.required]),
-      'problemNumber': new FormControl('', []),
-      'problemDifficulty': new FormControl('', [Validators.required]),
-      'problemTitle': new FormControl('', [Validators.required]),
-      'problemTags': new FormControl('', [Validators.required]),
-      'problemCompanies': new FormControl('', []),
-      'problemSpecialTags': new FormControl('', []),
-      'problemDescription': new FormControl('', [Validators.required]),
-      'problemSolution': new FormControl('', [Validators.required])
+      'id': new FormControl('', [Validators.required]),
+      'source': new FormControl('', [Validators.required]),
+      'type': new FormControl('', [Validators.required]),
+      'number': new FormControl('', []),
+      'difficulty': new FormControl('', [Validators.required]),
+      'title': new FormControl('', [Validators.required]),
+      'topics': new FormControl('', [Validators.required]),
+      'companies': new FormControl('', []),
+      'tags': new FormControl('', []),
+      'description': new FormControl('', [Validators.required]),
+      'solution': new FormControl('', [Validators.required])
     });
   }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      let passedInId = params['id'];
-      if (passedInId === -1) {
-        this.rForm.get('problemId').setValue(this._exampleDatabase.data.length);
+      let passedInId: string = params['id'];
+      if (passedInId === '-1') {
+        this.rForm.get('id').setValue(Guid.create());
       } else {
-        this.problem = this._exampleDatabase.data.find(x => x.ID === passedInId.toString());
+        this.problem = this._cpmsDatabase.data.find(x => x.ID === passedInId);
         if (this.problem) {
           // Set default values by converting to array
           let tagNums = this.problem.TAGS;
@@ -111,15 +100,17 @@ export class DescriptionComponent implements OnInit {
           for (var i in specialTagNums) {
             this.defaultSpecialTags.push(this.specialTags[+i].trim());
           }
-          this.rForm.get('problemId').setValue(this.problem.ID);
-          this.rForm.get('problemNumber').setValue(this.problem.NUMBER);
-          this.rForm.get('problemDifficulty').setValue(this.problem.DIFFICULTY);
-          this.rForm.get('problemTitle').setValue(this.problem.TITLE);
-          this.rForm.get('problemTags').setValue(this.problem.TAGS);
-          this.rForm.get('problemCompanies').setValue(this.problem.COMPANIES);
-          this.rForm.get('problemSpecialTags').setValue(this.problem.SPECIALTAGS);
-          this.rForm.get('problemDescription').setValue(this.problem.DESCRIPTION);
-          this.rForm.get('problemSolution').setValue(this.problem.SOLUTION);
+          this.rForm.get('id').setValue(this.problem.ID);
+          this.rForm.get('source').setValue(this.problem.SOURCE);
+          this.rForm.get('type').setValue(this.problem.TYPE);
+          this.rForm.get('number').setValue(this.problem.NUMBER);
+          this.rForm.get('difficulty').setValue(this.problem.DIFFICULTY);
+          this.rForm.get('title').setValue(this.problem.TITLE);
+          this.rForm.get('topics').setValue(this.problem.TAGS);
+          this.rForm.get('companies').setValue(this.problem.COMPANIES);
+          this.rForm.get('tags').setValue(this.problem.SPECIALTAGS);
+          this.rForm.get('description').setValue(this.problem.DESCRIPTION);
+          this.rForm.get('solution').setValue(this.problem.SOLUTION);
         }
       }
     });
@@ -144,23 +135,23 @@ export class DescriptionComponent implements OnInit {
 
   addOrUpdateProblem(problem: any) {
     let newProblem: Problem = new Problem(problem);
-    newProblem.ID = problem.problemId;
-    newProblem.NUMBER = problem.problemNumber;
-    newProblem.TITLE = problem.problemTitle;
-    newProblem.DIFFICULTY = problem.problemDifficulty;
-    newProblem.DESCRIPTION = problem.problemDescription;
-    newProblem.SOLUTION = problem.problemSolution;
-    newProblem.TAGS = problem.problemTags ? problem.problemTags.join(',') : '';
-    newProblem.COMPANIES = problem.problemCompanies ? problem.problemCompanies.join(',') : '';
-    newProblem.SPECIALTAGS = problem.problemSpecialTags ? problem.problemSpecialTags.join(',') : '';
+    // newProblem.ID = problem.problemId;
+    // newProblem.NUMBER = problem.problemNumber;
+    // newProblem.TITLE = problem.problemTitle;
+    // newProblem.DIFFICULTY = problem.problemDifficulty;
+    // newProblem.DESCRIPTION = problem.problemDescription;
+    // newProblem.SOLUTION = problem.problemSolution;
+    // newProblem.TAGS = problem.problemTags ? problem.problemTags.join(',') : '';
+    // newProblem.COMPANIES = problem.problemCompanies ? problem.problemCompanies.join(',') : '';
+    // newProblem.SPECIALTAGS = problem.problemSpecialTags ? problem.problemSpecialTags.join(',') : '';
     console.log(problem);
     console.log(newProblem);
 
-    if (problem.problemId < this._exampleDatabase.data.length) {
-      this._exampleDatabase.updateProblem(newProblem);
+    if (this._cpmsDatabase.data.find(x => x.ID === newProblem.ID)) {
+      this._cpmsDatabase.updateProblem(newProblem);
     } else {
       console.log("This is a new problem.");
-      this._exampleDatabase.addNewProblem(newProblem);
+      this._cpmsDatabase.addNewProblem(newProblem);
     }
     this.location.back();
   }

@@ -3,13 +3,17 @@ import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 
 import { Problem } from '../model/problem';
+import { ProblemJSON } from '../model/problemJSON';
+import { AppConstants } from '../shared/app-constants';
 
 @Injectable()
 export class ProblemService {
   baseUrl : string;
+  constants: AppConstants;
   
-  constructor(private http: Http) {
+  constructor(private http: Http, private app_constants: AppConstants) {
     this.baseUrl = 'http://localhost:8081/SpringBootCRUDApp/api/problem/';
+    this.constants = app_constants;
   }
 
   getProblems(): Observable<Problem[]> {    
@@ -23,22 +27,24 @@ export class ProblemService {
   }
 
   updateProblem(newProblem: Problem): Observable<Problem> {
-    let problem = this.http.put('http://localhost:8081/api/problems/', newProblem)
+    let problemJSON: ProblemJSON = new ProblemJSON(newProblem, this.constants);
+    let problem = this.http.put(this.baseUrl + newProblem.ID, problemJSON)
       .map((res: Response) => {
         res = res.json();
       }).catch(
         this.handleError
-      );
-      return problem;
+      ).subscribe();
+      return Observable.of(newProblem);
   }
 
   addProblem(newProblem: Problem): Observable<Problem> {
-    let problem = this.http.post('http://localhost:8081/api/problems/', newProblem)
+    let problemJSON: ProblemJSON = new ProblemJSON(newProblem, this.constants);
+    let problem = this.http.post(this.baseUrl, problemJSON)
       .map((res: Response) => {        
         res = res.json();
       }).catch(
         this.handleError
-      );
+      ).subscribe();
     return Observable.of(newProblem);
   }
 

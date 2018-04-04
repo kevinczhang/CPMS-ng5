@@ -20,6 +20,7 @@ import { AppRoutingModule }  from './app-routing.module';
 import { CPMSDatabase } from "./shared/cpms-database";
 import { ProblemService }  from './services/problem.service';
 import { MessagesComponent } from './messages/messages.component';
+import { AppConstants } from './shared/app-constants';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,7 @@ import { MessagesComponent } from './messages/messages.component';
     AceEditorModule,
     NgxEditorModule
   ],
-  providers: [CPMSDatabase, ProblemService],
+  providers: [CPMSDatabase, ProblemService, AppConstants],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
