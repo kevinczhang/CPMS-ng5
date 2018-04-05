@@ -48,7 +48,7 @@ export class ProblemListComponent implements OnInit {
   @ViewChild('filter') filter: ElementRef;
 
   constructor(private cpmsDatabase: CPMSDatabase) {
-    this.displayedColumns = ['Source', 'Title', 'Number', 'Difficulty'];    
+    this.displayedColumns = ['Source', 'Title', 'Number', 'Difficulty', 'Action'];    
   }
 
   ngOnInit() {
@@ -71,5 +71,9 @@ export class ProblemListComponent implements OnInit {
     this.dataSource.advancedFilter = [this.problemSource, this.problemTitle, this.problemNumber, this.problemDifficulty];
     this.advancedSearchDescription = (this.problemSource || this.problemTitle || 
       this.problemNumber || this.problemDifficulty) ? 'Has options' : '';
+  }
+
+  deleteProblem(id: any){
+    console.log(typeof id);
   }
 }

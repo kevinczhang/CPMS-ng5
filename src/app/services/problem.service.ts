@@ -48,6 +48,10 @@ export class ProblemService {
     return Observable.of(newProblem);
   }
 
+  deleteProblem(id: string): void {
+    this.http.delete(this.baseUrl + '/' + id);
+  }
+
   private handleError(error: any) {
         let errMsg = (error.message) ? error.message :
             error.status ? `${error.status} - ${error.statusText}` : 'Server error';

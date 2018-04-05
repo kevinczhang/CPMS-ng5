@@ -82,4 +82,8 @@ export class CPMSDatabase {
         });
   }
 
+  deleteProblem(id: string) {
+    console.log("Delete problem in database");
+  }
+
 }
