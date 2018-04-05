@@ -89,7 +89,7 @@ export class DescriptionComponent implements OnInit {
       if (passedInId === '-1') {
         this.rForm.get('id').setValue(Guid.create());
       } else {
-        this.problem = this._cpmsDatabase.data.find(x => x.ID === passedInId);
+        this.problem = this._cpmsDatabase.data.find(x => x.ID.toString() === passedInId);
         if (this.problem) {
           // Set default values by converting to array
           let tagNums = this.problem.TAGS;
@@ -139,17 +139,6 @@ export class DescriptionComponent implements OnInit {
 
   addOrUpdateProblem(problem: any) {
     let newProblem: Problem = new Problem(problem);
-    // newProblem.ID = problem.problemId;
-    // newProblem.NUMBER = problem.problemNumber;
-    // newProblem.TITLE = problem.problemTitle;
-    // newProblem.DIFFICULTY = problem.problemDifficulty;
-    // newProblem.DESCRIPTION = problem.problemDescription;
-    // newProblem.SOLUTION = problem.problemSolution;
-    // newProblem.TAGS = problem.problemTags ? problem.problemTags.join(',') : '';
-    // newProblem.COMPANIES = problem.problemCompanies ? problem.problemCompanies.join(',') : '';
-    // newProblem.SPECIALTAGS = problem.problemSpecialTags ? problem.problemSpecialTags.join(',') : '';
-    console.log(problem);
-    console.log(newProblem);
 
     if (this._cpmsDatabase.data.find(x => x.ID === newProblem.ID)) {
       this._cpmsDatabase.updateProblem(newProblem);
