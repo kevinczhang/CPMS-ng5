@@ -95,11 +95,19 @@ export class CPMSDataSource extends DataSource<any> {
       const startIndex = this._paginator.pageIndex * this._paginator.pageSize;
       let problemsLeft = this.filteredData.length - startIndex;
       let pageSize = problemsLeft < this._paginator.pageSize ? problemsLeft : this._paginator.pageSize;
+      
       return this.filteredData.splice(startIndex, pageSize);
     });
   }
   
   disconnect() {
+    this._filterChange.complete();
+    this._filterChange.observers = [];
+    this._sorterChange.complete();
+    this._sorterChange.observers = [];
+    this._advancedFilterChange.complete();
+    this._advancedFilterChange.observers = []; 
+    console.log("data source disconnected.");  
   }  
 
   private sortSource(): void {
