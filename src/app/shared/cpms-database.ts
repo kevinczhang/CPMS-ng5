@@ -36,6 +36,12 @@ export class CPMSDatabase {
     if(updateProblem.NUMBER){
       updateProblem.NUMBER = problem.NUMBER;
     }
+    if(updateProblem.SOURCE){
+      updateProblem.SOURCE = problem.SOURCE;
+    }
+    if(updateProblem.TYPE){
+      updateProblem.TYPE = problem.TYPE;
+    }
     if(updateProblem.TITLE){
       updateProblem.TITLE = problem.TITLE;
     }

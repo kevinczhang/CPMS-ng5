@@ -20,6 +20,8 @@ export class DescriptionComponent implements OnInit {
   
   problem: Problem;
   difficultyOptions: any[];
+  sourceOptions: any[];
+  typeOptions: any[];
   tags: string[];
   companies: string[];
   specialTags: string[];
@@ -42,7 +44,9 @@ export class DescriptionComponent implements OnInit {
     private app_constants: AppConstants
   ) {
     // Initialize the variables
+    this.sourceOptions = this.app_constants.sourceOptions;
     this.difficultyOptions = this.app_constants.difficultyOptions;
+    this.typeOptions = this.app_constants.typeOptions;
     this.tags = this.app_constants.tags;
     this.companies = this.app_constants.companies;
     this.specialTags = this.app_constants.specialTags;

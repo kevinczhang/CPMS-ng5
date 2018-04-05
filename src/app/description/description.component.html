@@ -8,13 +8,21 @@
         </mat-form-field>
       </tr>
       <tr>
-        <mat-form-field class="example-full-width">
-          <input matInput placeholder="Source" formControlName="source">
-        </mat-form-field>
+          <mat-form-field>
+              <mat-select placeholder="Source" class="example-full-width" formControlName="source">
+                  <mat-option *ngFor="let source of sourceOptions" [value]="source.value">
+                    {{ source.viewValue }}
+                  </mat-option>
+              </mat-select>
+          </mat-form-field>        
       </tr>
       <tr>
         <mat-form-field class="example-full-width">
-          <input matInput placeholder="Type" formControlName="type">
+            <mat-select placeholder="Type" class="example-full-width" formControlName="type">
+                <mat-option *ngFor="let type of typeOptions" [value]="type.value">
+                  {{ type.viewValue }}
+                </mat-option>
+            </mat-select>
         </mat-form-field>
       </tr>
       <tr>

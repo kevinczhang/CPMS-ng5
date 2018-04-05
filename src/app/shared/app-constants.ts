@@ -10,6 +10,16 @@ export class AppConstants {
         { value: 'Easy', viewValue: 'Easy' },
         { value: 'Medium', viewValue: 'Medium' }, 
         { value: 'Hard', viewValue: 'Hard' }];
+    readonly sourceOptions = [
+        { value: 'LeetCode', viewValue: 'LeetCode' },
+        { value: 'Facebook', viewValue: 'Facebook' }, 
+        { value: 'CodeSnippet', viewValue: 'CodeSnippet' }, 
+        { value: 'LintCode', viewValue: 'LintCode' }];
+    readonly typeOptions = [
+        { value: 'Algorithm', viewValue: 'Algorithm' },
+        { value: 'Database', viewValue: 'Database' }, 
+        { value: 'OODesign', viewValue: 'OO Design' }, 
+        { value: 'SystemDesign', viewValue: 'System Design' }];
     readonly tags = ["Array", "Hash Table", "Linked List", "Math", "Two Pointer", "String",
       "Binary Search", "Divide and Conquer", "Backtracking", "Dynamic Programming", "Design",
       "Trie", "Tree", "Sort", "Depth-first Search", "Stack",

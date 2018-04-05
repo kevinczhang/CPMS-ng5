@@ -15,45 +15,17 @@ export class ProblemJSON {
     solution: string;
     description: string;
 
-    constants: AppConstants;
-
     constructor(r: Problem, constants: AppConstants) {
-        this.constants = constants;
-        this.id = r.ID;
-        this.source = this.constants.sources.indexOf(r.SOURCE);
+        this.id = r.ID.toString();
+        this.source = constants.sources.indexOf(r.SOURCE);
         this.number = r.NUMBER;
-        this.type = this.constants.types.indexOf(r.TYPE);
+        this.type = constants.types.indexOf(r.TYPE);
         this.title = r.TITLE;
-        this.difficulty = this.constants.levels.indexOf(r.DIFFICULTY);
-        this.topics = r.TAGS ? this.getTopics(r.TAGS) : [];
-        this.companies = r.COMPANIES ? this.getCompanies(r.COMPANIES) : [];
-        this.tags = r.SPECIALTAGS ? this.getSpecialTags(r.SPECIALTAGS) : [];
+        this.difficulty = constants.levels.indexOf(r.DIFFICULTY);
+        this.topics = r.TAGS ? r.TAGS.map(x => +x) : [];
+        this.companies = r.COMPANIES ? r.COMPANIES.map(x => +x) : [];
+        this.tags = r.SPECIALTAGS ? r.SPECIALTAGS.map(x => +x) : [];
         this.description = r.DESCRIPTION;
         this.solution = r.SOLUTION;
     }
-
-    private getTopics(tags: string[]): number[] {
-        let res: number[] = [];
-        tags.forEach(i => {
-            res.push(this.constants.tags.indexOf(i));
-        });
-        return res;
-    }
-
-    private getCompanies(companies: string[]): number[] {
-        let res: number[] = [];
-        companies.forEach(i => {
-            res.push(this.constants.companies.indexOf(i));
-        });
-        return res;
-    }
-
-    private getSpecialTags(specialTags: string[]): number[] {
-        let res: number[] = [];
-        specialTags.forEach(i => {
-            res.push(this.constants.specialTags.indexOf(i));
-        });
-        return res;
-    }
-
 }
