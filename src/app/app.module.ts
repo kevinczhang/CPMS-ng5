@@ -1,6 +1,7 @@
+import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule }   from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -10,6 +11,7 @@ import { ChartsModule } from 'ng2-charts';
 import { CKEditorModule } from 'ng2-ckeditor';
 import { AceEditorModule } from 'ng2-ace-editor';
 import { NgxEditorModule } from 'ngx-editor';
+import { ToastrModule } from 'ngx-toastr';
 
 import { AppComponent } from './app.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -31,6 +33,7 @@ import { AppConstants } from './shared/app-constants';
     MessagesComponent
   ],
   imports: [
+    CommonModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
@@ -42,7 +45,8 @@ import { AppConstants } from './shared/app-constants';
     ChartsModule,
     ReactiveFormsModule,
     AceEditorModule,
-    NgxEditorModule
+    NgxEditorModule,
+    ToastrModule.forRoot(), // ToastrModule added
   ],
   providers: [CPMSDatabase, ProblemService, AppConstants],
   bootstrap: [AppComponent]
