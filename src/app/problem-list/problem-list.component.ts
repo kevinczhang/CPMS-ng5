@@ -75,5 +75,6 @@ export class ProblemListComponent implements OnInit {
 
   deleteProblem(id: any){
     console.log(typeof id);
+    this.dataSource.delete = id;
   }
 }

@@ -48,8 +48,10 @@ export class ProblemService {
     return Observable.of(newProblem);
   }
 
-  deleteProblem(id: string): void {
-    this.http.delete(this.baseUrl + '/' + id);
+  deleteProblem(id: string): Observable<Problem> {
+    return this.http.delete(this.baseUrl + '/' + id)
+                    .map((res: Response) => res.json())
+                    .catch(this.handleError);
   }
 
   private handleError(error: any) {

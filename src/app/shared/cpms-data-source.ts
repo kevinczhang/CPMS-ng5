@@ -18,6 +18,7 @@ export class CPMSDataSource extends DataSource<any> {
   _filterChange = new BehaviorSubject('');
   _sorterChange = new BehaviorSubject<[string, string]>(null);
   _advancedFilterChange = new BehaviorSubject<[string, string, number, string]>(null);
+  _deleteTriggered = new BehaviorSubject('');
 
   filteredData: Problem[] = [];
   problemsCount = 0;
@@ -49,14 +50,20 @@ export class CPMSDataSource extends DataSource<any> {
       this._paginator.page,
       this._filterChange,
       this._sorterChange,
-      this._advancedFilterChange
+      this._advancedFilterChange,
+      this._deleteTriggered
     ];    
 
-    return Observable.merge(...displayDataChanges).map(() => {
-      const data = this._cpmsDatabase.data.slice();
-      this.filteredData = data;
+    return Observable.merge(...displayDataChanges).map(() => { 
 
-      console.log("Sorter triggered " + this.sorter);
+      console.log("Deletion triggered " + this._deleteTriggered.value);
+      if(this._deleteTriggered.value){
+        this._cpmsDatabase.deleteProblem(this._deleteTriggered.value);
+        //this._deleteTriggered.unsubscribe();
+      }
+
+      const data = this._cpmsDatabase.data ? this._cpmsDatabase.data.slice() : [];
+      this.filteredData = data;
 
       // Filter data
       if (this._advancedFilterChange.value && (this._advancedFilterChange.value[0] || 
@@ -107,6 +114,8 @@ export class CPMSDataSource extends DataSource<any> {
     this._sorterChange.observers = [];
     this._advancedFilterChange.complete();
     this._advancedFilterChange.observers = []; 
+    this._deleteTriggered.complete();
+    this._deleteTriggered.observers = [];
     console.log("data source disconnected.");  
   }  
 
@@ -195,5 +204,13 @@ export class CPMSDataSource extends DataSource<any> {
 
   set advancedFilter(filter: [string, string, number, string]) {
     this._advancedFilterChange.next(filter);
+  }
+
+  get delete(): string {
+    return this._deleteTriggered.value;
+  }
+
+  set delete(id: string) {
+    this._deleteTriggered.next(id);
   }
 }

@@ -82,8 +82,17 @@ export class CPMSDatabase {
         });
   }
 
-  deleteProblem(id: string) {
-    console.log("Delete problem in database");
+  deleteProblem(problemId: string) {
+    const index: number = this.data.indexOf(this.data.find(x => x.ID === problemId));
+    if(index === -1){
+      return;
+    }
+    this.problemService.deleteProblem(problemId)
+        .subscribe(() => {
+          const copiedData = this.data.slice();
+          copiedData.splice(index, 1);
+          this.dataChange.next(copiedData);
+        });
   }
 
 }
