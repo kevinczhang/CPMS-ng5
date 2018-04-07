@@ -66,6 +66,6 @@ export class ProblemListComponent implements OnInit {
 
   private deleteProblem(id: any){
     console.log(typeof id);
-    this.dataSource.delete = id;
+    this.cpmsDatabase.deleteProblem(id);
   }
 }
