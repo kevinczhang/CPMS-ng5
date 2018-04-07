@@ -13,6 +13,7 @@ import 'rxjs/add/observable/fromEvent';
 
 import {CPMSDatabase} from "../shared/cpms-database";
 import {CPMSDataSource} from "../shared/cpms-data-source";
+import { AppConstants } from '../shared/app-constants';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -29,26 +30,16 @@ export class ProblemListComponent implements OnInit {
   problemDifficulty: string;
   advancedSearchDescription: string;
 
-  difficultyOptions = [
-    { value: null, viewValue: 'None' },
-    { value: 'Easy', viewValue: 'Easy' },
-    { value: 'Medium', viewValue: 'Medium' },
-    { value: 'Hard', viewValue: 'Hard' }
-  ];
-
-  sourceOptions = [
-    { value: null, viewValue: 'None' },
-    { value: 'LeetCode', viewValue: 'LeetCode' },
-    { value: 'Facebook', viewValue: 'Facebook' },
-    { value: 'CodeSnippet', viewValue: 'CodeSnippet' },
-    { value: 'LintCode', viewValue: 'LintCode' }
-  ];
+  difficultyOptions: object[];
+  sourceOptions: object[];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('filter') filter: ElementRef;
 
-  constructor(private cpmsDatabase: CPMSDatabase) {
-    this.displayedColumns = ['Source', 'Title', 'Number', 'Difficulty', 'Action'];    
+  constructor(private cpmsDatabase: CPMSDatabase, private app_constants: AppConstants) {
+    this.displayedColumns = app_constants.displayedColumns;
+    this.difficultyOptions = app_constants.difficultyOptions;
+    this.sourceOptions = app_constants.sourceOptions;    
   }
 
   ngOnInit() {
@@ -63,17 +54,17 @@ export class ProblemListComponent implements OnInit {
       });      
   }
 
-  sortData(sort: Sort) {
+  private sortData(sort: Sort) {
     this.dataSource.sorter = [sort.active, sort.direction];
   }
   
-  applyAdvancedFilter(){
+  private applyAdvancedFilter(){
     this.dataSource.advancedFilter = [this.problemSource, this.problemTitle, this.problemNumber, this.problemDifficulty];
     this.advancedSearchDescription = (this.problemSource || this.problemTitle || 
       this.problemNumber || this.problemDifficulty) ? 'Has options' : '';
   }
 
-  deleteProblem(id: any){
+  private deleteProblem(id: any){
     console.log(typeof id);
     this.dataSource.delete = id;
   }
