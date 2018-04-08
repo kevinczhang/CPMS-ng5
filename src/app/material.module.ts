@@ -4,19 +4,18 @@ import { MatButtonModule, MatTableModule, MatPaginatorModule,
   MatInputModule, MatMenuModule, MatIconModule, MatSidenavModule,
   MatToolbarModule, MatCheckboxModule, MatListModule, MatExpansionModule,
   MatAutocompleteModule, MatSelectModule, MatProgressSpinnerModule, 
-  MatCardModule, MatSortModule, MatDialogModule } from '@angular/material';
-  import { MatSnackBarModule } from '@angular/material/snack-bar';
+  MatCardModule, MatSortModule, MatDialogModule, MatSnackBarModule, MatSliderModule } from '@angular/material';
 
 @NgModule({
   imports: [MatButtonModule, MatTableModule, MatPaginatorModule, 
     MatInputModule, MatMenuModule, MatIconModule, MatSidenavModule,
     MatToolbarModule, MatCheckboxModule, MatListModule, MatExpansionModule,
     MatAutocompleteModule, MatSelectModule, MatProgressSpinnerModule, 
-    MatCardModule, MatSortModule, MatDialogModule, MatSnackBarModule],
+    MatCardModule, MatSortModule, MatDialogModule, MatSnackBarModule, MatSnackBarModule, MatSliderModule],
   exports: [MatButtonModule, MatTableModule, MatPaginatorModule, 
     MatInputModule, MatMenuModule, MatIconModule, MatSidenavModule,
     MatToolbarModule, MatCheckboxModule, MatListModule, MatExpansionModule,
     MatAutocompleteModule, MatSelectModule, MatProgressSpinnerModule, 
-    MatCardModule, MatSortModule, MatDialogModule, MatSnackBarModule],
+    MatCardModule, MatSortModule, MatDialogModule, MatSnackBarModule, MatSnackBarModule, MatSliderModule],
 })
 export class MaterialModule { }

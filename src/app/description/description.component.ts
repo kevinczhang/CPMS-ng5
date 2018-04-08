@@ -32,6 +32,7 @@ export class DescriptionComponent implements OnInit {
   defaultCompanies: string[] = [];
   defaultSpecialTags: string[] = [];
   editorConfig: any;
+  familiarityText: string;
 
   rForm: FormGroup;
   @ViewChild('editor') editor;
@@ -78,9 +79,10 @@ export class DescriptionComponent implements OnInit {
       'topics': new FormControl('', [Validators.required]),
       'companies': new FormControl('', []),
       'tags': new FormControl('', []),
+      'familiarity': new FormControl('', [Validators.required]),
       'description': new FormControl('', [Validators.required]),
       'solution': new FormControl('', [Validators.required])
-    });
+    });    
   }
 
   ngOnInit() {
@@ -113,10 +115,12 @@ export class DescriptionComponent implements OnInit {
           this.rForm.get('topics').setValue(this.problem.TAGS);
           this.rForm.get('companies').setValue(this.problem.COMPANIES);
           this.rForm.get('tags').setValue(this.problem.SPECIALTAGS);
+          this.rForm.get('familiarity').setValue(this.problem.FAMILIARITY);
           this.rForm.get('description').setValue(this.problem.DESCRIPTION);
           this.rForm.get('solution').setValue(this.problem.SOLUTION);
         }
       }
+      this.familiarityText = this.getFamiliarityTextBasedOnNumber(this.problem.FAMILIARITY);
     });
 
   }
@@ -147,5 +151,20 @@ export class DescriptionComponent implements OnInit {
       this._cpmsDatabase.addNewProblem(newProblem);
     }
     this.location.back();
+  }
+
+  familiarityChange(r: any) {
+    this.familiarityText = this.getFamiliarityTextBasedOnNumber(r.value);
+  }
+
+  private getFamiliarityTextBasedOnNumber(input: number): string{
+    if (input >= 2 && input < 3) {
+      return 'Familiarity';
+    }  else if (input >= 3 && input < 4) {
+      return 'Proficiency';
+    } else if (input >= 4) {
+      return 'Mastery    ';
+    }
+    return 'New        ';
   }
 }

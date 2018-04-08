@@ -12,6 +12,7 @@ export class ProblemJSON {
     topics: number[];
     companies: number[];
     tags: number[];
+    familiarity: number;
     solution: string;
     description: string;
 
@@ -25,6 +26,7 @@ export class ProblemJSON {
         this.topics = r.TAGS ? r.TAGS.map(x => +x) : [];
         this.companies = r.COMPANIES ? r.COMPANIES.map(x => +x) : [];
         this.tags = r.SPECIALTAGS ? r.SPECIALTAGS.map(x => +x) : [];
+        this.familiarity = r.FAMILIARITY;
         this.description = r.DESCRIPTION;
         this.solution = r.SOLUTION;
     }

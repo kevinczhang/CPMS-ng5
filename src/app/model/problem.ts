@@ -9,6 +9,7 @@ export class Problem {
   DESCRIPTION: string;
   SOLUTION: string;
   TAGS: string[];
+  FAMILIARITY: number;
   COMPANIES: string[];
   SPECIALTAGS: string[];
     
@@ -50,6 +51,7 @@ export class Problem {
     this.DESCRIPTION = r.description;
     this.SOLUTION = r.solution;
     this.TAGS = r.topics ? this.getTags(r.topics) : [] ;
+    this.FAMILIARITY = r.familiarity;
     this.COMPANIES = r.companies ? this.getCompanies(r.companies) : [];
     this.SPECIALTAGS = r.tags ? this.getSpecialTags(r.tags) : [];
   }
