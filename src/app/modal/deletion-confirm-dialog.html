@@ -1,8 +1,10 @@
-<h1 mat-dialog-title>Delete a problem</h1>
-<div mat-dialog-content>
-  <p>Are you sure ?</p> 
-</div>
-<div mat-dialog-actions>
-  <button mat-button (click)="onClickNo()">No Thanks</button>
-  <button mat-button (click)="onClickYes()" cdkFocusInitial>Ok</button>
+<div class="delete-confirm-dialog">
+  <h4 mat-dialog-title>Warning</h4>
+  <div mat-dialog-content>
+    <p>Are you sure to delete it ?</p>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-raised-button color="primary" (click)="onClickNo()">Cancel</button>
+    <button mat-raised-button color="warn" (click)="onClickYes()" cdkFocusInitial>OK</button>
+  </div>
 </div>

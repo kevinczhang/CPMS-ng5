@@ -2,8 +2,8 @@ import { Component, Inject } from "@angular/core";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
 
 @Component({
-    selector: 'dialog-overview-example-dialog',
     templateUrl: 'deletion-confirm-dialog.html',
+    styleUrls: ['deletion-confirm-dialog.css']
   })
   export class DeletionConfirmDialog {
   

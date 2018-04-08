@@ -1,6 +1,7 @@
 import { BehaviorSubject } from "rxjs";
 import { Injectable }    from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
+import { MatSnackBar } from '@angular/material';
 
 import { Problem } from "../model/problem";
 import { ProblemService }  from '../services/problem.service';
@@ -11,7 +12,8 @@ export class CPMSDatabase {
   dataChange: BehaviorSubject<Problem[]>;
   get data(): Problem[] { return this.dataChange.value; }
 
-  constructor(private problemService: ProblemService, private toastr: ToastrService) {
+  constructor(private problemService: ProblemService, 
+    private toastr: ToastrService, private snackBar: MatSnackBar) {
     this.dataChange = new BehaviorSubject<Problem[]>([]);
     // Fill up the database with 100 users.
     this.problemService.getProblems().subscribe(problems => {
@@ -29,6 +31,9 @@ export class CPMSDatabase {
     copiedData.push(problem);
     this.dataChange.next(copiedData);
     this.toastr.success('Problem added!', 'Success');
+    this.snackBar.open('Problem added!', null, {
+      duration: 2000,
+    });
   }
 
   updateExistingProblem(problem : Problem){
@@ -66,7 +71,10 @@ export class CPMSDatabase {
       updateProblem.SPECIALTAGS = problem.SPECIALTAGS;
     }
     this.dataChange.next(copiedData);
-    this.toastr.success('Problem Updated!', 'Success');
+    this.toastr.success('Problem updated!', 'Success');
+    this.snackBar.open('Problem updated!', null, {
+      duration: 2000,
+    });
   }
 
   updateProblem(problem : Problem){
@@ -96,6 +104,9 @@ export class CPMSDatabase {
           copiedData.splice(index, 1);
           this.dataChange.next(copiedData);
           this.toastr.warning('Problem deleted!', 'Warning');
+          this.snackBar.open('Problem deleted!', null, {
+            duration: 2000,
+          });
         });
   }
 
