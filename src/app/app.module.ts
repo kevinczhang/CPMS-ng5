@@ -23,6 +23,7 @@ import { CPMSDatabase } from "./shared/cpms-database";
 import { ProblemService }  from './services/problem.service';
 import { MessagesComponent } from './messages/messages.component';
 import { AppConstants } from './shared/app-constants';
+import { DeletionConfirmDialog } from './modal/deletion.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { AppConstants } from './shared/app-constants';
     DashboardComponent,
     DescriptionComponent,
     ProblemListComponent,
-    MessagesComponent
+    MessagesComponent,
+    DeletionConfirmDialog
   ],
   imports: [
     CommonModule,
@@ -48,6 +50,7 @@ import { AppConstants } from './shared/app-constants';
     NgxEditorModule,
     ToastrModule.forRoot(), // ToastrModule added
   ],
+  entryComponents: [DeletionConfirmDialog],
   providers: [CPMSDatabase, ProblemService, AppConstants],
   bootstrap: [AppComponent]
 })

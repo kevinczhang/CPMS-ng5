@@ -1,5 +1,6 @@
 import { BehaviorSubject } from "rxjs";
 import { Injectable }    from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 
 import { Problem } from "../model/problem";
 import { ProblemService }  from '../services/problem.service';
@@ -10,7 +11,7 @@ export class CPMSDatabase {
   dataChange: BehaviorSubject<Problem[]>;
   get data(): Problem[] { return this.dataChange.value; }
 
-  constructor(private problemService: ProblemService) {
+  constructor(private problemService: ProblemService, private toastr: ToastrService) {
     this.dataChange = new BehaviorSubject<Problem[]>([]);
     // Fill up the database with 100 users.
     this.problemService.getProblems().subscribe(problems => {
@@ -27,6 +28,7 @@ export class CPMSDatabase {
     const copiedData = this.data.slice();
     copiedData.push(problem);
     this.dataChange.next(copiedData);
+    this.toastr.success('Problem added!', 'Success');
   }
 
   updateExistingProblem(problem : Problem){
@@ -64,6 +66,7 @@ export class CPMSDatabase {
       updateProblem.SPECIALTAGS = problem.SPECIALTAGS;
     }
     this.dataChange.next(copiedData);
+    this.toastr.success('Problem Updated!', 'Success');
   }
 
   updateProblem(problem : Problem){
@@ -92,6 +95,7 @@ export class CPMSDatabase {
           const copiedData = this.data.slice();
           copiedData.splice(index, 1);
           this.dataChange.next(copiedData);
+          this.toastr.warning('Problem deleted!', 'Warning');
         });
   }
 

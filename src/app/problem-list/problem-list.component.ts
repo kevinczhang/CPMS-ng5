@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild, 
-  ElementRef, ChangeDetectionStrategy } from '@angular/core';
+  ElementRef, ChangeDetectionStrategy, Inject } from '@angular/core';
 import {MatPaginator, MatAccordion, MatExpansionPanel, 
-  MatExpansionPanelHeader, MatExpansionPanelTitle, Sort} from '@angular/material';
+  MatExpansionPanelHeader, MatExpansionPanelTitle, Sort, 
+  MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/startWith';
@@ -11,9 +12,10 @@ import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/observable/fromEvent';
 
-import {CPMSDatabase} from "../shared/cpms-database";
-import {CPMSDataSource} from "../shared/cpms-data-source";
+import { CPMSDatabase } from "../shared/cpms-database";
+import { CPMSDataSource } from "../shared/cpms-data-source";
 import { AppConstants } from '../shared/app-constants';
+import { DeletionConfirmDialog } from '../modal/deletion.component';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -36,7 +38,7 @@ export class ProblemListComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('filter') filter: ElementRef;
 
-  constructor(private cpmsDatabase: CPMSDatabase, private app_constants: AppConstants) {
+  constructor(private cpmsDatabase: CPMSDatabase, private app_constants: AppConstants, private dialog: MatDialog) {
     this.displayedColumns = app_constants.displayedColumns;
     this.difficultyOptions = app_constants.difficultyOptions;
     this.sourceOptions = app_constants.sourceOptions;    
@@ -65,7 +67,16 @@ export class ProblemListComponent implements OnInit {
   }
 
   private deleteProblem(id: any){
-    console.log(typeof id);
-    this.cpmsDatabase.deleteProblem(id);
+    let dialogRef = this.dialog.open(DeletionConfirmDialog, {
+      width: '250px'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed with result: ' + result);
+      if(result === 'Y'){
+        this.cpmsDatabase.deleteProblem(id);
+      }
+    });
   }
 }
+
