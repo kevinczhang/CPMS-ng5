@@ -35,6 +35,8 @@ export class ProblemListComponent implements OnInit {
   difficultyOptions: object[];
   sourceOptions: object[];
 
+  panelOpenState: boolean;
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('filter') filter: ElementRef;
 
@@ -56,11 +58,11 @@ export class ProblemListComponent implements OnInit {
       });      
   }
 
-  private sortData(sort: Sort) {
+  sortData(sort: Sort) {
     this.dataSource.sorter = [sort.active, sort.direction];
   }
   
-  private applyAdvancedFilter(){
+  applyAdvancedFilter(){
     this.dataSource.advancedFilter = [this.problemSource, this.problemTitle, this.problemNumber, this.problemDifficulty];
     this.advancedSearchDescription = (this.problemSource || this.problemTitle || 
       this.problemNumber || this.problemDifficulty) ? 'Has options' : '';
