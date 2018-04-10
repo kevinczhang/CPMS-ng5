@@ -16,6 +16,9 @@ import { CPMSDatabase } from "../shared/cpms-database";
 import { CPMSDataSource } from "../shared/cpms-data-source";
 import { AppConstants } from '../shared/app-constants';
 import { DeletionConfirmDialog } from '../modal/deletion.component';
+import { LoaderService } from '../services/loader.service';
+import { LoaderState } from '../loader/loader';
+import { Subscription } from 'rxjs';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -36,14 +39,19 @@ export class ProblemListComponent implements OnInit {
   sourceOptions: object[];
 
   panelOpenState: boolean;
+  hideTable: boolean;
+
+  private subscription: Subscription;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('filter') filter: ElementRef;
 
-  constructor(private cpmsDatabase: CPMSDatabase, private app_constants: AppConstants, private dialog: MatDialog) {
+  constructor(private cpmsDatabase: CPMSDatabase, private app_constants: AppConstants, 
+    private dialog: MatDialog, private loaderService: LoaderService) {
     this.displayedColumns = app_constants.displayedColumns;
     this.difficultyOptions = app_constants.difficultyOptions;
     this.sourceOptions = app_constants.sourceOptions;    
+    this.hideTable = true;
   }
 
   ngOnInit() {
@@ -55,7 +63,15 @@ export class ProblemListComponent implements OnInit {
       .distinctUntilChanged()
       .subscribe(() => {
         this.dataSource.filter = this.filter.nativeElement.value;
-      });      
+      });
+    this.subscription = this.loaderService.loaderState
+      .subscribe((state: LoaderState) => {
+          this.hideTable = state.show;
+      });
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
   sortData(sort: Sort) {

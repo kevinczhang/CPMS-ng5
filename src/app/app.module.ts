@@ -24,6 +24,8 @@ import { ProblemService }  from './services/problem.service';
 import { MessagesComponent } from './messages/messages.component';
 import { AppConstants } from './shared/app-constants';
 import { DeletionConfirmDialog } from './modal/deletion.component';
+import { LoaderComponent } from './loader/loader.component';
+import { LoaderService }  from './services/loader.service';
 
 @NgModule({
   declarations: [
@@ -32,7 +34,8 @@ import { DeletionConfirmDialog } from './modal/deletion.component';
     DescriptionComponent,
     ProblemListComponent,
     MessagesComponent,
-    DeletionConfirmDialog
+    DeletionConfirmDialog,
+    LoaderComponent
   ],
   imports: [
     CommonModule,
@@ -50,8 +53,11 @@ import { DeletionConfirmDialog } from './modal/deletion.component';
     NgxEditorModule,
     ToastrModule.forRoot(), // ToastrModule added
   ],
+  exports:[
+    LoaderComponent
+  ],
   entryComponents: [DeletionConfirmDialog],
-  providers: [CPMSDatabase, ProblemService, AppConstants],
+  providers: [CPMSDatabase, ProblemService, AppConstants, LoaderService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
