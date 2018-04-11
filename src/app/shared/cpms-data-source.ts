@@ -39,7 +39,8 @@ export class CPMSDataSource extends DataSource<any> {
 
   constructor(private _cpmsDatabase: CPMSDatabase, private _paginator: MatPaginator) {
     super();
-    this._filterChange.subscribe(() => this._paginator.pageIndex = 0);        
+    this._filterChange.subscribe(() => this._paginator.pageIndex = 0);
+    this.filteredData = _cpmsDatabase.data;        
   }
 
   /** Connect function called by the table to retrieve one stream containing the data to render. */

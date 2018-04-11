@@ -58,6 +58,7 @@ export class ProblemListComponent implements OnInit {
     this.dataSource = new CPMSDataSource(this.cpmsDatabase, this.paginator);
     if(!this.dataSource)
       return;
+    this.hideTable = false;
     Observable.fromEvent(this.filter.nativeElement, 'keyup')
       .debounceTime(150)
       .distinctUntilChanged()

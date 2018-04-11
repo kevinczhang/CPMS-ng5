@@ -55,6 +55,14 @@ export class ProblemService {
                     .catch(this.handleError);
   }
 
+  getOneProblem(id: string): Observable<Problem> {    
+    let problem = this.http.get(this.baseUrl + '/' + id)
+      .map((res: Response) => {
+        return new Problem(res.json().payload);
+      });
+    return problem;
+  }
+
   private handleError(error: any) {
         let errMsg = (error.message) ? error.message :
             error.status ? `${error.status} - ${error.statusText}` : 'Server error';

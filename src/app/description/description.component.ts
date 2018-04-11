@@ -10,6 +10,7 @@ import { CPMSDatabase } from "../shared/cpms-database";
 import { Problem } from "../model/problem";
 import { Tag } from "../model/tag";
 import { AppConstants } from '../shared/app-constants';
+import { ProblemService } from '../services/problem.service';
 
 @Component({
   selector: 'app-description',
@@ -17,7 +18,7 @@ import { AppConstants } from '../shared/app-constants';
   styleUrls: ['./description.component.css']
 })
 export class DescriptionComponent implements OnInit {
-  
+
   problem: Problem;
   difficultyOptions: any[];
   sourceOptions: any[];
@@ -27,7 +28,7 @@ export class DescriptionComponent implements OnInit {
   specialTags: string[];
   tagOptions: Tag[] = [];
   companyOptions: Tag[] = [];
-  specialTagOptions: Tag[] = [];  
+  specialTagOptions: Tag[] = [];
   defaultTags: string[] = [];
   defaultCompanies: string[] = [];
   defaultSpecialTags: string[] = [];
@@ -42,7 +43,8 @@ export class DescriptionComponent implements OnInit {
     private location: Location,
     private _cpmsDatabase: CPMSDatabase,
     private fb: FormBuilder,
-    private app_constants: AppConstants
+    private app_constants: AppConstants,
+    private problemService: ProblemService
   ) {
     // Initialize the variables
     this.sourceOptions = this.app_constants.sourceOptions;
@@ -82,7 +84,7 @@ export class DescriptionComponent implements OnInit {
       'familiarity': new FormControl('', [Validators.required]),
       'description': new FormControl('', [Validators.required]),
       'solution': new FormControl('', [Validators.required])
-    });    
+    });
   }
 
   ngOnInit() {
@@ -91,36 +93,36 @@ export class DescriptionComponent implements OnInit {
       if (passedInId === '-1') {
         this.rForm.get('id').setValue(Guid.create());
       } else {
-        this.problem = this._cpmsDatabase.data.find(x => x.ID.toString() === passedInId);
-        if (this.problem) {
-          // Set default values by converting to array
-          let tagNums = this.problem.TAGS;
-          for (var i in tagNums) {
-            this.defaultTags.push(this.tags[+i]);
-          }
-          let companyNums = this.problem.COMPANIES;
-          for (var i in companyNums) {
-            this.defaultCompanies.push(this.companies[+i].trim());
-          }
-          let specialTagNums = this.problem.SPECIALTAGS;
-          for (var i in specialTagNums) {
-            this.defaultSpecialTags.push(this.specialTags[+i].trim());
-          }
-          this.rForm.get('id').setValue(this.problem.ID);
-          this.rForm.get('source').setValue(this.problem.SOURCE);
-          this.rForm.get('type').setValue(this.problem.TYPE);
-          this.rForm.get('number').setValue(this.problem.NUMBER);
-          this.rForm.get('difficulty').setValue(this.problem.DIFFICULTY);
-          this.rForm.get('title').setValue(this.problem.TITLE);
-          this.rForm.get('topics').setValue(this.problem.TAGS);
-          this.rForm.get('companies').setValue(this.problem.COMPANIES);
-          this.rForm.get('tags').setValue(this.problem.SPECIALTAGS);
-          this.rForm.get('familiarity').setValue(this.problem.FAMILIARITY);
-          this.rForm.get('description').setValue(this.problem.DESCRIPTION);
-          this.rForm.get('solution').setValue(this.problem.SOLUTION);
-        }
-      }
-      this.familiarityText = this.getFamiliarityTextBasedOnNumber(this.problem.FAMILIARITY);
+        this.problemService.getOneProblem(passedInId)
+          .subscribe(p => {
+            // Set default values by converting to array
+            let tagNums = p.TAGS;
+            for (var i in tagNums) {
+              this.defaultTags.push(this.tags[+i]);
+            }
+            let companyNums = p.COMPANIES;
+            for (var i in companyNums) {
+              this.defaultCompanies.push(this.companies[+i].trim());
+            }
+            let specialTagNums = p.SPECIALTAGS;
+            for (var i in specialTagNums) {
+              this.defaultSpecialTags.push(this.specialTags[+i].trim());
+            }
+            this.rForm.get('id').setValue(p.ID);
+            this.rForm.get('source').setValue(p.SOURCE);
+            this.rForm.get('type').setValue(p.TYPE);
+            this.rForm.get('number').setValue(p.NUMBER);
+            this.rForm.get('difficulty').setValue(p.DIFFICULTY);
+            this.rForm.get('title').setValue(p.TITLE);
+            this.rForm.get('topics').setValue(p.TAGS);
+            this.rForm.get('companies').setValue(p.COMPANIES);
+            this.rForm.get('tags').setValue(p.SPECIALTAGS);
+            this.rForm.get('familiarity').setValue(p.FAMILIARITY);
+            this.rForm.get('description').setValue(p.DESCRIPTION);
+            this.rForm.get('solution').setValue(p.SOLUTION);
+            this.familiarityText = this.getFamiliarityTextBasedOnNumber(p.FAMILIARITY);
+          });
+      }      
     });
 
   }
@@ -129,15 +131,15 @@ export class DescriptionComponent implements OnInit {
     this.editor.setTheme("eclipse");
 
     this.editor.getEditor().setOptions({
-        enableBasicAutocompletion: true
+      enableBasicAutocompletion: true
     });
 
     this.editor.getEditor().commands.addCommand({
-        name: "showOtherCompletions",
-        bindKey: "Ctrl-.",
-        exec: function (editor) {
+      name: "showOtherCompletions",
+      bindKey: "Ctrl-.",
+      exec: function (editor) {
 
-        }
+      }
     })
   }
 
@@ -157,10 +159,10 @@ export class DescriptionComponent implements OnInit {
     this.familiarityText = this.getFamiliarityTextBasedOnNumber(r.value);
   }
 
-  private getFamiliarityTextBasedOnNumber(input: number): string{
+  private getFamiliarityTextBasedOnNumber(input: number): string {
     if (input >= 2 && input < 3) {
       return 'Familiarity';
-    }  else if (input >= 3 && input < 4) {
+    } else if (input >= 3 && input < 4) {
       return 'Proficiency';
     } else if (input >= 4) {
       return 'Mastery    ';

@@ -35,7 +35,6 @@
     "hammerjs": "^2.0.8",
     "ng2-ace-editor": "^0.3.4",
     "ng2-charts": "^1.6.0",
-    "ng2-ckeditor": "^1.1.14",
     "ngx-bootstrap": "^2.0.3",
     "ngx-editor": "^3.3.0-rc.13",
     "ngx-toastr": "^8.4.0",

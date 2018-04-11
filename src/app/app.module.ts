@@ -8,7 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MaterialModule } from './material.module';
 import { ChartsModule } from 'ng2-charts';
-import { CKEditorModule } from 'ng2-ckeditor';
+// import { CKEditorModule } from 'ng2-ckeditor';
 import { AceEditorModule } from 'ng2-ace-editor';
 import { NgxEditorModule } from 'ngx-editor';
 import { ToastrModule } from 'ngx-toastr';
@@ -44,7 +44,7 @@ import { LoaderService }  from './services/loader.service';
     BrowserAnimationsModule,
     MaterialModule,
     FormsModule,
-    CKEditorModule,
+    // CKEditorModule,
     HttpModule, 
     HttpClientModule,
     ChartsModule,
