@@ -1,15 +1,15 @@
 //Install express server
 const express = require('express');
 const app = express();
-var router = express.Router();
+const path = require('path');
 
 // Serve only the static files form the dist directory
 app.use(express.static(__dirname + '/dist'));
 
 // rewrite virtual urls to angular app to enable refreshing of internal pages
-router.get('*', function (req, res, next) {
-    res.sendFile(path.resolve(express.static(__dirname + '/dist') + '/index.html'));
-});
+app.get('/*', function(req, res) {
+    res.sendFile(path.join(__dirname + '/dist/index.html'));
+  });
 
 // Start the app by listening on the default Heroku port
 app.listen(process.env.PORT || 8000);
