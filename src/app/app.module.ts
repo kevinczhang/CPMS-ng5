@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, LocationStrategy, HashLocationStrategy, PathLocationStrategy } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -57,7 +57,8 @@ import { LoaderService }  from './services/loader.service';
     LoaderComponent
   ],
   entryComponents: [DeletionConfirmDialog],
-  providers: [CPMSDatabase, ProblemService, AppConstants, LoaderService],
+  providers: [CPMSDatabase, ProblemService, AppConstants, LoaderService, 
+    {provide: LocationStrategy, useClass: PathLocationStrategy}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
