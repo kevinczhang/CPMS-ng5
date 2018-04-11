@@ -51,24 +51,24 @@ export class ProblemListComponent implements OnInit {
     this.displayedColumns = app_constants.displayedColumns;
     this.difficultyOptions = app_constants.difficultyOptions;
     this.sourceOptions = app_constants.sourceOptions;    
-    this.hideTable = true;
+    this.subscription = this.loaderService.loaderState
+      .subscribe((state: LoaderState) => {
+          this.hideTable = state.show;
+      });
   }
 
   ngOnInit() {
-    this.dataSource = new CPMSDataSource(this.cpmsDatabase, this.paginator);
+    this.loaderService.show();
+    this.dataSource = new CPMSDataSource(this.cpmsDatabase, this.paginator, this.loaderService);
     if(!this.dataSource)
       return;
-    this.hideTable = false;
     Observable.fromEvent(this.filter.nativeElement, 'keyup')
       .debounceTime(150)
       .distinctUntilChanged()
       .subscribe(() => {
         this.dataSource.filter = this.filter.nativeElement.value;
       });
-    this.subscription = this.loaderService.loaderState
-      .subscribe((state: LoaderState) => {
-          this.hideTable = state.show;
-      });
+    
   }
 
   ngOnDestroy() {

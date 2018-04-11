@@ -5,6 +5,7 @@ import { MatPaginator } from "@angular/material";
 
 import { Problem } from "../model/problem";
 import { CPMSDatabase } from "./cpms-database";
+import { LoaderService }  from '../services/loader.service';
 
 /**
  * Data source to provide what data should be rendered in the table. Note that the data source
@@ -37,7 +38,7 @@ export class CPMSDataSource extends DataSource<any> {
     return false;
   }
 
-  constructor(private _cpmsDatabase: CPMSDatabase, private _paginator: MatPaginator) {
+  constructor(private _cpmsDatabase: CPMSDatabase, private _paginator: MatPaginator, private loaderService: LoaderService) {
     super();
     this._filterChange.subscribe(() => this._paginator.pageIndex = 0);
     this.filteredData = _cpmsDatabase.data;        
@@ -95,7 +96,9 @@ export class CPMSDataSource extends DataSource<any> {
       const startIndex = this._paginator.pageIndex * this._paginator.pageSize;
       let problemsLeft = this.filteredData.length - startIndex;
       let pageSize = problemsLeft < this._paginator.pageSize ? problemsLeft : this._paginator.pageSize;
-      
+      if(this.filteredData.length > 0){
+        this.loaderService.hide();
+      }
       return this.filteredData.splice(startIndex, pageSize);
     });
   }

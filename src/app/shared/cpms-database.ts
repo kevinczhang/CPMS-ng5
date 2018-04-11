@@ -5,7 +5,6 @@ import { MatSnackBar } from '@angular/material';
 
 import { Problem } from "../model/problem";
 import { ProblemService }  from '../services/problem.service';
-import { LoaderService }  from '../services/loader.service';
 
 @Injectable()
 export class CPMSDatabase {
@@ -13,8 +12,7 @@ export class CPMSDatabase {
   dataChange: BehaviorSubject<Problem[]>;
   get data(): Problem[] { return this.dataChange.value; }
 
-  constructor(private problemService: ProblemService, private toastr: ToastrService, 
-    private snackBar: MatSnackBar, private loaderService: LoaderService) {
+  constructor(private problemService: ProblemService, private toastr: ToastrService, private snackBar: MatSnackBar) {
     this.dataChange = new BehaviorSubject<Problem[]>([]);
     // Fill up the database with 100 users.
     this.problemService.getProblems().subscribe(problems => {
@@ -23,7 +21,6 @@ export class CPMSDatabase {
         copiedData.push(problems[i]);  
       }
       this.dataChange.next(copiedData);
-      loaderService.hide();
     });
   }
 
