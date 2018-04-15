@@ -11,6 +11,7 @@ import { Problem } from "../model/problem";
 import { Tag } from "../model/tag";
 import { AppConstants } from '../shared/app-constants';
 import { ProblemService } from '../services/problem.service';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-description',
@@ -37,6 +38,7 @@ export class DescriptionComponent implements OnInit {
 
   rForm: FormGroup;
   @ViewChild('editor') editor;
+  isAdmin: boolean;
 
   constructor(
     private route: ActivatedRoute,
@@ -44,16 +46,18 @@ export class DescriptionComponent implements OnInit {
     private _cpmsDatabase: CPMSDatabase,
     private fb: FormBuilder,
     private app_constants: AppConstants,
-    private problemService: ProblemService
+    private problemService: ProblemService,
+    private userService: UserService
   ) {
     // Initialize the variables
+    this.isAdmin = userService.isAdminUser();
     this.sourceOptions = this.app_constants.sourceOptions;
     this.difficultyOptions = this.app_constants.difficultyOptions;
     this.typeOptions = this.app_constants.typeOptions;
     this.tags = this.app_constants.tags;
     this.companies = this.app_constants.companies;
     this.specialTags = this.app_constants.specialTags;
-    this.editorConfig = this.app_constants.editorConfig;
+    this.editorConfig = this.isAdmin ? this.app_constants.adminEditorConfig : this.app_constants.userEditorConfig;
 
     // construct tagOptions
     for (var i in this.tags) {
@@ -121,17 +125,29 @@ export class DescriptionComponent implements OnInit {
             this.rForm.get('description').setValue(p.DESCRIPTION);
             this.rForm.get('solution').setValue(p.SOLUTION);
             this.familiarityText = this.getFamiliarityTextBasedOnNumber(p.FAMILIARITY);
+
+            if(!this.isAdmin){
+              this.rForm.get('source').disable();
+              this.rForm.get('type').disable();
+              this.rForm.get('difficulty').disable();
+              this.rForm.get('topics').disable();
+              this.rForm.get('companies').disable();
+              this.rForm.get('tags').disable();
+              this.rForm.get('familiarity').disable();
+            }
+            
           });
       }      
     });
-
+    
   }
 
   ngAfterViewInit() {
     this.editor.setTheme("eclipse");
 
     this.editor.getEditor().setOptions({
-      enableBasicAutocompletion: true
+      enableBasicAutocompletion: true,
+      readOnly: this.isAdmin ? false : true
     });
 
     this.editor.getEditor().commands.addCommand({

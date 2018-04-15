@@ -19,6 +19,7 @@ import { DeletionConfirmDialog } from '../modal/deletion.component';
 import { LoaderService } from '../services/loader.service';
 import { LoaderState } from '../loader/loader';
 import { Subscription } from 'rxjs';
+import { UserService } from '../services/user.service';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -40,6 +41,7 @@ export class ProblemListComponent implements OnInit {
 
   panelOpenState: boolean;
   hideTable: boolean;
+  isAdmin: boolean;
 
   private subscription: Subscription;
 
@@ -47,14 +49,15 @@ export class ProblemListComponent implements OnInit {
   @ViewChild('filter') filter: ElementRef;
 
   constructor(private cpmsDatabase: CPMSDatabase, private app_constants: AppConstants, 
-    private dialog: MatDialog, private loaderService: LoaderService) {
-    this.displayedColumns = app_constants.displayedColumns;
-    this.difficultyOptions = app_constants.difficultyOptions;
-    this.sourceOptions = app_constants.sourceOptions;    
-    this.subscription = this.loaderService.loaderState
-      .subscribe((state: LoaderState) => {
+    private dialog: MatDialog, private loaderService: LoaderService, private userService: UserService) {
+      this.isAdmin = userService.isAdminUser();
+      this.displayedColumns = this.isAdmin ? app_constants.adminDisplayedColumns: app_constants.adminDisplayedColumns;
+      this.difficultyOptions = app_constants.difficultyOptions;
+      this.sourceOptions = app_constants.sourceOptions;    
+      this.subscription = this.loaderService.loaderState
+        .subscribe((state: LoaderState) => {
           this.hideTable = state.show;
-      });
+        });    
   }
 
   ngOnInit() {

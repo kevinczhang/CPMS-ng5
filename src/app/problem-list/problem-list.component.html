@@ -77,8 +77,9 @@
         <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
         <mat-cell *matCellDef="let row"> 
             <div class="btn-group" role="group" aria-label="Basic example">
-                <button mat-raised-button color="warn" (click) = "deleteProblem(row.ID)">Delete</button>
-                <button mat-raised-button color="accent" routerLink="/description/{{row.ID}}">Edit</button>
+                <button *ngIf="isAdmin" mat-raised-button color="warn" (click) = "deleteProblem(row.ID)"><mat-icon>delete</mat-icon></button>
+                <button *ngIf="isAdmin" mat-raised-button color="accent" routerLink="/description/{{row.ID}}"><mat-icon>edit</mat-icon></button>
+                <button *ngIf="!isAdmin" mat-raised-button color="accent" routerLink="/description/{{row.ID}}"><mat-icon>send</mat-icon></button>
             </div>
         </mat-cell>
       </ng-container>   

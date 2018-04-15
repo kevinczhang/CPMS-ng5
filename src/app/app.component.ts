@@ -29,7 +29,7 @@ export class AppComponent implements OnInit{
       {
         link: '/problemList',
         title: 'Algorithm',
-        icon: 'group',
+        icon: 'code',
         isActive: 'disactive'
       },
       {

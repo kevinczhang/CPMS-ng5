@@ -37,7 +37,7 @@ export class AppConstants {
     
     readonly specialTags = ["Remember", "CodeSnippet", "Recent"];
     
-    readonly editorConfig = {
+    adminEditorConfig = {
         editable: true,
         spellcheck: false,
         height: '10rem',
@@ -46,5 +46,16 @@ export class AppConstants {
         translate: 'no'
       };
 
-    readonly displayedColumns = ['Source', 'Title', 'Number', 'Difficulty', 'Action'];
+    userEditorConfig = {
+        editable: false,
+        showToolbar: false,
+        spellcheck: false,
+        height: '10rem',
+        minHeight: '5rem',
+        placeholder: 'Type something. Test the Editor... ヽ(^。^)丿',
+        translate: 'no'
+      };
+
+    readonly adminDisplayedColumns = ['Source', 'Title', 'Number', 'Difficulty', 'Action'];
+    readonly userDisplayedColumns = ['Source', 'Title', 'Number', 'Difficulty'];
 }

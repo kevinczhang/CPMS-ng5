@@ -1,8 +1,8 @@
 <div class="problem-description">
   <form class="example-form" [formGroup]="rForm" (ngSubmit)="addOrUpdateProblem(rForm.value)">
-    <button mat-raised-button color="primary" type="submit" [disabled]="!rForm.valid">Save</button>
+    <button *ngIf="isAdmin" mat-raised-button color="primary" type="submit" [disabled]="!rForm.valid">Save</button>
     <table class="example-full-width" cellspacing="0">
-      <tr>
+      <tr *ngIf="isAdmin">
         <mat-form-field class="example-full-width">
           <input matInput placeholder="Problem Id" formControlName="id" readonly>
         </mat-form-field>
@@ -33,7 +33,7 @@
       </tr>
       <tr>
         <mat-form-field class="example-full-width">
-          <input matInput placeholder="Number" formControlName="number">
+          <input [readonly]="!isAdmin" matInput placeholder="Number" formControlName="number">
         </mat-form-field>
       </tr>
       <tr>
@@ -47,7 +47,7 @@
       </tr>
       <tr>
         <mat-form-field class="example-full-width">
-          <input matInput placeholder="Title" formControlName="title">
+          <input [readonly]="!isAdmin" matInput placeholder="Title" formControlName="title">
         </mat-form-field>
       </tr>
       <tr>
