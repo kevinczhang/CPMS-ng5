@@ -2,7 +2,7 @@ import { CommonModule, LocationStrategy, HashLocationStrategy, PathLocationStrat
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
+import { HttpModule, Http } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -12,8 +12,10 @@ import { ChartsModule } from 'ng2-charts';
 import { AceEditorModule } from 'ng2-ace-editor';
 import { NgxEditorModule } from 'ngx-editor';
 import { ToastrModule } from 'ngx-toastr';
+import { AuthConfig, AuthHttp } from 'angular2-jwt';
 
 import { AppComponent } from './app.component';
+import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { DescriptionComponent } from './description/description.component';
 import { ProblemListComponent } from './problem-list/problem-list.component';
@@ -27,9 +29,27 @@ import { DeletionConfirmDialog } from './modal/deletion.component';
 import { LoaderComponent } from './loader/loader.component';
 import { LoaderService }  from './services/loader.service';
 
+import {TOKEN_NAME} from './shared/auth.constant';
+import {UserService} from './services/user.service';
+import {AuthenticationService} from './services/authentication.service';
+import {AuthGuard} from './guards/auth-guard.service';
+import {AdminAuthGuard} from './guards/admin-auth-guard.service';
+
+export function authHttpServiceFactory(http: Http) {
+  return new AuthHttp(new AuthConfig({
+    headerPrefix: 'Bearer',
+    tokenName: TOKEN_NAME,
+    globalHeaders: [{'Content-Type': 'application/json'}],
+    noJwtError: false,
+    noTokenScheme: true,
+    tokenGetter: (() => localStorage.getItem(TOKEN_NAME))
+  }), http);
+}
+
 @NgModule({
   declarations: [
     AppComponent,
+    LoginComponent,
     DashboardComponent,
     DescriptionComponent,
     ProblemListComponent,
@@ -58,7 +78,12 @@ import { LoaderService }  from './services/loader.service';
   ],
   entryComponents: [DeletionConfirmDialog],
   providers: [CPMSDatabase, ProblemService, AppConstants, LoaderService, 
-    {provide: LocationStrategy, useClass: PathLocationStrategy}],
+    {provide: LocationStrategy, useClass: PathLocationStrategy},
+    {provide: AuthHttp, useFactory: authHttpServiceFactory, deps: [Http]},
+    AuthenticationService,
+    UserService,
+    AuthGuard,
+    AdminAuthGuard,],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
