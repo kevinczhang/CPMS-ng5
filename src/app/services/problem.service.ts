@@ -12,8 +12,7 @@ export class ProblemService {
   constants: AppConstants;
   
   constructor(private http: Http, private app_constants: AppConstants) {
-    //this.baseUrl = 'http://localhost:8081/SpringBootCRUDApp/api/problem/';
-    this.baseUrl = 'https://cpms-java.herokuapp.com/SpringBootCRUDApp/api/problem/';
+    this.baseUrl = app_constants.baseUrl + '/api/problem/';
     this.constants = app_constants;
   }
 

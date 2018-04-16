@@ -58,4 +58,6 @@ export class AppConstants {
 
     readonly adminDisplayedColumns = ['Source', 'Title', 'Number', 'Difficulty', 'Action'];
     readonly userDisplayedColumns = ['Source', 'Title', 'Number', 'Difficulty'];
+    //readonly baseUrl = 'http://localhost:8081/SpringBootCRUDApp';
+    readonly baseUrl = 'https://cpms-java.herokuapp.com/SpringBootCRUDApp';
 }

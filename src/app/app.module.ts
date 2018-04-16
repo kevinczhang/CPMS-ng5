@@ -16,6 +16,7 @@ import { AuthConfig, AuthHttp } from 'angular2-jwt';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
+import { SignupComponent } from './signup/signup.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { DescriptionComponent } from './description/description.component';
 import { ProblemListComponent } from './problem-list/problem-list.component';
@@ -50,6 +51,7 @@ export function authHttpServiceFactory(http: Http) {
   declarations: [
     AppComponent,
     LoginComponent,
+    SignupComponent,
     DashboardComponent,
     DescriptionComponent,
     ProblemListComponent,

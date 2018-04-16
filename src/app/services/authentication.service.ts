@@ -1,17 +1,18 @@
 import {Injectable} from '@angular/core';
 import {Http, Headers} from '@angular/http';
 import 'rxjs/add/operator/map';
+import { Observable } from 'rxjs/Observable';
 
 import {TOKEN_AUTH_PASSWORD, TOKEN_AUTH_USERNAME} from '../shared/auth.constant';
+import { AppConstants } from '../shared/app-constants';
 
 @Injectable()
 export class AuthenticationService {
   static AUTH_TOKEN = '/oauth/token';
   baseUrl: string;
 
-  constructor(private http: Http) {
-    //this.baseUrl = 'http://localhost:8081/SpringBootCRUDApp';
-    this.baseUrl = 'https://cpms-java.herokuapp.com/SpringBootCRUDApp';
+  constructor(private http: Http, private app_constants: AppConstants) {
+    this.baseUrl = app_constants.baseUrl;
   }
 
   login(username: string, password: string) {
@@ -29,5 +30,23 @@ export class AuthenticationService {
         }
         return null;
       });
+  }
+
+  signup(newUser: any): Observable<Response>{
+    let user = this.http.post(this.baseUrl + '/api/user/', newUser)
+      .map(
+        res => res.json()
+      )
+      .catch(
+        this.handleError
+      ).subscribe();
+    return Observable.of(newUser);
+  }
+
+  private handleError(error: any) {
+    let errMsg = (error.message) ? error.message :
+        error.status ? `${error.status} - ${error.statusText}` : 'Server error';
+    console.error(errMsg);
+    return Observable.throw(errMsg);
   }
 }
