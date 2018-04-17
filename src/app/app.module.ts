@@ -18,7 +18,6 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { DescriptionComponent } from './description/description.component';
 import { ProblemListComponent } from './problem-list/problem-list.component';
 
 import { AppRoutingModule }  from './app-routing.module';
@@ -35,6 +34,8 @@ import {UserService} from './services/user.service';
 import {AuthenticationService} from './services/authentication.service';
 import {AuthGuard} from './guards/auth-guard.service';
 import {AdminAuthGuard} from './guards/admin-auth-guard.service';
+import { ViewProblemComponent } from './view-problem/view-problem.component';
+import { EditProblemComponent } from './edit-problem/edit-problem.component';
 
 export function authHttpServiceFactory(http: Http) {
   return new AuthHttp(new AuthConfig({
@@ -53,11 +54,12 @@ export function authHttpServiceFactory(http: Http) {
     LoginComponent,
     SignupComponent,
     DashboardComponent,
-    DescriptionComponent,
     ProblemListComponent,
     MessagesComponent,
     DeletionConfirmDialog,
-    LoaderComponent
+    LoaderComponent,
+    ViewProblemComponent,
+    EditProblemComponent
   ],
   imports: [
     CommonModule,

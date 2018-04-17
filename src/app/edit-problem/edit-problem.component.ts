@@ -14,11 +14,11 @@ import { ProblemService } from '../services/problem.service';
 import { UserService } from '../services/user.service';
 
 @Component({
-  selector: 'app-description',
-  templateUrl: './description.component.html',
-  styleUrls: ['./description.component.css']
+  selector: 'app-edit-problem',
+  templateUrl: './edit-problem.component.html',
+  styleUrls: ['./edit-problem.component.css']
 })
-export class DescriptionComponent implements OnInit {
+export class EditProblemComponent implements OnInit {
 
   problem: Problem;
   difficultyOptions: any[];
@@ -126,15 +126,15 @@ export class DescriptionComponent implements OnInit {
             this.rForm.get('solution').setValue(p.SOLUTION);
             this.familiarityText = this.getFamiliarityTextBasedOnNumber(p.FAMILIARITY);
 
-            if(!this.isAdmin){
-              this.rForm.get('source').disable();
-              this.rForm.get('type').disable();
-              this.rForm.get('difficulty').disable();
-              this.rForm.get('topics').disable();
-              this.rForm.get('companies').disable();
-              this.rForm.get('tags').disable();
-              this.rForm.get('familiarity').disable();
-            }
+            // if(!this.isAdmin){
+            //   this.rForm.get('source').disable();
+            //   this.rForm.get('type').disable();
+            //   this.rForm.get('difficulty').disable();
+            //   this.rForm.get('topics').disable();
+            //   this.rForm.get('companies').disable();
+            //   this.rForm.get('tags').disable();
+            //   this.rForm.get('familiarity').disable();
+            // }
             
           });
       }      
@@ -185,4 +185,5 @@ export class DescriptionComponent implements OnInit {
     }
     return 'New        ';
   }
+
 }

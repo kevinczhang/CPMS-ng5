@@ -4,7 +4,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { DescriptionComponent } from './description/description.component';
+import { ViewProblemComponent } from './view-problem/view-problem.component';
+import { EditProblemComponent } from './edit-problem/edit-problem.component';
 import { ProblemListComponent } from './problem-list/problem-list.component';
 import { MessagesComponent } from './messages/messages.component';
 
@@ -17,7 +18,8 @@ const routes: Routes = [
   { path: 'signup',  component: SignupComponent },
   { path: 'dashboard',  component: DashboardComponent, canActivate: [AuthGuard] },
   { path: 'problemList',  component: ProblemListComponent, canActivate: [AuthGuard] },
-  { path: 'description/:id',  component: DescriptionComponent, canActivate: [AuthGuard] },
+  { path: 'edit-problem/:id',  component: EditProblemComponent, canActivate: [AuthGuard] },
+  { path: 'view-problem/:id',  component: ViewProblemComponent, canActivate: [AuthGuard] },
   { path: 'messages',  component: MessagesComponent, canActivate: [AuthGuard] }
 ];
 
