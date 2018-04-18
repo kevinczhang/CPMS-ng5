@@ -17,7 +17,7 @@ export class ProblemService {
   }
 
   getProblems(): Observable<Problem[]> {    
-    let problems = this.http.get(this.baseUrl)
+    let problems = this.http.get(this.constants.baseUrl + '/api/problemList/')
       .map((res: Response) => {
         return res.json().payload.map((r: any) => {
           return new Problem(r);
