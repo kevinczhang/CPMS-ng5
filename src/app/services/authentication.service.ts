@@ -8,7 +8,7 @@ import { AppConstants } from '../shared/app-constants';
 
 @Injectable()
 export class AuthenticationService {
-  static AUTH_TOKEN = '/oauth/token';
+  static AUTH_TOKEN = '/auth/signin';
   baseUrl: string;
 
   constructor(private http: Http, private app_constants: AppConstants) {
@@ -16,24 +16,25 @@ export class AuthenticationService {
   }
 
   login(username: string, password: string) {
-    const body = `username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}&grant_type=password`;
+    //const body = `username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}&grant_type=password`;
+    const body = {"usernameOrEmail": username, "password": password};
 
     const headers = new Headers();
-    headers.append('Content-Type', 'application/x-www-form-urlencoded');
+    headers.append('Content-Type', 'application/json');
     headers.append('Authorization', 'Basic ' + btoa(TOKEN_AUTH_USERNAME + ':' + TOKEN_AUTH_PASSWORD));
 
     return this.http.post(this.baseUrl + AuthenticationService.AUTH_TOKEN, body, {headers})
       .map(res => res.json())
       .map((res: any) => {
-        if (res.access_token) {
-          return res.access_token;
+        if (res.accessToken) {
+          return res.accessToken;
         }
         return null;
       });
   }
 
   signup(newUser: any): Observable<Response>{
-    let user = this.http.post(this.baseUrl + '/api/user/', newUser)
+    let user = this.http.post(this.baseUrl + '/auth/signup', newUser)
       .map(
         res => res.json()
       )

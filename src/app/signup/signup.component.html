@@ -16,16 +16,16 @@
         </tr>
         <tr>
             <mat-form-field class="example-full-width">
-              <input autocomplete='firstName' matInput placeholder="First Name" [formControl]="firstName">
-              <mat-error *ngIf="firstName.hasError('required')">
+              <input autocomplete='fullName' matInput placeholder="Full Name" [formControl]="name">
+              <mat-error *ngIf="name.hasError('required')">
                   Please enter your first name here
               </mat-error>
             </mat-form-field>
         </tr>
         <tr>
             <mat-form-field class="example-full-width">
-              <input autocomplete='lastName' matInput placeholder="Last Name" [formControl]="lastName">
-              <mat-error *ngIf="lastName.hasError('required')">
+              <input autocomplete='username' matInput placeholder="Username" [formControl]="username">
+              <mat-error *ngIf="username.hasError('required')">
                   Please enter your last name here
               </mat-error>
             </mat-form-field>

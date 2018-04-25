@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit {
   redirectUrl: string;
 
   rForm: FormGroup;
-  email = new FormControl('', [Validators.required, Validators.email]);
+  usernameOrEmail = new FormControl('', [Validators.required, Validators.email]);
   password = new FormControl('', [Validators.required]);
 
   constructor(
@@ -32,7 +32,7 @@ export class LoginComponent implements OnInit {
     this.redirectUrl = this.activatedRoute.snapshot.queryParams['redirectTo'];
     // Define FormControl and formGroup
     this.rForm = fb.group({
-      'email': this.email,
+      'usernameOrEmail': this.usernameOrEmail,
       'password': this.password
     });
   }
@@ -44,7 +44,7 @@ export class LoginComponent implements OnInit {
   login(userInfo: any) {
     this.loading = true;
 
-    this.authenticationService.login(userInfo.email, userInfo.password)
+    this.authenticationService.login(userInfo.usernameOrEmail, userInfo.password)
       .subscribe(
         result => {
           this.loading = false;

@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { Http, Response, RequestOptions, RequestOptionsArgs, Headers } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 
 import { Problem } from '../model/problem';
 import { ProblemJSON } from '../model/problemJSON';
 import { AppConstants } from '../shared/app-constants';
+import { ProblemSummary } from '../model/problemSummary';
 
 @Injectable()
 export class ProblemService {
@@ -12,15 +13,35 @@ export class ProblemService {
   constants: AppConstants;
   
   constructor(private http: Http, private app_constants: AppConstants) {
-    this.baseUrl = app_constants.baseUrl + '/api/problem/';
+    this.baseUrl = app_constants.baseUrl + '/question/';
     this.constants = app_constants;
   }
 
-  getProblems(): Observable<Problem[]> {    
-    let problems = this.http.get(this.constants.baseUrl + '/api/problemList/')
+  getProblems(): Observable<ProblemSummary[]> {
+    const headers = new Headers({
+      Authorization: 'Bearer ' + localStorage.getItem("access_token")
+    });
+    let options: RequestOptions = new RequestOptions();
+    options.headers = headers;
+    let problems = this.http.get(this.baseUrl, options)
       .map((res: Response) => {
         return res.json().payload.map((r: any) => {
-          return new Problem(r);
+          return new ProblemSummary(r);
+        });
+      });
+    return problems;
+  }
+
+  getAdminProblems(): Observable<ProblemSummary[]> {
+    const headers = new Headers({
+      Authorization: 'Bearer ' + localStorage.getItem("access_token")
+    });
+    let options: RequestOptions = new RequestOptions();
+    options.headers = headers;
+    let problems = this.http.get(this.baseUrl + 'admin', options)
+      .map((res: Response) => {
+        return res.json().payload.map((r: any) => {
+          return new ProblemSummary(r);
         });
       });
     return problems;

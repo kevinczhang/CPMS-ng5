@@ -51,7 +51,7 @@ export class Problem {
     this.DESCRIPTION = r.description;
     this.SOLUTION = r.solution;
     this.TAGS = r.topics ? this.getTags(r.topics) : [] ;
-    this.FAMILIARITY = r.familiarity;
+    this.FAMILIARITY = r.familiarity ? r.familiarity : 0;
     this.COMPANIES = r.companies ? this.getCompanies(r.companies) : [];
     this.SPECIALTAGS = r.tags ? this.getSpecialTags(r.tags) : [];
   }

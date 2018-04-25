@@ -21,8 +21,8 @@ export class SignupComponent implements OnInit {
 
   rForm: FormGroup;
   email = new FormControl('', [Validators.required, Validators.email]);  
-  firstName = new FormControl('', [Validators.required]);
-  lastName = new FormControl('', [Validators.required]);
+  name = new FormControl('', [Validators.required]);
+  username = new FormControl('', [Validators.required]);
   password = new FormControl('', [Validators.required]);
   confirmPassword = new FormControl('', [Validators.required]);
 
@@ -38,8 +38,8 @@ export class SignupComponent implements OnInit {
       'email': this.email,
       'password': this.password,
       'confirmPassword': this.confirmPassword,
-      'firstName': this.firstName,
-      'lastName': this.lastName
+      'name': this.name,
+      'username': this.username
     }, {
       validator: this.MatchPassword // your validation method
     });

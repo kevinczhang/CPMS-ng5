@@ -1,9 +1,13 @@
-import { Component, OnInit, ViewChild, 
-  ElementRef, ChangeDetectionStrategy, Inject } from '@angular/core';
-import {MatPaginator, MatAccordion, MatExpansionPanel, 
-  MatExpansionPanelHeader, MatExpansionPanelTitle, Sort, 
-  MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
-import {Observable} from 'rxjs/Observable';
+import {
+  Component, OnInit, ViewChild,
+  ElementRef, ChangeDetectionStrategy, Inject
+} from '@angular/core';
+import {
+  MatPaginator, MatAccordion, MatExpansionPanel,
+  MatExpansionPanelHeader, MatExpansionPanelTitle, Sort,
+  MatDialog, MatDialogRef, MAT_DIALOG_DATA
+} from '@angular/material';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/observable/merge';
@@ -20,6 +24,7 @@ import { LoaderService } from '../services/loader.service';
 import { LoaderState } from '../loader/loader';
 import { Subscription } from 'rxjs';
 import { UserService } from '../services/user.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -31,7 +36,7 @@ export class ProblemListComponent implements OnInit {
   displayedColumns: string[];
   dataSource: CPMSDataSource;
   problemSource: string;
-  problemTitle: string;  
+  problemTitle: string;
   problemNumber: number;
   problemDifficulty: string;
   advancedSearchDescription: string;
@@ -48,30 +53,38 @@ export class ProblemListComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('filter') filter: ElementRef;
 
-  constructor(private cpmsDatabase: CPMSDatabase, private app_constants: AppConstants, 
-    private dialog: MatDialog, private loaderService: LoaderService, private userService: UserService) {
-      this.isAdmin = userService.isAdminUser();
-      this.displayedColumns = this.isAdmin ? app_constants.adminDisplayedColumns: app_constants.adminDisplayedColumns;
-      this.difficultyOptions = app_constants.difficultyOptions;
-      this.sourceOptions = app_constants.sourceOptions;    
-      this.subscription = this.loaderService.loaderState
-        .subscribe((state: LoaderState) => {
-          this.hideTable = state.show;
-        });    
+  constructor(
+    private cpmsDatabase: CPMSDatabase,
+    private app_constants: AppConstants,
+    private dialog: MatDialog,
+    private loaderService: LoaderService,
+    private userService: UserService,
+    private route: ActivatedRoute
+  ) {
+    this.isAdmin = userService.isAdminUser();
+    this.displayedColumns = this.isAdmin ? app_constants.adminDisplayedColumns : app_constants.adminDisplayedColumns;
+    this.difficultyOptions = app_constants.difficultyOptions;
+    this.sourceOptions = app_constants.sourceOptions;
+    this.subscription = this.loaderService.loaderState
+      .subscribe((state: LoaderState) => {
+        this.hideTable = state.show;
+      });
   }
 
   ngOnInit() {
-    this.loaderService.show();
-    this.dataSource = new CPMSDataSource(this.cpmsDatabase, this.paginator, this.loaderService);
-    if(!this.dataSource)
-      return;
-    Observable.fromEvent(this.filter.nativeElement, 'keyup')
-      .debounceTime(150)
-      .distinctUntilChanged()
-      .subscribe(() => {
-        this.dataSource.filter = this.filter.nativeElement.value;
-      });
-    
+    this.route.params.subscribe(params => {
+      let passedInId: string = params['id'];
+      this.loaderService.show();
+      this.dataSource = new CPMSDataSource(this.cpmsDatabase, this.paginator, this.loaderService, passedInId);
+      if (!this.dataSource)
+        return;
+      Observable.fromEvent(this.filter.nativeElement, 'keyup')
+        .debounceTime(150)
+        .distinctUntilChanged()
+        .subscribe(() => {
+          this.dataSource.filter = this.filter.nativeElement.value;
+        });
+    });
   }
 
   ngOnDestroy() {
@@ -81,21 +94,21 @@ export class ProblemListComponent implements OnInit {
   sortData(sort: Sort) {
     this.dataSource.sorter = [sort.active, sort.direction];
   }
-  
-  applyAdvancedFilter(){
+
+  applyAdvancedFilter() {
     this.dataSource.advancedFilter = [this.problemSource, this.problemTitle, this.problemNumber, this.problemDifficulty];
-    this.advancedSearchDescription = (this.problemSource || this.problemTitle || 
+    this.advancedSearchDescription = (this.problemSource || this.problemTitle ||
       this.problemNumber || this.problemDifficulty) ? 'Has options' : '';
   }
 
-  private deleteProblem(id: any){
+  private deleteProblem(id: any) {
     let dialogRef = this.dialog.open(DeletionConfirmDialog, {
       width: '250px'
     });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed with result: ' + result);
-      if(result === 'Y'){
+      if (result === 'Y') {
         this.cpmsDatabase.deleteProblem(id);
       }
     });

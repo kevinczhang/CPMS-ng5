@@ -27,7 +27,7 @@ export class AppComponent implements OnInit{
         isActive: 'active'
       },
       {
-        link: '/problemList',
+        link: '/problemList/1',
         title: 'Algorithm',
         icon: 'code',
         isActive: 'disactive'
