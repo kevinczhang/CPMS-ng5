@@ -2,32 +2,49 @@ import { BehaviorSubject } from "rxjs";
 import { Injectable }    from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { MatSnackBar } from '@angular/material';
+import { JwtHelper } from 'angular2-jwt';
 
 import { Problem } from "../model/problem";
 import { ProblemService }  from '../services/problem.service';
+import { ProblemSummary } from "../model/problemSummary";
+import { LoaderService } from "../services/loader.service";
 
 @Injectable()
 export class CPMSDatabase {
   /** Stream that emits whenever the data has been modified. */
-  dataChange: BehaviorSubject<Problem[]>;
-  get data(): Problem[] { return this.dataChange.value; }
+  dataChange: BehaviorSubject<ProblemSummary[]>;
+  get data(): ProblemSummary[] { return this.dataChange.value; }
+  jwtHelper: JwtHelper = new JwtHelper();
 
-  constructor(private problemService: ProblemService, private toastr: ToastrService, private snackBar: MatSnackBar) {
-    this.dataChange = new BehaviorSubject<Problem[]>([]);
-    // Fill up the database with 100 users.
-    this.problemService.getProblems().subscribe(problems => {
-      const copiedData = this.data.slice();
-      for (let i = 0; i < problems.length; i++) {        
-        copiedData.push(problems[i]);  
+  constructor(private problemService: ProblemService, private toastr: ToastrService, 
+    private snackBar: MatSnackBar, private loaderService: LoaderService) {
+      const decodedToken = this.jwtHelper.decodeToken(localStorage.getItem("access_token"));
+      this.dataChange = new BehaviorSubject<ProblemSummary[]>([]);
+      if(decodedToken.sub !== 1){
+        this.problemService.getProblems().subscribe(problems => {
+          const copiedData = this.data.slice();
+          for (let i = 0; i < problems.length; i++) {        
+            copiedData.push(problems[i]);  
+          }
+          this.dataChange.next(copiedData);
+        });
       }
-      this.dataChange.next(copiedData);
-    });
-  }
+      
+      this.problemService.getAdminProblems().subscribe(problems => {
+        const copiedData = this.data.slice();
+        for (let i = 0; i < problems.length; i++) {        
+          copiedData.push(problems[i]);  
+        }
+        this.dataChange.next(copiedData);
+        loaderService.hide();
+      });
+    }
 
-  /** Adds a new user to the database. */
+  /** Adds a new user to this database. */
   addProblem(problem : Problem) {
     const copiedData = this.data.slice();
-    copiedData.push(problem);
+    let problemSummary = new ProblemSummary(problem);
+    copiedData.push(problemSummary);
     this.dataChange.next(copiedData);
     this.toastr.success('Problem added!', 'Success');
     this.snackBar.open('Problem added!', null, {
@@ -35,40 +52,15 @@ export class CPMSDatabase {
     });
   }
 
+  // Update this database
   updateExistingProblem(problem : Problem){
     const copiedData = this.data.slice();
-    let updateProblem = copiedData.find(p => p.ID === problem.ID);
+    let updateProblem = copiedData.find(p => p.id === problem.ID);
     if(!updateProblem) return;
-    if(updateProblem.NUMBER){
-      updateProblem.NUMBER = problem.NUMBER;
-    }
-    if(updateProblem.SOURCE){
-      updateProblem.SOURCE = problem.SOURCE;
-    }
-    if(updateProblem.TYPE){
-      updateProblem.TYPE = problem.TYPE;
-    }
-    if(updateProblem.TITLE){
-      updateProblem.TITLE = problem.TITLE;
-    }
-    if(updateProblem.DIFFICULTY){
-      updateProblem.DIFFICULTY = problem.DIFFICULTY;
-    }
-    if(updateProblem.DESCRIPTION){
-      updateProblem.DESCRIPTION = problem.DESCRIPTION;
-    }
-    if(updateProblem.SOLUTION){
-      updateProblem.SOLUTION = problem.SOLUTION;
-    }
-    if(updateProblem.TAGS){
-      updateProblem.TAGS = problem.TAGS;
-    }
-    if(updateProblem.COMPANIES){
-      updateProblem.COMPANIES = problem.COMPANIES;
-    }
-    if(updateProblem.SPECIALTAGS){
-      updateProblem.SPECIALTAGS = problem.SPECIALTAGS;
-    }
+    updateProblem.number = problem.NUMBER ? problem.NUMBER : updateProblem.number;
+    updateProblem.source = problem.SOURCE ? problem.SOURCE : updateProblem.source;
+    updateProblem.title = problem.TITLE ? problem.TITLE : updateProblem.title;
+    updateProblem.level = problem.DIFFICULTY ? problem.DIFFICULTY : updateProblem.level;    
     this.dataChange.next(copiedData);
     this.toastr.success('Problem updated!', 'Success');
     this.snackBar.open('Problem updated!', null, {
@@ -76,6 +68,7 @@ export class CPMSDatabase {
     });
   }
 
+  // Update by calling service
   updateProblem(problem : Problem){
     let newProblem = problem;
     this.problemService.updateProblem(problem)
@@ -84,6 +77,7 @@ export class CPMSDatabase {
           });
   }
 
+  // Update by calling service
   addNewProblem(problem : Problem){
     let newProblem = problem;
     this.problemService.addProblem(problem)
@@ -92,8 +86,9 @@ export class CPMSDatabase {
         });
   }
 
+  // Delete problem calling service then update this database
   deleteProblem(problemId: string) {
-    const index: number = this.data.indexOf(this.data.find(x => x.ID === problemId));
+    const index: number = this.data.indexOf(this.data.find(x => x.id === problemId));
     if(index === -1){
       return;
     }

@@ -162,7 +162,7 @@ export class ViewProblemComponent implements OnInit {
   addOrUpdateProblem(problem: any) {
     let newProblem: Problem = new Problem(problem);
 
-    if (this._cpmsDatabase.data.find(x => x.ID === newProblem.ID)) {
+    if (this._cpmsDatabase.data.find(x => x.id === newProblem.ID)) {
       this._cpmsDatabase.updateProblem(newProblem);
     } else {
       console.log("This is a new problem.");

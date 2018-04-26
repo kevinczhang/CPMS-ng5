@@ -6,6 +6,7 @@ import { MatPaginator } from "@angular/material";
 import { Problem } from "../model/problem";
 import { CPMSDatabase } from "./cpms-database";
 import { LoaderService }  from '../services/loader.service';
+import { ProblemSummary } from "../model/problemSummary";
 
 /**
  * Data source to provide what data should be rendered in the table. Note that the data source
@@ -20,32 +21,37 @@ export class CPMSDataSource extends DataSource<any> {
   _sorterChange = new BehaviorSubject<[string, string]>(null);
   _advancedFilterChange = new BehaviorSubject<[string, string, number, string]>(null);
 
-  filteredData: Problem[] = [];
+  filteredData: ProblemSummary[] = [];
   problemsCount = 0;
 
-  private findInGeneralFilter(item: Problem): boolean{
-    let searchStr = (item.SOURCE + item.TITLE + item.NUMBER + item.DIFFICULTY);
+  private findInGeneralFilter(item: ProblemSummary): boolean{
+    let searchStr = (item.source + item.title + item.number + item.level);
     return this.filter.trim() === "" || searchStr.toLowerCase().indexOf(this.filter.toLowerCase()) != -1;
   }
 
-  private findInAdvancedFilter(item: Problem): boolean {
+  private findInAdvancedFilter(item: ProblemSummary): boolean {
     if(this._advancedFilterChange.value){
-      return this._advancedFilterChange.value[0] && item.SOURCE === this._advancedFilterChange.value[0] ||
-      this._advancedFilterChange.value[1] && item.TITLE === this._advancedFilterChange.value[1] ||
-      this._advancedFilterChange.value[2] && item.NUMBER === Number(this._advancedFilterChange.value[2]) ||
-      this._advancedFilterChange.value[3] && item.DIFFICULTY === this._advancedFilterChange.value[3];
+      return this._advancedFilterChange.value[0] && item.source === this._advancedFilterChange.value[0] ||
+      this._advancedFilterChange.value[1] && item.title === this._advancedFilterChange.value[1] ||
+      this._advancedFilterChange.value[2] && item.number === Number(this._advancedFilterChange.value[2]) ||
+      this._advancedFilterChange.value[3] && item.level === this._advancedFilterChange.value[3];
     }
     return false;
   }
 
-  constructor(private _cpmsDatabase: CPMSDatabase, private _paginator: MatPaginator, private loaderService: LoaderService) {
+  constructor(private _cpmsDatabase: CPMSDatabase, private _paginator: MatPaginator, 
+    private loaderService: LoaderService, private fromAdmin: string) {
     super();
     this._filterChange.subscribe(() => this._paginator.pageIndex = 0);
-    this.filteredData = _cpmsDatabase.data;        
+    if(fromAdmin === '1'){
+      this.filteredData = _cpmsDatabase.data.filter(r => r.createdBy === 1);
+    } else {
+      this.filteredData = _cpmsDatabase.data.filter(r => r.createdBy !== 1);
+    }            
   }
 
   /** Connect function called by the table to retrieve one stream containing the data to render. */
-  connect(): Observable<Problem[]> {
+  connect(): Observable<ProblemSummary[]> {
     const displayDataChanges = [
       this._cpmsDatabase.dataChange,
       this._paginator.page,
@@ -63,14 +69,14 @@ export class CPMSDataSource extends DataSource<any> {
       if (this._advancedFilterChange.value && (this._advancedFilterChange.value[0] || 
         this._advancedFilterChange.value[1] || this._advancedFilterChange.value[2] ||
         this._advancedFilterChange.value[3])){
-          this.filteredData = data.filter((item: Problem) => {
+          this.filteredData = data.filter((item: ProblemSummary) => {
             if(item){          
               return this.findInAdvancedFilter(item);
             }
             return false;
           });
       } else if (this.filter && this.filter.trim().length > 0) {
-        this.filteredData = data.filter((item: Problem) => {
+        this.filteredData = data.filter((item: ProblemSummary) => {
           if(item){
             return this.findInGeneralFilter(item);
           }
@@ -80,7 +86,7 @@ export class CPMSDataSource extends DataSource<any> {
       // Sort data
       if(this.sorter){
         if(this.sorter[0] === 'Number'){
-          this.filteredData.sort((a, b) => this.sorter[1] === 'asc' ? a.NUMBER - b.NUMBER : b.NUMBER - a.NUMBER);
+          this.filteredData.sort((a, b) => this.sorter[1] === 'asc' ? a.number - b.number : b.number - a.number);
         } else if(this.sorter[0] === 'Source'){
           this.sortSource();
         } else if(this.sorter[0] === 'Title'){
@@ -116,18 +122,18 @@ export class CPMSDataSource extends DataSource<any> {
   private sortSource(): void {
     if (this.sorter[1] === 'asc') {
       this.filteredData.sort((a, b) => {
-        if (a.SOURCE > b.SOURCE)
+        if (a.source > b.source)
           return 1;
-        if (a.SOURCE < b.SOURCE)
+        if (a.source < b.source)
           return -1;
         return 0;
       });
     }
     else if (this.sorter[1] === 'desc') {
       this.filteredData.sort((a, b) => {
-        if (b.SOURCE > a.SOURCE)
+        if (b.source > a.source)
           return 1;
-        if (b.SOURCE < a.SOURCE)
+        if (b.source < a.source)
           return -1;
         return 0;
       });
@@ -137,18 +143,18 @@ export class CPMSDataSource extends DataSource<any> {
   private sortTitle(): void {
     if (this.sorter[1] === 'asc') {
       this.filteredData.sort((a, b) => {
-        if (a.TITLE > b.TITLE)
+        if (a.title > b.title)
           return 1;
-        if (a.TITLE < b.TITLE)
+        if (a.title < b.title)
           return -1;
         return 0;
       });
     }
     else if (this.sorter[1] === 'desc') {
       this.filteredData.sort((a, b) => {
-        if (b.TITLE > a.TITLE)
+        if (b.title > a.title)
           return 1;
-        if (b.TITLE < a.TITLE)
+        if (b.title < a.title)
           return -1;
         return 0;
       });
@@ -158,18 +164,18 @@ export class CPMSDataSource extends DataSource<any> {
   private sortDifficulty(): void {
     if (this.sorter[1] === 'asc') {
       this.filteredData.sort((a, b) => {
-        if (a.DIFFICULTY > b.DIFFICULTY)
+        if (a.level > b.level)
           return 1;
-        if (a.DIFFICULTY < b.DIFFICULTY)
+        if (a.level < b.level)
           return -1;
         return 0;
       });
     }
     else if (this.sorter[1] === 'desc') {
       this.filteredData.sort((a, b) => {
-        if (b.DIFFICULTY > a.DIFFICULTY)
+        if (b.level > a.level)
           return 1;
-        if (b.DIFFICULTY < a.DIFFICULTY)
+        if (b.level < a.level)
           return -1;
         return 0;
       });

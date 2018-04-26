@@ -52,34 +52,34 @@
       <!-- SOURCE Column -->
       <ng-container matColumnDef="Source">
         <mat-header-cell *matHeaderCellDef mat-sort-header> Source </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.SOURCE}} </mat-cell>
+        <mat-cell *matCellDef="let row"> {{row.source}} </mat-cell>
       </ng-container>
   
       <!-- Number Column -->
       <ng-container matColumnDef="Number">
         <mat-header-cell *matHeaderCellDef mat-sort-header> Number </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.NUMBER}} </mat-cell>
+        <mat-cell *matCellDef="let row"> {{row.number}} </mat-cell>
       </ng-container>
   
       <!-- Title Column -->
       <ng-container matColumnDef="Title">
         <mat-header-cell *matHeaderCellDef mat-sort-header> Title </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.TITLE}} </mat-cell>
+        <mat-cell *matCellDef="let row"> {{row.title}} </mat-cell>
       </ng-container>
   
       <!-- Difficulty Column -->
       <ng-container matColumnDef="Difficulty">
         <mat-header-cell *matHeaderCellDef mat-sort-header> Difficulty </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.DIFFICULTY}} </mat-cell>
+        <mat-cell *matCellDef="let row"> {{row.level}} </mat-cell>
       </ng-container>
   
       <ng-container matColumnDef="Action">
         <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
         <mat-cell *matCellDef="let row"> 
             <div class="btn-group" role="group" aria-label="Basic example">
-                <button *ngIf="isAdmin" mat-raised-button color="warn" (click) = "deleteProblem(row.ID)"><mat-icon>delete</mat-icon></button>
-                <button *ngIf="isAdmin" mat-raised-button color="accent" routerLink="/edit-problem/{{row.ID}}"><mat-icon>edit</mat-icon></button>
-                <button *ngIf="!isAdmin" mat-raised-button color="accent" routerLink="/view-problem/{{row.ID}}"><mat-icon>send</mat-icon></button>
+                <button *ngIf="isAdmin" mat-raised-button color="warn" (click) = "deleteProblem(row.id)"><mat-icon>delete</mat-icon></button>
+                <button *ngIf="isAdmin" mat-raised-button color="accent" routerLink="/edit-problem/{{row.id}}"><mat-icon>edit</mat-icon></button>
+                <button *ngIf="!isAdmin" mat-raised-button color="accent" routerLink="/view-problem/{{row.id}}"><mat-icon>send</mat-icon></button>
             </div>
         </mat-cell>
       </ng-container>   
