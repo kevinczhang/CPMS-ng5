@@ -47,7 +47,7 @@ export class Problem {
     this.TYPE = (typeof r.type) === 'string' ? r.type : this.types[r.type];
     this.NUMBER = r.number;
     this.TITLE = r.title;
-    this.DIFFICULTY = (typeof r.difficulty) === 'string' ? r.difficulty : this.levels[r.difficulty];
+    this.DIFFICULTY = (typeof r.level) === 'string' ? r.level : this.levels[r.level];
     this.DESCRIPTION = r.description;
     this.SOLUTION = r.solution;
     this.TAGS = r.topics ? this.getTags(r.topics) : [] ;

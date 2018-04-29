@@ -75,8 +75,13 @@ export class ProblemService {
                     .catch(this.handleError);
   }
 
-  getOneProblem(id: string): Observable<Problem> {    
-    let problem = this.http.get(this.baseUrl + '/' + id)
+  getOneProblem(id: string): Observable<Problem> {
+    const headers = new Headers({
+      Authorization: 'Bearer ' + localStorage.getItem("access_token")
+    });
+    let options: RequestOptions = new RequestOptions();
+    options.headers = headers;    
+    let problem = this.http.get(this.baseUrl + id, options)
       .map((res: Response) => {
         return new Problem(res.json().payload);
       });
