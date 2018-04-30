@@ -16,7 +16,7 @@ export class UserService {
     const decodedToken = this.jwtHelper.decodeToken(accessToken);
     console.log(decodedToken);
 
-    //this.isAdmin = decodedToken.authorities.some(el => el === 'ADMIN_USER');
+    this.isAdmin = decodedToken.role.some(e => e.authority === 'ROLE_ADMIN');
     this.accessToken = accessToken;
 
     localStorage.setItem(TOKEN_NAME, accessToken);
