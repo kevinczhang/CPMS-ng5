@@ -28,7 +28,8 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private authenticationService: AuthenticationService,
-    private userService: UserService) {
+    private userService: UserService
+  ) {
     this.redirectUrl = this.activatedRoute.snapshot.queryParams['redirectTo'];
     // Define FormControl and formGroup
     this.rForm = fb.group({

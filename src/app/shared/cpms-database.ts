@@ -20,7 +20,7 @@ export class CPMSDatabase {
     private snackBar: MatSnackBar, private loaderService: LoaderService) {
       const decodedToken = this.jwtHelper.decodeToken(localStorage.getItem("access_token"));
       this.dataChange = new BehaviorSubject<ProblemSummary[]>([]);
-      if(decodedToken.sub !== 1){
+      if(decodedToken.sub !== "1"){
         this.problemService.getProblems().subscribe(problems => {
           const copiedData = this.data.slice();
           for (let i = 0; i < problems.length; i++) {        

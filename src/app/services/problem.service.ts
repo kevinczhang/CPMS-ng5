@@ -48,8 +48,13 @@ export class ProblemService {
   }
 
   updateProblem(newProblem: Problem): Observable<Problem> {
+    const headers = new Headers({
+      Authorization: 'Bearer ' + localStorage.getItem("access_token")
+    });
+    let options: RequestOptions = new RequestOptions();
+    options.headers = headers;
     let problemJSON: ProblemJSON = new ProblemJSON(newProblem, this.constants);
-    let problem = this.http.put(this.baseUrl + newProblem.ID, problemJSON)
+    let problem = this.http.put(this.baseUrl + newProblem.ID, problemJSON, options)
       .map((res: Response) => {
         res = res.json();
       }).catch(

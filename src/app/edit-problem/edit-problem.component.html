@@ -38,7 +38,7 @@
         </tr>
         <tr>
           <mat-form-field>
-          <mat-select placeholder="Difficulty level" class="example-full-width" formControlName="difficulty">
+          <mat-select placeholder="Difficulty level" class="example-full-width" formControlName="level">
             <mat-option *ngFor="let difficulty of difficultyOptions" [value]="difficulty.value">
               {{ difficulty.viewValue }}
             </mat-option>
@@ -106,7 +106,7 @@
       </mat-expansion-panel>
   
       <br>
-  
+
       <mat-expansion-panel>
         <mat-expansion-panel-header>
           <mat-panel-title>
