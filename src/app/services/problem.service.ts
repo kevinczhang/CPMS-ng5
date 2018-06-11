@@ -11,19 +11,20 @@ import { ProblemSummary } from '../model/problemSummary';
 export class ProblemService {
   baseUrl : string;
   constants: AppConstants;
+  options: RequestOptions;
   
   constructor(private http: Http, private app_constants: AppConstants) {
     this.baseUrl = app_constants.baseUrl + '/question/';
     this.constants = app_constants;
-  }
-
-  getProblems(): Observable<ProblemSummary[]> {
     const headers = new Headers({
       Authorization: 'Bearer ' + localStorage.getItem("access_token")
     });
-    let options: RequestOptions = new RequestOptions();
-    options.headers = headers;
-    let problems = this.http.get(this.baseUrl, options)
+    this.options = new RequestOptions();
+    this.options.headers = headers;
+  }
+
+  getProblems(): Observable<ProblemSummary[]> {    
+    let problems = this.http.get(this.baseUrl, this.options)
       .map((res: Response) => {
         return res.json().payload.map((r: any) => {
           return new ProblemSummary(r);
@@ -33,12 +34,7 @@ export class ProblemService {
   }
 
   getAdminProblems(): Observable<ProblemSummary[]> {
-    const headers = new Headers({
-      Authorization: 'Bearer ' + localStorage.getItem("access_token")
-    });
-    let options: RequestOptions = new RequestOptions();
-    options.headers = headers;
-    let problems = this.http.get(this.baseUrl + 'admin', options)
+    let problems = this.http.get(this.baseUrl + 'admin', this.options)
       .map((res: Response) => {
         return res.json().payload.map((r: any) => {
           return new ProblemSummary(r);
@@ -48,13 +44,8 @@ export class ProblemService {
   }
 
   updateProblem(newProblem: Problem): Observable<Problem> {
-    const headers = new Headers({
-      Authorization: 'Bearer ' + localStorage.getItem("access_token")
-    });
-    let options: RequestOptions = new RequestOptions();
-    options.headers = headers;
     let problemJSON: ProblemJSON = new ProblemJSON(newProblem, this.constants);
-    let problem = this.http.put(this.baseUrl + newProblem.ID, problemJSON, options)
+    let problem = this.http.put(this.baseUrl + newProblem.ID, problemJSON, this.options)
       .map((res: Response) => {
         res = res.json();
       }).catch(
@@ -65,7 +56,7 @@ export class ProblemService {
 
   addProblem(newProblem: Problem): Observable<Problem> {
     let problemJSON: ProblemJSON = new ProblemJSON(newProblem, this.constants);
-    let problem = this.http.post(this.baseUrl, problemJSON)
+    let problem = this.http.post(this.baseUrl, problemJSON, this.options)
       .map((res: Response) => {        
         res = res.json();
       }).catch(
@@ -75,18 +66,13 @@ export class ProblemService {
   }
 
   deleteProblem(id: string): Observable<Problem> {
-    return this.http.delete(this.baseUrl + '/' + id)
+    return this.http.delete(this.baseUrl + '/' + id, this.options)
                     .map((res: Response) => res.json())
                     .catch(this.handleError);
   }
 
   getOneProblem(id: string): Observable<Problem> {
-    const headers = new Headers({
-      Authorization: 'Bearer ' + localStorage.getItem("access_token")
-    });
-    let options: RequestOptions = new RequestOptions();
-    options.headers = headers;    
-    let problem = this.http.get(this.baseUrl + id, options)
+    let problem = this.http.get(this.baseUrl + id, this.options)
       .map((res: Response) => {
         return new Problem(res.json().payload);
       });

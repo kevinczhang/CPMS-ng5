@@ -49,7 +49,9 @@ export class Problem {
     this.TITLE = r.title;
     this.DIFFICULTY = (typeof r.level) === 'string' ? r.level : this.levels[r.level];
     this.DESCRIPTION = r.description;
-    this.SOLUTION = (typeof r.solution) === 'string' ? r.solution : r.solutions[0].content;
+    if(r.solution || r.solutions){
+      this.SOLUTION = (typeof r.solution) === 'string' ? r.solution : r.solutions[0].content;
+    }    
     this.TAGS = r.topics ? this.getTags(r.topics) : [] ;
     this.FAMILIARITY = r.familiarity ? r.familiarity : 0;
     this.COMPANIES = r.companies ? this.getCompanies(r.companies) : [];

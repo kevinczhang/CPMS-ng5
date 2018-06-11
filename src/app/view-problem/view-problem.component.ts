@@ -102,15 +102,15 @@ export class ViewProblemComponent implements OnInit {
             // Set default values by converting to array
             let tagNums = p.TAGS;
             for (var i in tagNums) {
-              this.defaultTags.push(this.tags[+i]);
+              this.defaultTags.push((this.tags.indexOf(tagNums[i])).toString());
             }
             let companyNums = p.COMPANIES;
             for (var i in companyNums) {
-              this.defaultCompanies.push(this.companies[+i].trim());
+              this.defaultCompanies.push((this.companies.indexOf(companyNums[i])).toString());
             }
             let specialTagNums = p.SPECIALTAGS;
             for (var i in specialTagNums) {
-              this.defaultSpecialTags.push(this.specialTags[+i].trim());
+              this.defaultSpecialTags.push((this.specialTags.indexOf(specialTagNums[i])).toString());
             }
             this.rForm.get('id').setValue(p.ID);
             this.rForm.get('source').setValue(p.SOURCE);
@@ -118,9 +118,9 @@ export class ViewProblemComponent implements OnInit {
             this.rForm.get('number').setValue(p.NUMBER);
             this.rForm.get('difficulty').setValue(p.DIFFICULTY);
             this.rForm.get('title').setValue(p.TITLE);
-            this.rForm.get('topics').setValue(p.TAGS);
-            this.rForm.get('companies').setValue(p.COMPANIES);
-            this.rForm.get('tags').setValue(p.SPECIALTAGS);
+            this.rForm.get('topics').setValue(this.defaultTags);
+            this.rForm.get('companies').setValue(this.defaultCompanies);
+            this.rForm.get('tags').setValue(this.defaultSpecialTags);
             this.rForm.get('familiarity').setValue(p.FAMILIARITY);
             this.rForm.get('description').setValue(p.DESCRIPTION);
             this.rForm.get('solution').setValue(p.SOLUTION);
