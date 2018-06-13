@@ -107,6 +107,15 @@
   
       <br>
 
+      <mat-form-field>
+        <mat-select placeholder="Solution Language" class="example-full-width" 
+                    formControlName="solution_language" (change)="languageSelectionChange($event)">
+          <mat-option *ngFor="let language of languageOptions" [value]="language.value">
+            {{ language.viewValue }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
       <mat-expansion-panel>
         <mat-expansion-panel-header>
           <mat-panel-title>

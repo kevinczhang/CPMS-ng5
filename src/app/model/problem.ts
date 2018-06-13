@@ -8,6 +8,7 @@ export class Problem {
   DIFFICULTY: string;
   DESCRIPTION: string;
   SOLUTION: string;
+  SOLUTION_LANGUAGE: string;
   TAGS: string[];
   FAMILIARITY: number;
   COMPANIES: string[];
@@ -49,6 +50,7 @@ export class Problem {
     this.TITLE = r.title;
     this.DIFFICULTY = (typeof r.level) === 'string' ? r.level : this.levels[r.level];
     this.DESCRIPTION = r.description;
+    this.SOLUTION_LANGUAGE = r.solution_language;
     if(r.solution || r.solutions){
       this.SOLUTION = (typeof r.solution) === 'string' ? r.solution : r.solutions[0].content;
     }    

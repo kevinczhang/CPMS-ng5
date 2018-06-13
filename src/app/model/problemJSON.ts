@@ -13,6 +13,7 @@ export class ProblemJSON {
     companies: number[];
     tags: number[];
     familiarity: number;
+    solution_language: string;
     solution: string;
     description: string;
 
@@ -29,5 +30,6 @@ export class ProblemJSON {
         this.familiarity = r.FAMILIARITY;
         this.description = r.DESCRIPTION;
         this.solution = r.SOLUTION;
+        this.solution_language = r.SOLUTION_LANGUAGE;
     }
 }

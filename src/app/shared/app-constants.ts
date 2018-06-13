@@ -12,6 +12,11 @@ export class AppConstants {
         { value: 'Medium', viewValue: 'Medium' }, 
         { value: 'Hard', viewValue: 'Hard' }];
 
+    readonly languageOptions = [
+        { value: 'Java', viewValue: 'Java' },
+        { value: 'C#', viewValue: 'C#' }, 
+        { value: 'Python', viewValue: 'Python' }];
+
     readonly sourceOptions = [
         { value: null, viewValue: 'None' },
         { value: 'LeetCode', viewValue: 'LeetCode' },

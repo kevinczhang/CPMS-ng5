@@ -35,6 +35,7 @@ export class EditProblemComponent implements OnInit {
   defaultSpecialTags: string[] = [];
   editorConfig: any;
   familiarityText: string;
+  languageOptions: any[];
 
   rForm: FormGroup;
   @ViewChild('editor') editor;
@@ -58,6 +59,7 @@ export class EditProblemComponent implements OnInit {
     this.companies = this.app_constants.companies;
     this.specialTags = this.app_constants.specialTags;
     this.editorConfig = this.isAdmin ? this.app_constants.adminEditorConfig : this.app_constants.userEditorConfig;
+    this.languageOptions = this.app_constants.languageOptions;
 
     // construct tagOptions
     for (var i in this.tags) {
@@ -87,7 +89,8 @@ export class EditProblemComponent implements OnInit {
       'tags': new FormControl('', []),
       'familiarity': new FormControl('', [Validators.required]),
       'description': new FormControl('', [Validators.required]),
-      'solution': new FormControl('', [Validators.required])
+      'solution': new FormControl('', [Validators.required]),
+      'solution_language': new FormControl('', [Validators.required])
     });
   }
 
@@ -124,6 +127,8 @@ export class EditProblemComponent implements OnInit {
             this.rForm.get('familiarity').setValue(p.FAMILIARITY);
             this.rForm.get('description').setValue(p.DESCRIPTION);
             this.rForm.get('solution').setValue(p.SOLUTION);
+            this.rForm.get('solution_language').setValue('Java');
+            
             this.familiarityText = this.getFamiliarityTextBasedOnNumber(p.FAMILIARITY);
 
             // if(!this.isAdmin){
@@ -184,6 +189,10 @@ export class EditProblemComponent implements OnInit {
       return 'Mastery    ';
     }
     return 'New        ';
+  }
+
+  languageSelectionChange($event) {
+    console.log($event.value);
   }
 
 }
