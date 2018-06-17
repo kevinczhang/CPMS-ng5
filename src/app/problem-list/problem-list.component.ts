@@ -39,10 +39,14 @@ export class ProblemListComponent implements OnInit {
   problemTitle: string;
   problemNumber: number;
   problemDifficulty: string;
+  problemTopic: string;
+  problemCompany: string;
   advancedSearchDescription: string;
 
   difficultyOptions: object[];
   sourceOptions: object[];
+  companyOptions: string[];
+  topicOptions: string[];
 
   panelOpenState: boolean;
   hideTable: boolean;
@@ -65,6 +69,9 @@ export class ProblemListComponent implements OnInit {
     this.displayedColumns = this.isAdmin ? app_constants.adminDisplayedColumns : app_constants.adminDisplayedColumns;
     this.difficultyOptions = app_constants.difficultyOptions;
     this.sourceOptions = app_constants.sourceOptions;
+    this.companyOptions = app_constants.companies;
+    this.topicOptions = app_constants.tags;
+
     this.subscription = this.loaderService.loaderState
       .subscribe((state: LoaderState) => {
         this.hideTable = state.show;
@@ -96,9 +103,10 @@ export class ProblemListComponent implements OnInit {
   }
 
   applyAdvancedFilter() {
-    this.dataSource.advancedFilter = [this.problemSource, this.problemTitle, this.problemNumber, this.problemDifficulty];
-    this.advancedSearchDescription = (this.problemSource || this.problemTitle ||
-      this.problemNumber || this.problemDifficulty) ? 'Has options' : '';
+    this.dataSource.advancedFilter = [this.problemSource, this.problemTitle, 
+      this.problemNumber, this.problemDifficulty, this.problemCompany, this.problemTopic];
+    this.advancedSearchDescription = (this.problemSource || this.problemTitle || this.problemNumber || 
+      this.problemDifficulty || this.problemCompany || this.problemTopic) ? 'Has options' : '';
   }
 
   private deleteProblem(id: any) {

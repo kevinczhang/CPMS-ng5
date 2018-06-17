@@ -30,7 +30,7 @@ export class AppConstants {
         { value: 'OODesign', viewValue: 'OO Design' }, 
         { value: 'SystemDesign', viewValue: 'System Design' }];
 
-    readonly tags = ["Array", "Hash Table", "Linked List", "Math", "Two Pointer", "String",
+    readonly tags = [null, "Array", "Hash Table", "Linked List", "Math", "Two Pointer", "String",
       "Binary Search", "Divide and Conquer", "Backtracking", "Dynamic Programming", "Design",
       "Trie", "Tree", "Sort", "Depth-first Search", "Stack",
       "Union Find", "Greedy", "Queue", "Breath-first Search", "Heap",
@@ -38,7 +38,7 @@ export class AppConstants {
       "Binary Indexed Tree", "Segment Tree", "Binary Search Tree", "Memorization",
       "Minimax", "Recursion", "Reservoir Sampling"];
 
-    readonly companies = ["Facebook", "Amazon", "Bloomberg", "Google", "Microsoft", "Yelp", "Linkedin"];
+    readonly companies = [null, "Facebook", "Amazon", "Bloomberg", "Google", "Microsoft", "Yelp", "Linkedin"];
     
     readonly specialTags = ["Remember", "CodeSnippet", "Recent"];
     
@@ -64,5 +64,5 @@ export class AppConstants {
     readonly adminDisplayedColumns = ['Source', 'Title', 'Number', 'Difficulty', 'Action'];
     readonly userDisplayedColumns = ['Source', 'Title', 'Number', 'Difficulty'];
     readonly baseUrl = 'http://localhost:5000/api';
-    //readonly baseUrl = 'https://cpms-java.herokuapp.com/SpringBootCRUDApp';
+    //readonly baseUrl = 'https://cpms-java.herokuapp.com/cpms-springboot';
 }

@@ -19,7 +19,7 @@ export class CPMSDataSource extends DataSource<any> {
   
   _filterChange = new BehaviorSubject('');
   _sorterChange = new BehaviorSubject<[string, string]>(null);
-  _advancedFilterChange = new BehaviorSubject<[string, string, number, string]>(null);
+  _advancedFilterChange = new BehaviorSubject<[string, string, number, string, string, string]>(null);
 
   filteredData: ProblemSummary[] = [];
   problemsCount = 0;
@@ -34,7 +34,9 @@ export class CPMSDataSource extends DataSource<any> {
       return this._advancedFilterChange.value[0] && item.source === this._advancedFilterChange.value[0] ||
       this._advancedFilterChange.value[1] && item.title === this._advancedFilterChange.value[1] ||
       this._advancedFilterChange.value[2] && item.number === Number(this._advancedFilterChange.value[2]) ||
-      this._advancedFilterChange.value[3] && item.level === this._advancedFilterChange.value[3];
+      this._advancedFilterChange.value[3] && item.level === this._advancedFilterChange.value[3] ||
+      this._advancedFilterChange.value[4] && item.companies.indexOf(this._advancedFilterChange.value[4]) != -1 || 
+      this._advancedFilterChange.value[5] && item.topics.indexOf(this._advancedFilterChange.value[5]) != -1;
     }
     return false;
   }
@@ -66,9 +68,9 @@ export class CPMSDataSource extends DataSource<any> {
       this.filteredData = data;
 
       // Filter data
-      if (this._advancedFilterChange.value && (this._advancedFilterChange.value[0] || 
-        this._advancedFilterChange.value[1] || this._advancedFilterChange.value[2] ||
-        this._advancedFilterChange.value[3])){
+      if (this._advancedFilterChange.value && (this._advancedFilterChange.value[0] || this._advancedFilterChange.value[1] || 
+        this._advancedFilterChange.value[2] || this._advancedFilterChange.value[3] || 
+        this._advancedFilterChange.value[4] || this._advancedFilterChange.value[5])){
           this.filteredData = data.filter((item: ProblemSummary) => {
             if(item){          
               return this.findInAdvancedFilter(item);
@@ -198,11 +200,11 @@ export class CPMSDataSource extends DataSource<any> {
     this._sorterChange.next(sorter);
   }
 
-  get advancedFilter(): [string, string, number, string] {
+  get advancedFilter(): [string, string, number, string, string, string] {
     return this._advancedFilterChange.value;
   }
 
-  set advancedFilter(filter: [string, string, number, string]) {
+  set advancedFilter(filter: [string, string, number, string, string, string]) {
     this._advancedFilterChange.next(filter);
   }
 }

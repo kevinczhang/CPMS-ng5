@@ -19,7 +19,7 @@
 
   .advanced-search-header {
     display: flex;
-    padding-bottom:20px;
+    padding: 8px 0px 20px 60px;
     justify-content: space-between center;
   }
   

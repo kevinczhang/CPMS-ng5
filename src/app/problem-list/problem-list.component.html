@@ -25,15 +25,29 @@
         </mat-form-field>
         <mat-form-field>
           <input matInput placeholder="Title" [(ngModel)]="problemTitle">
-        </mat-form-field>
-        <br />
+        </mat-form-field>        
         <mat-form-field>
           <input matInput placeholder="Number" [(ngModel)]="problemNumber">
         </mat-form-field>
+        <br />
         <mat-form-field>
           <mat-select placeholder="Difficulty" [(ngModel)]="problemDifficulty">
             <mat-option *ngFor="let difficulty of difficultyOptions" [value]="difficulty.value">
               {{ difficulty.viewValue }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-select placeholder="Company" [(ngModel)]="problemCompany">
+            <mat-option *ngFor="let company of companyOptions" [value]="company">
+              {{ company }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-select placeholder="Topic" [(ngModel)]="problemTopic">
+            <mat-option *ngFor="let topic of topicOptions" [value]="topic">
+              {{ topic }}
             </mat-option>
           </mat-select>
         </mat-form-field>
