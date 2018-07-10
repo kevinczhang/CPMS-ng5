@@ -12,7 +12,7 @@ export class AuthenticationService {
   baseUrl: string;
 
   constructor(private http: Http, private app_constants: AppConstants) {
-    this.baseUrl = app_constants.baseUrl;
+    this.baseUrl = this.app_constants.baseUrl;
   }
 
   login(username: string, password: string) {

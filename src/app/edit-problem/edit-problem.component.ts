@@ -90,7 +90,8 @@ export class EditProblemComponent implements OnInit {
       'familiarity': new FormControl('', [Validators.required]),
       'description': new FormControl('', [Validators.required]),
       'solution': new FormControl('', [Validators.required]),
-      'solution_language': new FormControl('', [Validators.required])
+      'solution_language': new FormControl('', [Validators.required]),
+      'note': new FormControl('', [])
     });
   }
 

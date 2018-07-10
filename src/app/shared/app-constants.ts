@@ -7,7 +7,6 @@ export class AppConstants {
     readonly levels: string[] = ['Easy', 'Medium', 'Hard' ];
     
     readonly difficultyOptions = [
-        { value: null, viewValue: 'None' },
         { value: 'Easy', viewValue: 'Easy' },
         { value: 'Medium', viewValue: 'Medium' }, 
         { value: 'Hard', viewValue: 'Hard' }];
@@ -18,7 +17,6 @@ export class AppConstants {
         { value: 'Python', viewValue: 'Python' }];
 
     readonly sourceOptions = [
-        { value: null, viewValue: 'None' },
         { value: 'LeetCode', viewValue: 'LeetCode' },
         { value: 'Facebook', viewValue: 'Facebook' }, 
         { value: 'CodeSnippet', viewValue: 'CodeSnippet' }, 
@@ -30,7 +28,7 @@ export class AppConstants {
         { value: 'OODesign', viewValue: 'OO Design' }, 
         { value: 'SystemDesign', viewValue: 'System Design' }];
 
-    readonly tags = [null, "Array", "Hash Table", "Linked List", "Math", "Two Pointer", "String",
+    readonly tags = ["Array", "Hash Table", "Linked List", "Math", "Two Pointer", "String",
       "Binary Search", "Divide and Conquer", "Backtracking", "Dynamic Programming", "Design",
       "Trie", "Tree", "Sort", "Depth-first Search", "Stack",
       "Union Find", "Greedy", "Queue", "Breath-first Search", "Heap",
@@ -40,7 +38,7 @@ export class AppConstants {
 
     readonly companies = [null, "Facebook", "Amazon", "Bloomberg", "Google", "Microsoft", "Yelp", "Linkedin"];
     
-    readonly specialTags = ["Remember", "CodeSnippet", "Recent"];
+    readonly specialTags = [null, "Remember", "CodeSnippet", "Recent"];
     
     adminEditorConfig = {
         editable: true,

@@ -10,6 +10,11 @@ export class UserService {
   isAdmin: boolean;
 
   constructor() {
+    let accessToken = localStorage.getItem(TOKEN_NAME);
+    if(accessToken){
+      const decodedToken = this.jwtHelper.decodeToken(accessToken);
+      this.isAdmin = decodedToken.role.some(e => e.authority === 'ROLE_ADMIN');
+    }    
   }
 
   login(accessToken: string) {

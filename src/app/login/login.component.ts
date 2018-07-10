@@ -1,10 +1,9 @@
-import {Component, OnInit} from '@angular/core';
-import {Router, ActivatedRoute} from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 
-import {AuthenticationService} from '../services/authentication.service';
-import {UserService} from '../services/user.service';
-import { FormGroup, FormBuilder, FormControl, Validators, FormGroupDirective, NgForm } from '@angular/forms';
-import { ErrorStateMatcher } from '@angular/material/core';
+import { AuthenticationService } from '../services/authentication.service';
+import { UserService } from '../services/user.service';
+import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'login',
@@ -32,14 +31,14 @@ export class LoginComponent implements OnInit {
   ) {
     this.redirectUrl = this.activatedRoute.snapshot.queryParams['redirectTo'];
     // Define FormControl and formGroup
-    this.rForm = fb.group({
+    this.rForm = this.fb.group({
       'usernameOrEmail': this.usernameOrEmail,
       'password': this.password
     });
   }
 
   ngOnInit(): void {
-    this.userService.logout();    
+    this.userService.logout();
   }
 
   login(userInfo: any) {
