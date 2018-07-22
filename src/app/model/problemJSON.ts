@@ -16,6 +16,7 @@ export class ProblemJSON {
     solution_language: string;
     solution: string;
     description: string;
+    note: string;
 
     constructor(r: Problem, constants: AppConstants) {
         this.id = r.ID.toString();
@@ -31,5 +32,6 @@ export class ProblemJSON {
         this.description = r.DESCRIPTION;
         this.solution = r.SOLUTION;
         this.solution_language = r.SOLUTION_LANGUAGE;
+        this.note = r.NOTE;
     }
 }

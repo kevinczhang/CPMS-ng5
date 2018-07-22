@@ -129,6 +129,7 @@ export class EditProblemComponent implements OnInit {
             this.rForm.get('description').setValue(p.DESCRIPTION);
             this.rForm.get('solution').setValue(p.SOLUTION);
             this.rForm.get('solution_language').setValue('Java');
+            this.rForm.get('note').setValue(p.NOTE);
             
             this.familiarityText = this.getFamiliarityTextBasedOnNumber(p.FAMILIARITY);
 

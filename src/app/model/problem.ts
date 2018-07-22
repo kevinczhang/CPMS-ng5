@@ -13,6 +13,7 @@ export class Problem {
   FAMILIARITY: number;
   COMPANIES: string[];
   SPECIALTAGS: string[];
+  NOTE: string;
     
   sources: string[] = ['LeetCode', 'Facebook', 'CodeSnippet', 'LintCode'];
   types: string[] = ['Algorithm', 'Database', 'OODesign', 'SystemDesign'];
@@ -58,6 +59,7 @@ export class Problem {
     this.FAMILIARITY = r.familiarity ? r.familiarity : 0;
     this.COMPANIES = r.companies ? this.getCompanies(r.companies) : [];
     this.SPECIALTAGS = r.tags ? this.getSpecialTags(r.tags) : [];
+    this.NOTE = r.note;
   }
     
 }
