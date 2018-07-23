@@ -53,8 +53,6 @@ export class AppConstants {
         editable: false,
         showToolbar: false,
         spellcheck: false,
-        height: '10rem',
-        minHeight: '5rem',
         placeholder: 'Type something. Test the Editor... ヽ(^。^)丿',
         translate: 'no'
       };

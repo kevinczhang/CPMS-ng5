@@ -1,9 +1,8 @@
 import 'rxjs/add/operator/switchMap';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
 import { Guid } from "guid-typescript";
 
 import { CPMSDatabase } from "../shared/cpms-database";
@@ -19,22 +18,19 @@ import { UserService } from '../services/user.service';
   styleUrls: ['./view-problem.component.css']
 })
 export class ViewProblemComponent implements OnInit {
+ 
+  editorConfig: any;
+  familiarityText: string;
 
-  problem: Problem;
-  difficultyOptions: any[];
-  sourceOptions: any[];
-  typeOptions: any[];
+  title: string;
+  description: string;
+  source: string;
+  type: string;
+  number: number;
+  difficulty: string;
   tags: string[];
   companies: string[];
   specialTags: string[];
-  tagOptions: Tag[] = [];
-  companyOptions: Tag[] = [];
-  specialTagOptions: Tag[] = [];
-  defaultTags: string[] = [];
-  defaultCompanies: string[] = [];
-  defaultSpecialTags: string[] = [];
-  editorConfig: any;
-  familiarityText: string;
 
   rForm: FormGroup;
   @ViewChild('editor') editor;
@@ -51,43 +47,14 @@ export class ViewProblemComponent implements OnInit {
   ) {
     // Initialize the variables
     this.isAdmin = userService.isAdminUser();
-    this.sourceOptions = this.app_constants.sourceOptions;
-    this.difficultyOptions = this.app_constants.difficultyOptions;
-    this.typeOptions = this.app_constants.typeOptions;
-    this.tags = this.app_constants.tags;
-    this.companies = this.app_constants.companies;
-    this.specialTags = this.app_constants.specialTags;
-    this.editorConfig = this.isAdmin ? this.app_constants.adminEditorConfig : this.app_constants.userEditorConfig;
+    this.editorConfig = this.app_constants.userEditorConfig;
 
-    // construct tagOptions
-    for (var i in this.tags) {
-      let newTag = new Tag(i, this.tags[i]);
-      this.tagOptions.push(newTag);
-    }
-    // construct companyOptions
-    for (var i in this.companies) {
-      let newCompany = new Tag(i, this.companies[i]);
-      this.companyOptions.push(newCompany);
-    }
-    // construct companyOptions
-    for (var i in this.specialTags) {
-      let newSpecailTag = new Tag(i, this.specialTags[i]);
-      this.specialTagOptions.push(newSpecailTag);
-    }
     // Define FormControl and formGroup
     this.rForm = fb.group({
       'id': new FormControl('', [Validators.required]),
-      'source': new FormControl('', [Validators.required]),
-      'type': new FormControl('', [Validators.required]),
-      'number': new FormControl('', []),
-      'difficulty': new FormControl('', [Validators.required]),
-      'title': new FormControl('', [Validators.required]),
-      'topics': new FormControl('', [Validators.required]),
-      'companies': new FormControl('', []),
-      'tags': new FormControl('', []),
       'familiarity': new FormControl('', [Validators.required]),
-      'description': new FormControl('', [Validators.required]),
-      'solution': new FormControl('', [Validators.required])
+      'solution': new FormControl('', [Validators.required]),
+      'note': new FormControl('', [])
     });
   }
 
@@ -99,43 +66,21 @@ export class ViewProblemComponent implements OnInit {
       } else {
         this.problemService.getOneProblem(passedInId)
           .subscribe(p => {
-            // Set default values by converting to array
-            let tagNums = p.TAGS;
-            for (var i in tagNums) {
-              this.defaultTags.push((this.tags.indexOf(tagNums[i])).toString());
-            }
-            let companyNums = p.COMPANIES;
-            for (var i in companyNums) {
-              this.defaultCompanies.push((this.companies.indexOf(companyNums[i])).toString());
-            }
-            let specialTagNums = p.SPECIALTAGS;
-            for (var i in specialTagNums) {
-              this.defaultSpecialTags.push((this.specialTags.indexOf(specialTagNums[i])).toString());
-            }
+            this.description = p.DESCRIPTION;
+            this.title = p.TITLE;
+            this.source = p.SOURCE;
+            this.type = p.TYPE;
+            this.difficulty = p.DIFFICULTY;
+            this.number = p.NUMBER; 
+            this.tags = p.TAGS;
+            this.companies = p.COMPANIES;    
+            this.specialTags = p.SPECIALTAGS;
+
             this.rForm.get('id').setValue(p.ID);
-            this.rForm.get('source').setValue(p.SOURCE);
-            this.rForm.get('type').setValue(p.TYPE);
-            this.rForm.get('number').setValue(p.NUMBER);
-            this.rForm.get('difficulty').setValue(p.DIFFICULTY);
-            this.rForm.get('title').setValue(p.TITLE);
-            this.rForm.get('topics').setValue(this.defaultTags);
-            this.rForm.get('companies').setValue(this.defaultCompanies);
-            this.rForm.get('tags').setValue(this.defaultSpecialTags);
             this.rForm.get('familiarity').setValue(p.FAMILIARITY);
-            this.rForm.get('description').setValue(p.DESCRIPTION);
             this.rForm.get('solution').setValue(p.SOLUTION);
             this.familiarityText = this.getFamiliarityTextBasedOnNumber(p.FAMILIARITY);
-
-            if(!this.isAdmin){
-              this.rForm.get('source').disable();
-              this.rForm.get('type').disable();
-              this.rForm.get('difficulty').disable();
-              this.rForm.get('topics').disable();
-              this.rForm.get('companies').disable();
-              this.rForm.get('tags').disable();
-              this.rForm.get('familiarity').disable();
-            }
-            
+            this.rForm.get('note').setValue(p.NOTE);                     
           });
       }      
     });
