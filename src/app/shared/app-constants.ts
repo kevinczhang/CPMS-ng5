@@ -59,6 +59,6 @@ export class AppConstants {
 
     readonly adminDisplayedColumns = ['Source', 'Title', 'Number', 'Difficulty', 'Action'];
     readonly userDisplayedColumns = ['Source', 'Title', 'Number', 'Difficulty'];
-    //readonly baseUrl = 'http://localhost:5000/api';
-    readonly baseUrl = 'https://cpms-java.herokuapp.com/api';
+    readonly baseUrl = 'http://localhost:5000/api';
+    //readonly baseUrl = 'https://cpms-java.herokuapp.com/api';
 }

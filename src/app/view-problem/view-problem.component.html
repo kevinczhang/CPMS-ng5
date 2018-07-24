@@ -6,17 +6,24 @@
       </mat-card-title>
       <mat-card-subtitle>
         <p>
-          <strong>Source:</strong> <span>{{source}}</span>;
-          <strong>Number:</strong> <span>{{number}}</span>; 
-          <strong>Type:</strong> <span>{{type}}</span>
-        </p>
-        <p>            
-            <strong>Difficulty:</strong> <span>{{difficulty}}</span>;
-            <strong>Topics:</strong> <span>{{tags}}</span>;            
+          <strong>Source:</strong>
+          <span>{{source}}</span>;
+          <strong>Number:</strong>
+          <span>{{number}}</span>;
+          <strong>Type:</strong>
+          <span>{{type}}</span>
         </p>
         <p>
-            <strong>Companies:</strong> <span>{{companies}}</span>;
-            <strong>Tags:</strong> <span>{{specialTags}}</span> 
+          <strong>Difficulty:</strong>
+          <span>{{difficulty}}</span>;
+          <strong>Topics:</strong>
+          <span>{{tags}}</span>;
+        </p>
+        <p>
+          <strong>Companies:</strong>
+          <span>{{companies}}</span>;
+          <strong>Tags:</strong>
+          <span>{{specialTags}}</span>
         </p>
       </mat-card-subtitle>
     </mat-card-header>
@@ -25,32 +32,32 @@
     </mat-card-content>
   </mat-card>
   <form [formGroup]="rForm" (ngSubmit)="addOrUpdateProblem(rForm.value)">
-    <table class="example-full-width" cellspacing="0">
-      <tr hidden>
-        <mat-form-field class="example-full-width">
-          <input matInput placeholder="Problem Id" formControlName="id" readonly>
-        </mat-form-field>
-      </tr>
-      <tr>
-        <h4>
-          <mat-slider min="1" max="5" step="0.5" value="familiarity" formControlName="familiarity" (input)="familiarityChange($event)"></mat-slider>
-          {{familiarityText}}
-        </h4>
-      </tr>
-      <tr>
-        <mat-form-field class="example-full-width">
-          <textarea matInput placeholder="Leave a comment" formControlName="note"></textarea>
-        </mat-form-field>
-      </tr>
-    </table>
-    <br>
-    <ace-editor formControlName="solution" [mode]="'java'" #editor style="height:300px;"></ace-editor>
-    <br>
-    <div>
-        <button mat-raised-button color="primary" type="submit" [disabled]="!rForm.valid">
-          Save
-        </button>
-    </div>     
+    <mat-tab-group [backgroundColor]="primary">
+      <mat-tab label="Solution">
+        <mat-card>
+          <ace-editor formControlName="solution" [mode]="'java'" #editor1 style="height:300px;"></ace-editor>
+        </mat-card>
+      </mat-tab>
+      <mat-tab label="Hint">
+        <mat-card>
+          <mat-form-field class="example-full-width">
+            <textarea class="example-full-width" matInput placeholder="Note" formControlName="note"></textarea>
+          </mat-form-field>
+        </mat-card>
+      </mat-tab>
+      <mat-tab label="Answer">
+        <mat-card>
+          <ace-editor formControlName="answer" [mode]="'java'" #editor style="height:300px;">
+          </ace-editor>
+        </mat-card>
+      </mat-tab>
+    </mat-tab-group>
+    <mat-slider min="1" max="5" step="0.5" value="familiarity" formControlName="familiarity" (input)="familiarityChange($event)"></mat-slider>
+    {{familiarityText}}
+    <button mat-raised-button color="primary" type="submit" [disabled]="!rForm.valid">
+      Save all changes
+    </button>
+    <input matInput placeholder="Problem Id" formControlName="id" hidden readonly>
   </form>
-  <br> 
+  <br>
 </div>

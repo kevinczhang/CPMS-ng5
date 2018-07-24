@@ -53,7 +53,8 @@ export class ViewProblemComponent implements OnInit {
     this.rForm = fb.group({
       'id': new FormControl('', [Validators.required]),
       'familiarity': new FormControl('', [Validators.required]),
-      'solution': new FormControl('', [Validators.required]),
+      'answer': new FormControl('', [Validators.required]),
+      'solution': new FormControl('', []),
       'note': new FormControl('', [])
     });
   }
@@ -78,7 +79,7 @@ export class ViewProblemComponent implements OnInit {
 
             this.rForm.get('id').setValue(p.ID);
             this.rForm.get('familiarity').setValue(p.FAMILIARITY);
-            this.rForm.get('solution').setValue(p.SOLUTION);
+            this.rForm.get('answer').setValue(p.SOLUTION);
             this.familiarityText = this.getFamiliarityTextBasedOnNumber(p.FAMILIARITY);
             this.rForm.get('note').setValue(p.NOTE);                     
           });
