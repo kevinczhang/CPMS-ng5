@@ -32,7 +32,7 @@
     </mat-card-content>
   </mat-card>
   <form [formGroup]="rForm" (ngSubmit)="addOrUpdateProblem(rForm.value)">
-    <mat-tab-group [backgroundColor]="primary">
+    <mat-tab-group backgroundColor="primary">
       <mat-tab label="Solution">
         <mat-card>
           <ace-editor formControlName="solution" [mode]="'java'" #editor1 style="height:300px;"></ace-editor>
