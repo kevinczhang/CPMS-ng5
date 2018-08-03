@@ -31,6 +31,7 @@ export class ViewProblemComponent implements OnInit {
   tags: string[];
   companies: string[];
   specialTags: string[];
+  languageOptions: any[];
 
   rForm: FormGroup;
   @ViewChild('editor') editor;
@@ -48,6 +49,7 @@ export class ViewProblemComponent implements OnInit {
     // Initialize the variables
     this.isAdmin = userService.isAdminUser();
     this.editorConfig = this.app_constants.userEditorConfig;
+    this.languageOptions = this.app_constants.languageOptions;
 
     // Define FormControl and formGroup
     this.rForm = fb.group({
@@ -55,6 +57,7 @@ export class ViewProblemComponent implements OnInit {
       'familiarity': new FormControl('', [Validators.required]),
       'answer': new FormControl('', [Validators.required]),
       'solution': new FormControl('', []),
+      'solution_language': new FormControl('', [Validators.required]),
       'note': new FormControl('', [])
     });
   }
@@ -81,7 +84,8 @@ export class ViewProblemComponent implements OnInit {
             this.rForm.get('familiarity').setValue(p.FAMILIARITY);
             this.rForm.get('answer').setValue(p.SOLUTION);
             this.familiarityText = this.getFamiliarityTextBasedOnNumber(p.FAMILIARITY);
-            this.rForm.get('note').setValue(p.NOTE);                     
+            this.rForm.get('note').setValue(p.NOTE);
+            this.rForm.get('solution_language').setValue('Java');                     
           });
       }      
     });
@@ -130,6 +134,10 @@ export class ViewProblemComponent implements OnInit {
       return 'Mastery    ';
     }
     return 'New        ';
+  }
+
+  languageSelectionChange($event) {
+    console.log($event.value);
   }
 
 }

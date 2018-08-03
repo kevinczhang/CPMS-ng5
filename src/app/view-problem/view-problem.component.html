@@ -31,7 +31,19 @@
       <app-ngx-editor [config]="editorConfig" [spellcheck]="true" [ngModel]="description"></app-ngx-editor>
     </mat-card-content>
   </mat-card>
-  <form [formGroup]="rForm" (ngSubmit)="addOrUpdateProblem(rForm.value)">
+
+  <br>
+
+  <form [formGroup]="rForm" (ngSubmit)="addOrUpdateProblem(rForm.value)">    
+    <mat-form-field>
+      <mat-select placeholder="Solution Language" class="example-full-width" 
+                  formControlName="solution_language" (change)="languageSelectionChange($event)">
+        <mat-option *ngFor="let language of languageOptions" [value]="language.value">
+          {{ language.viewValue }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>  
+    <br>
     <mat-tab-group backgroundColor="primary">
       <mat-tab label="Solution">
         <mat-card>
