@@ -154,7 +154,8 @@ export class EditProblemComponent implements OnInit {
 
     this.editor.getEditor().setOptions({
       enableBasicAutocompletion: true,
-      readOnly: this.isAdmin ? false : true
+      readOnly: this.isAdmin ? false : true,
+      maxLines: Infinity
     });
 
     this.editor.getEditor().commands.addCommand({
