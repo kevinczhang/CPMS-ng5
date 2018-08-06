@@ -24,7 +24,7 @@ export class ProblemService {
   }
 
   getProblems(): Observable<ProblemSummary[]> {    
-    let problems = this.http.get(this.baseUrl, this.options)
+    let problems = this.http.get(this.baseUrl + '?adminOnly=false', this.options)
       .map((res: Response) => {
         return res.json().payload.map((r: any) => {
           return new ProblemSummary(r);
@@ -34,7 +34,7 @@ export class ProblemService {
   }
 
   getAdminProblems(): Observable<ProblemSummary[]> {
-    let problems = this.http.get(this.baseUrl + 'admin', this.options)
+    let problems = this.http.get(this.baseUrl + '?adminOnly=true', this.options)
       .map((res: Response) => {
         return res.json().payload.map((r: any) => {
           return new ProblemSummary(r);
@@ -66,7 +66,7 @@ export class ProblemService {
   }
 
   deleteProblem(id: string): Observable<Problem> {
-    return this.http.delete(this.baseUrl + '/' + id, this.options)
+    return this.http.delete(this.baseUrl + id, this.options)
                     .map((res: Response) => res.json())
                     .catch(this.handleError);
   }
