@@ -1,19 +1,30 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
+import { LoginComponent } from './login/login.component';
+import { SignupComponent } from './signup/signup.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { DescriptionComponent } from './description/description.component';
+import { ViewProblemComponent } from './view-problem/view-problem.component';
+import { EditProblemComponent } from './edit-problem/edit-problem.component';
 import { ProblemListComponent } from './problem-list/problem-list.component';
+import { MessagesComponent } from './messages/messages.component';
+
+import {AuthGuard} from './guards/auth-guard.service';
+import {AdminAuthGuard} from './guards/admin-auth-guard.service';
 
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
-  { path: 'dashboard',  component: DashboardComponent },
-  { path: 'problemList',  component: ProblemListComponent },
-  { path: 'description/:id',  component: DescriptionComponent }
+  { path: 'login',  component: LoginComponent },
+  { path: 'signup',  component: SignupComponent },
+  { path: 'dashboard',  component: DashboardComponent, canActivate: [AuthGuard] },
+  { path: 'problemList/:id',  component: ProblemListComponent, canActivate: [AuthGuard] },
+  { path: 'edit-problem/:id',  component: EditProblemComponent, canActivate: [AdminAuthGuard] },
+  { path: 'view-problem/:id',  component: ViewProblemComponent, canActivate: [AuthGuard] },
+  { path: 'messages',  component: MessagesComponent, canActivate: [AdminAuthGuard] }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { useHash: true })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

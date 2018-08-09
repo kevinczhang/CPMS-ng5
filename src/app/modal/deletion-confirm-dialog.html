@@ -1,0 +1,11 @@
+<div class="delete-confirm-dialog">
+  <h4 mat-dialog-title>Warning</h4>
+  <mat-divider></mat-divider>
+  <div mat-dialog-content>
+    <p>Are you sure to delete it ?</p>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-raised-button color="primary" (click)="onClickNo()">Cancel</button>
+    <button mat-raised-button color="warn" (click)="onClickYes()" cdkFocusInitial>OK</button>
+  </div>
+</div>

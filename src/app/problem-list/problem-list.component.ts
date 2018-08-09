@@ -1,8 +1,13 @@
-import { Component, OnInit, ViewChild, 
-  ElementRef, ChangeDetectionStrategy } from '@angular/core';
-import {MatPaginator, MatAccordion, MatExpansionPanel, 
-  MatExpansionPanelHeader, MatExpansionPanelTitle} from '@angular/material';
-import {Observable} from 'rxjs/Observable';
+import {
+  Component, OnInit, ViewChild,
+  ElementRef, ChangeDetectionStrategy, Inject
+} from '@angular/core';
+import {
+  MatPaginator, MatAccordion, MatExpansionPanel,
+  MatExpansionPanelHeader, MatExpansionPanelTitle, Sort,
+  MatDialog, MatDialogRef, MAT_DIALOG_DATA
+} from '@angular/material';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/observable/merge';
@@ -11,38 +16,110 @@ import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/observable/fromEvent';
 
-import {ExampleDatabase} from "../shared/example-database";
-import {ExampleDataSource} from "../shared/example-data-source";
+import { CPMSDatabase } from "../shared/cpms-database";
+import { CPMSDataSource } from "../shared/cpms-data-source";
+import { AppConstants } from '../shared/app-constants';
+import { DeletionConfirmDialog } from '../modal/deletion.component';
+import { LoaderService } from '../services/loader.service';
+import { LoaderState } from '../loader/loader';
+import { Subscription } from 'rxjs';
+import { UserService } from '../services/user.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
-  selector: 'app-problem-list',
   templateUrl: './problem-list.component.html',
   styleUrls: ['./problem-list.component.css']
 })
 export class ProblemListComponent implements OnInit {
 
-  displayedColumns = ['ID', 'Title', 'Number', 'Difficulty'];
-  //exampleDatabase = new ExampleDatabase();
-  dataSource: ExampleDataSource | null;
-  title = 'app';
+  displayedColumns: string[];
+  dataSource: CPMSDataSource;
+  problemSource: string;
+  problemTitle: string;
+  problemNumber: number;
+  problemDifficulty: string;
+  problemTopic: string;
+  problemCompany: string;
+  advancedSearchDescription: string;
+
+  difficultyOptions: object[];
+  sourceOptions: object[];
+  companyOptions: string[];
+  topicOptions: string[];
+
+  panelOpenState: boolean;
+  hideTable: boolean;
+  isAdmin: boolean;
+
+  private subscription: Subscription;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('filter') filter: ElementRef;
 
-  constructor(private exampleDatabase: ExampleDatabase) { }
+  constructor(
+    private cpmsDatabase: CPMSDatabase,
+    private app_constants: AppConstants,
+    private dialog: MatDialog,
+    private loaderService: LoaderService,
+    private userService: UserService,
+    private route: ActivatedRoute
+  ) {
+    this.isAdmin = userService.isAdminUser();
+    this.displayedColumns = this.isAdmin ? app_constants.adminDisplayedColumns : app_constants.adminDisplayedColumns;
+    this.difficultyOptions = app_constants.difficultyOptions;
+    this.sourceOptions = app_constants.sourceOptions;
+    this.companyOptions = app_constants.companies;
+    this.topicOptions = app_constants.tags;
 
-  ngOnInit() {
-    this.dataSource = new ExampleDataSource(this.exampleDatabase, this.paginator);    
-    Observable.fromEvent(this.filter.nativeElement, 'keyup')
-      .debounceTime(150)
-      .distinctUntilChanged()
-      .subscribe(() => {
-        if (!this.dataSource) {
-          return;
-        }
-        this.dataSource.filter = this.filter.nativeElement.value;
+    this.subscription = this.loaderService.loaderState
+      .subscribe((state: LoaderState) => {
+        this.hideTable = state.show;
       });
   }
 
+  ngOnInit() {
+    this.route.params.subscribe(params => {
+      let passedInId: string = params['id'];
+      this.loaderService.show();
+      this.dataSource = new CPMSDataSource(this.cpmsDatabase, this.paginator, this.loaderService, passedInId);
+      if (!this.dataSource)
+        return;
+      Observable.fromEvent(this.filter.nativeElement, 'keyup')
+        .debounceTime(150)
+        .distinctUntilChanged()
+        .subscribe(() => {
+          this.dataSource.filter = this.filter.nativeElement.value;
+        });
+    });
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+
+  sortData(sort: Sort) {
+    this.dataSource.sorter = [sort.active, sort.direction];
+  }
+
+  applyAdvancedFilter() {
+    this.dataSource.advancedFilter = [this.problemSource, this.problemTitle, 
+      this.problemNumber, this.problemDifficulty, this.problemCompany, this.problemTopic];
+    this.advancedSearchDescription = (this.problemSource || this.problemTitle || this.problemNumber || 
+      this.problemDifficulty || this.problemCompany || this.problemTopic) ? 'Has options' : '';
+  }
+
+  private deleteProblem(id: any) {
+    let dialogRef = this.dialog.open(DeletionConfirmDialog, {
+      width: '250px'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed with result: ' + result);
+      if (result === 'Y') {
+        this.cpmsDatabase.deleteProblem(id);
+      }
+    });
+  }
 }
+

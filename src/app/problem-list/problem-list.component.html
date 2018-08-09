@@ -3,7 +3,7 @@
     <mat-form-field floatPlaceholder="never" class="mat-input-element">
       <input matInput #filter placeholder="Filter problems">
     </mat-form-field>
-    <button mat-raised-button color="primary" [routerLink]="['/description', -1]">New Problem</button>
+    <button mat-raised-button color="primary" [routerLink]="['/edit-problem', -1]">New Problem</button>
   </div>
   <div class="advanced-search-header">
     <mat-accordion>
@@ -13,62 +13,96 @@
             Advanced Search
           </mat-panel-title>
           <mat-panel-description>
-            Currently I am {{panelOpenState ? 'open' : 'closed'}}
+            {{panelOpenState ? '' : advancedSearchDescription}}
           </mat-panel-description>
         </mat-expansion-panel-header>
         <mat-form-field>
-          <input matInput placeholder="First name">
+          <mat-select placeholder="Source" [(ngModel)]="problemSource">
+            <mat-option *ngFor="let source of sourceOptions" [value]="source.value">
+              {{ source.viewValue }}
+            </mat-option>
+          </mat-select>
         </mat-form-field>
         <mat-form-field>
-          <input matInput placeholder="Age">
+          <input matInput placeholder="Title" [(ngModel)]="problemTitle">
+        </mat-form-field>        
+        <mat-form-field>
+          <input matInput placeholder="Number" [(ngModel)]="problemNumber">
         </mat-form-field>
         <br />
         <mat-form-field>
-          <input matInput placeholder="First name">
+          <mat-select placeholder="Difficulty" [(ngModel)]="problemDifficulty">
+            <mat-option *ngFor="let difficulty of difficultyOptions" [value]="difficulty.value">
+              {{ difficulty.viewValue }}
+            </mat-option>
+          </mat-select>
         </mat-form-field>
         <mat-form-field>
-          <input matInput placeholder="Age">
+          <mat-select placeholder="Company" [(ngModel)]="problemCompany">
+            <mat-option *ngFor="let company of companyOptions" [value]="company">
+              {{ company }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-select placeholder="Topic" [(ngModel)]="problemTopic">
+            <mat-option *ngFor="let topic of topicOptions" [value]="topic">
+              {{ topic }}
+            </mat-option>
+          </mat-select>
         </mat-form-field>
         <br/>
-        <button mat-raised-button color="primary" [routerLink]="['/description', -1]" class="mdl-button">
+        <button (click)="applyAdvancedFilter()" mat-raised-button color="primary" class="mdl-button">
           Search
         </button>
       </mat-expansion-panel>
     </mat-accordion>
+  </div>  
+  <div [hidden]="hideTable">
+    <mat-table matSort #table [dataSource]="dataSource" (matSortChange) = "sortData($event)">    
+      <!--- Note that these columns can be defined in any order.
+            The actual rendered columns are set as a property on the row definition" -->
+  
+      <!-- SOURCE Column -->
+      <ng-container matColumnDef="Source">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Source </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.source}} </mat-cell>
+      </ng-container>
+  
+      <!-- Number Column -->
+      <ng-container matColumnDef="Number">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Number </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.number}} </mat-cell>
+      </ng-container>
+  
+      <!-- Title Column -->
+      <ng-container matColumnDef="Title">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Title </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.title}} </mat-cell>
+      </ng-container>
+  
+      <!-- Difficulty Column -->
+      <ng-container matColumnDef="Difficulty">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Difficulty </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.level}} </mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="Action">
+        <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+        <mat-cell *matCellDef="let row"> 
+            <div class="btn-group" role="group" aria-label="Basic example">
+                <button *ngIf="isAdmin" mat-raised-button color="warn" (click) = "deleteProblem(row.id)"><mat-icon>delete</mat-icon></button>
+                <button *ngIf="isAdmin" mat-raised-button color="accent" routerLink="/edit-problem/{{row.id}}"><mat-icon>edit</mat-icon></button>
+                <button *ngIf="!isAdmin" mat-raised-button color="accent" routerLink="/view-problem/{{row.id}}"><mat-icon>send</mat-icon></button>
+            </div>
+        </mat-cell>
+      </ng-container>   
+  
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+    <mat-paginator #paginator [length]="dataSource.problemsCount" [pageIndex]="0" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]">
+    </mat-paginator>
   </div>
-  <mat-table #table [dataSource]="dataSource">
-
-    <!--- Note that these columns can be defined in any order.
-          The actual rendered columns are set as a property on the row definition" -->
-
-    <!-- ID Column -->
-    <ng-container matColumnDef="ID">
-      <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.ID}} </mat-cell>
-    </ng-container>
-
-    <!-- Progress Column -->
-    <ng-container matColumnDef="Number">
-      <mat-header-cell *matHeaderCellDef> Number </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.NUMBER}} </mat-cell>
-    </ng-container>
-
-    <!-- Name Column -->
-    <ng-container matColumnDef="Title">
-      <mat-header-cell *matHeaderCellDef> Title </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.TITLE}} </mat-cell>
-    </ng-container>
-
-    <!-- Color Column -->
-    <ng-container matColumnDef="Difficulty">
-      <mat-header-cell *matHeaderCellDef> Difficulty </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.DIFFICULTY}} </mat-cell>
-    </ng-container>
-
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;" [routerLink]="['/description', row.ID]"></mat-row>
-  </mat-table>
-  <mat-paginator #paginator [length]="dataSource.problemsCount" [pageIndex]="0" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]">
-  </mat-paginator>
-
+  <angular-loader></angular-loader>
 </div>

@@ -1,53 +1,82 @@
-import { Problem } from '../model/problem';
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { Http, Response, RequestOptions, RequestOptionsArgs, Headers } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
+
+import { Problem } from '../model/problem';
+import { ProblemJSON } from '../model/problemJSON';
+import { AppConstants } from '../shared/app-constants';
+import { ProblemSummary } from '../model/problemSummary';
 
 @Injectable()
 export class ProblemService {
-  constructor(private http: Http) {
-
+  baseUrl : string;
+  constants: AppConstants;
+  options: RequestOptions;
+  
+  constructor(private http: Http, private app_constants: AppConstants) {
+    this.baseUrl = app_constants.baseUrl + '/question/';
+    this.constants = app_constants;
+    const headers = new Headers({
+      Authorization: 'Bearer ' + localStorage.getItem("access_token")
+    });
+    this.options = new RequestOptions();
+    this.options.headers = headers;
   }
 
-  getProblems(): Observable<Problem[]> {
-    //let problems = this.http.get('../../assets/problems.json')
-    let problems = this.http.get('http://localhost:8081/api/problems')
+  getProblems(): Observable<ProblemSummary[]> {    
+    let problems = this.http.get(this.baseUrl + '?adminOnly=false', this.options)
       .map((res: Response) => {
-        return res.json().map((r: any) => {
-          return <Problem>({
-            ID: r.ID,
-            NUMBER: r.NUMBER,
-            TITLE: r.TITLE,
-            DIFFICULTY: r.DIFFICULTY,
-            DESCRIPTION: r.DESCRIPTION,
-            SOLUTION: r.SOLUTION,
-            TAGS: r.TAGS,
-            COMPANIES: r.COMPANIES,
-            SPECIALTAGS: r.SPECIALTAGS
-          });
+        return res.json().payload.map((r: any) => {
+          return new ProblemSummary(r);
+        });
+      });
+    return problems;
+  }
+
+  getAdminProblems(): Observable<ProblemSummary[]> {
+    let problems = this.http.get(this.baseUrl + '?adminOnly=true', this.options)
+      .map((res: Response) => {
+        return res.json().payload.map((r: any) => {
+          return new ProblemSummary(r);
         });
       });
     return problems;
   }
 
   updateProblem(newProblem: Problem): Observable<Problem> {
-    let problem = this.http.put('http://localhost:8081/api/problems/', newProblem)
+    let problemJSON: ProblemJSON = new ProblemJSON(newProblem, this.constants);
+    let problem = this.http.put(this.baseUrl + newProblem.ID, problemJSON, this.options)
       .map((res: Response) => {
         res = res.json();
       }).catch(
         this.handleError
-      );
-      return problem;
+      ).subscribe();
+      return Observable.of(newProblem);
   }
 
   addProblem(newProblem: Problem): Observable<Problem> {
-    let problem = this.http.post('http://localhost:8081/api/problems/', newProblem)
+    let problemJSON: ProblemJSON = new ProblemJSON(newProblem, this.constants);
+    let problem = this.http.post(this.baseUrl, problemJSON, this.options)
       .map((res: Response) => {        
         res = res.json();
       }).catch(
         this.handleError
-      );
+      ).subscribe();
     return Observable.of(newProblem);
+  }
+
+  deleteProblem(id: string): Observable<Problem> {
+    return this.http.delete(this.baseUrl + id, this.options)
+                    .map((res: Response) => res.json())
+                    .catch(this.handleError);
+  }
+
+  getOneProblem(id: string): Observable<Problem> {
+    let problem = this.http.get(this.baseUrl + id, this.options)
+      .map((res: Response) => {
+        return new Problem(res.json().payload);
+      });
+    return problem;
   }
 
   private handleError(error: any) {

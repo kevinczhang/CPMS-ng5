@@ -1,6 +1,6 @@
-<mat-sidenav-container class="example-sidenav-fab-container">
+<mat-sidenav-container class="app-sidenav-fab-container">
   <mat-sidenav #sidenav mode="side" class="app-sidenav">
-    <div class="example-scrolling-content">
+    <div class="app-scrolling-content">
       <mat-toolbar class="mat-tall mat-hue-2">
         <span flex></span>
         <div layout="column" class="mat-toolbar-tools-bottom inset">
@@ -33,20 +33,26 @@
       </mat-list>
     </div>
   </mat-sidenav>
-  <mat-toolbar color="primary">
-    <button mat-icon-button (click)="sidenav.toggle()">
-                <mat-icon class="mat-24" >menu</mat-icon>
-            </button>
-    <h1>{{title}}</h1>
-  </mat-toolbar>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <button mat-icon-button (click)="sidenav.toggle()">
+        <mat-icon class="mat-24">menu</mat-icon>
+      </button>
+      <h1>{{title}}</h1>
+      <span class="example-spacer"></span>
+      <mat-icon class="example-icon" routerLink="/signup">supervisor_account</mat-icon>
+      <mat-icon class="example-icon" routerLink="/login">account_circle</mat-icon>
+    </mat-toolbar>
 
-  <router-outlet></router-outlet>
+    <router-outlet></router-outlet>
+
+    <!-- footer -->
+    <footer color="primary">
+      <div class="footer-content">
+        <p class="footer-text">Copyright 2017 Chao Zhang. &nbsp;&nbsp;&nbsp; Designed by Chao Zhang</p>
+      </div>
+    </footer>
+
+  </mat-sidenav-content>
 
 </mat-sidenav-container>
-
-<!-- footer -->
-<footer color="primary">
-  <div class="footer-content">
-    <p class="footer-text">Copyright 2017 Chao Zhang. &nbsp;&nbsp;&nbsp; Designed by Chao Zhang</p>
-  </div>
-</footer>

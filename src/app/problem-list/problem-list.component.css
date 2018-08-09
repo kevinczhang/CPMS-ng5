@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: column;
     min-width: 300px;
-    max-width: 800px;
+    max-width: 900px;
     margin:0 auto;
     margin-top: 20px;
     margin-bottom: 20px;
@@ -19,7 +19,7 @@
 
   .advanced-search-header {
     display: flex;
-    padding-bottom:20px;
+    padding: 8px 0px 20px 60px;
     justify-content: space-between center;
   }
   
@@ -40,4 +40,24 @@
   
   .mdl-button {
     margin-left: 300px;
+  }
+
+  .mat-column-Source {
+    flex: 0 0 100px;
+  }
+
+  .mat-column-Title {
+    flex: 0 0 300px;
+  }
+
+  .mat-column-Number {
+    flex: 0 0 100px;
+  }
+
+  .mat-column-Difficulty {
+    flex: 0 0 100px;
+  }
+
+  .mat-column-Action {
+    flex: 0 0 260px;
   }
