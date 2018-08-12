@@ -109,7 +109,7 @@ export class ProblemListComponent implements OnInit {
       this.problemDifficulty || this.problemCompany || this.problemTopic) ? 'Has options' : '';
   }
 
-  private deleteProblem(id: any) {
+  deleteProblem(id: any) {
     let dialogRef = this.dialog.open(DeletionConfirmDialog, {
       width: '250px'
     });
