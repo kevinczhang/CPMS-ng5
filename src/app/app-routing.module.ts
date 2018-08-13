@@ -17,7 +17,7 @@ const routes: Routes = [
   { path: 'login',  component: LoginComponent },
   { path: 'signup',  component: SignupComponent },
   { path: 'dashboard',  component: DashboardComponent, canActivate: [AuthGuard] },
-  { path: 'problemList/:id',  component: ProblemListComponent, canActivate: [AuthGuard] },
+  { path: 'problemList',  component: ProblemListComponent, canActivate: [AuthGuard] },
   { path: 'edit-problem/:id',  component: EditProblemComponent, canActivate: [AdminAuthGuard] },
   { path: 'view-problem/:id',  component: ViewProblemComponent, canActivate: [AuthGuard] },
   { path: 'messages',  component: MessagesComponent, canActivate: [AdminAuthGuard] }

@@ -10,6 +10,7 @@ import { SolutionService }  from '../services/solution.service';
 import { ProblemSummary } from "../model/problemSummary";
 import { LoaderService } from "../services/loader.service";
 import { Solution } from "../model/solution";
+import { UserService } from "../services/user.service";
 
 @Injectable()
 export class CPMSDatabase {  
@@ -18,12 +19,17 @@ export class CPMSDatabase {
   get data(): ProblemSummary[] { return this.dataChange.value; }
   jwtHelper: JwtHelper = new JwtHelper();
 
-  constructor(private problemService: ProblemService, private toastr: ToastrService, 
-    private snackBar: MatSnackBar, private loaderService: LoaderService,
-    private solutionService: SolutionService,) {
+  constructor(
+    private problemService: ProblemService, 
+    private toastr: ToastrService, 
+    private snackBar: MatSnackBar, 
+    private loaderService: LoaderService,
+    private solutionService: SolutionService,
+    private userService: UserService
+  ) {
       const decodedToken = this.jwtHelper.decodeToken(localStorage.getItem("access_token"));
       this.dataChange = new BehaviorSubject<ProblemSummary[]>([]);
-      if(decodedToken.sub !== "1"){
+      if(userService.isAdmin){
         this.problemService.getProblems().subscribe(problems => {
           const copiedData = this.data.slice();
           for (let i = 0; i < problems.length; i++) {        

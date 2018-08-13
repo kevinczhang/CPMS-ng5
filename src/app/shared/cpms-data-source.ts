@@ -30,26 +30,30 @@ export class CPMSDataSource extends DataSource<any> {
   }
 
   private findInAdvancedFilter(item: ProblemSummary): boolean {
-    if(this._advancedFilterChange.value){
-      return this._advancedFilterChange.value[0] && item.source === this._advancedFilterChange.value[0] ||
-      this._advancedFilterChange.value[1] && item.title === this._advancedFilterChange.value[1] ||
-      this._advancedFilterChange.value[2] && item.number === Number(this._advancedFilterChange.value[2]) ||
-      this._advancedFilterChange.value[3] && item.level === this._advancedFilterChange.value[3] ||
-      this._advancedFilterChange.value[4] && item.companies.indexOf(this._advancedFilterChange.value[4]) != -1 || 
-      this._advancedFilterChange.value[5] && item.topics.indexOf(this._advancedFilterChange.value[5]) != -1;
+    if(this._advancedFilterChange.value)
+    {
+      let matchSource : boolean = !this._advancedFilterChange.value[0] || 
+        this._advancedFilterChange.value[0] && item.source === this._advancedFilterChange.value[0];
+      let matchTitle : boolean = !this._advancedFilterChange.value[1] || 
+        this._advancedFilterChange.value[1] && item.title === this._advancedFilterChange.value[1];
+      let matchNumber : boolean = !this._advancedFilterChange.value[2] || 
+        this._advancedFilterChange.value[2] && item.number === Number(this._advancedFilterChange.value[2]);  
+      let matchLevel : boolean = !this._advancedFilterChange.value[3] || 
+        this._advancedFilterChange.value[3] && item.level === this._advancedFilterChange.value[3];
+      let matchCompanies : boolean = !this._advancedFilterChange.value[4] || 
+        this._advancedFilterChange.value[4] && item.companies.indexOf(this._advancedFilterChange.value[4]) != -1;
+      let matchTopics : boolean = !this._advancedFilterChange.value[5] || 
+        this._advancedFilterChange.value[5] && item.topics.indexOf(this._advancedFilterChange.value[5]) != -1;
+
+      return matchSource && matchTitle && matchNumber && matchLevel && matchCompanies && matchTopics;
     }
     return false;
   }
 
   constructor(private _cpmsDatabase: CPMSDatabase, private _paginator: MatPaginator, 
-    private loaderService: LoaderService, private fromAdmin: string) {
+    private loaderService: LoaderService) {
     super();
-    this._filterChange.subscribe(() => this._paginator.pageIndex = 0);
-    if(fromAdmin === '1'){
-      this.filteredData = _cpmsDatabase.data.filter(r => r.createdBy === 1);
-    } else {
-      this.filteredData = _cpmsDatabase.data.filter(r => r.createdBy !== 1);
-    }            
+    this._filterChange.subscribe(() => this._paginator.pageIndex = 0);           
   }
 
   /** Connect function called by the table to retrieve one stream containing the data to render. */
@@ -68,9 +72,11 @@ export class CPMSDataSource extends DataSource<any> {
       this.filteredData = data;
 
       // Filter data
-      if (this._advancedFilterChange.value && (this._advancedFilterChange.value[0] || this._advancedFilterChange.value[1] || 
-        this._advancedFilterChange.value[2] || this._advancedFilterChange.value[3] || 
-        this._advancedFilterChange.value[4] || this._advancedFilterChange.value[5])){
+      if (this._advancedFilterChange.value && (this._advancedFilterChange.value[0] || 
+        this._advancedFilterChange.value[1] || this._advancedFilterChange.value[2] || 
+        this._advancedFilterChange.value[3] || this._advancedFilterChange.value[4] || 
+        this._advancedFilterChange.value[5])
+      ){
           this.filteredData = data.filter((item: ProblemSummary) => {
             if(item){          
               return this.findInAdvancedFilter(item);

@@ -29,7 +29,9 @@ export class ProblemService {
         return res.json().payload.userQuestions.map((r: any) => {
           return new ProblemSummary(r);
         });
-      });
+      }).catch(
+        this.handleError
+      );
     return problems;
   }
 
@@ -39,7 +41,9 @@ export class ProblemService {
         return res.json().payload.adminQuestions.map((r: any) => {
           return new ProblemSummary(r);
         });
-      });
+      }).catch(
+        this.handleError
+      );
     return problems;
   }
 

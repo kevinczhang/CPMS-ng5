@@ -10,7 +10,9 @@ export class ProblemSummary {
   createdBy: number;
   companies: string[];
   topics: string[];
+  tags: string[];
   familiarity: number;
+  createdByAdmin: boolean;
 
   constructor(
     r : any
@@ -33,7 +35,9 @@ export class ProblemSummary {
       this.createdBy = r.createdBy;
       this.companies = r.companies;
       this.topics = r.topics;
+      this.tags = r.tas;
       this.familiarity = r.familiarity;
+      this.createdByAdmin = r.createdByAdmin;
     }    
   }
     
