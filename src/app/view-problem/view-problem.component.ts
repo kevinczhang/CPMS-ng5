@@ -83,6 +83,7 @@ export class ViewProblemComponent implements OnInit {
             this.rForm.get('id').setValue(p.ID);
             this.rForm.get('familiarity').setValue(p.FAMILIARITY);
             this.rForm.get('answer').setValue(p.SOLUTION);
+            this.rForm.get('solution').setValue(p.SUBMISSION);
             this.familiarityText = this.getFamiliarityTextBasedOnNumber(p.FAMILIARITY);
             this.rForm.get('note').setValue(p.NOTE);
             this.rForm.get('solution_language').setValue('Java');                     
@@ -109,15 +110,8 @@ export class ViewProblemComponent implements OnInit {
     })
   }
 
-  addOrUpdateProblem(problem: any) {
-    let newProblem: Problem = new Problem(problem);
-
-    if (this._cpmsDatabase.data.find(x => x.id === newProblem.ID)) {
-      this._cpmsDatabase.updateProblem(newProblem);
-    } else {
-      console.log("This is a new problem.");
-      this._cpmsDatabase.addNewProblem(newProblem);
-    }
+  submitSolution(solution: any) {
+    this._cpmsDatabase.submitSolution(solution);
     this.location.back();
   }
 

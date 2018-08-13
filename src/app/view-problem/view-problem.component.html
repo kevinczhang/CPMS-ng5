@@ -34,7 +34,7 @@
 
   <br>
 
-  <form [formGroup]="rForm" (ngSubmit)="addOrUpdateProblem(rForm.value)">    
+  <form [formGroup]="rForm" (ngSubmit)="submitSolution(rForm.value)">    
     <mat-form-field>
       <mat-select placeholder="Solution Language" class="example-full-width" 
                   formControlName="solution_language" (change)="languageSelectionChange($event)">

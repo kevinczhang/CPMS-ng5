@@ -8,6 +8,7 @@ export class Problem {
   DIFFICULTY: string;
   DESCRIPTION: string;
   SOLUTION: string;
+  SUBMISSION: string;
   SOLUTION_LANGUAGE: string;
   TAGS: string[];
   FAMILIARITY: number;
@@ -54,7 +55,10 @@ export class Problem {
     this.SOLUTION_LANGUAGE = r.solution_language;
     if(r.solution || r.solutions){
       this.SOLUTION = (typeof r.solution) === 'string' ? r.solution : r.solutions[0].content;
-    }    
+    }
+    if(r.submissions && r.submissions.length > 0){
+      this.SUBMISSION = r.submissions[0].content;
+    }
     this.TAGS = r.topics ? this.getTags(r.topics) : [] ;
     this.FAMILIARITY = r.familiarity ? r.familiarity : 0;
     this.COMPANIES = r.companies ? this.getCompanies(r.companies) : [];

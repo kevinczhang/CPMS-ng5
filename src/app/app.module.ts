@@ -29,6 +29,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppConstants } from './shared/app-constants';
 import { CPMSDatabase } from "./shared/cpms-database";
 import { ProblemService } from './services/problem.service';
+import { SolutionService } from './services/solution.service';
 import { LoaderService } from './services/loader.service';
 
 import { TOKEN_NAME } from './shared/auth.constant';
@@ -81,7 +82,7 @@ export function authHttpServiceFactory(http: Http) {
     LoaderComponent
   ],
   entryComponents: [DeletionConfirmDialog],
-  providers: [CPMSDatabase, ProblemService, AppConstants, LoaderService,
+  providers: [CPMSDatabase, ProblemService, AppConstants, LoaderService, SolutionService,
     { provide: LocationStrategy, useClass: PathLocationStrategy },
     { provide: AuthHttp, useFactory: authHttpServiceFactory, deps: [Http] },
     AuthenticationService,

@@ -6,18 +6,21 @@ import { JwtHelper } from 'angular2-jwt';
 
 import { Problem } from "../model/problem";
 import { ProblemService }  from '../services/problem.service';
+import { SolutionService }  from '../services/solution.service';
 import { ProblemSummary } from "../model/problemSummary";
 import { LoaderService } from "../services/loader.service";
+import { Solution } from "../model/solution";
 
 @Injectable()
-export class CPMSDatabase {
+export class CPMSDatabase {  
   /** Stream that emits whenever the data has been modified. */
   dataChange: BehaviorSubject<ProblemSummary[]>;
   get data(): ProblemSummary[] { return this.dataChange.value; }
   jwtHelper: JwtHelper = new JwtHelper();
 
   constructor(private problemService: ProblemService, private toastr: ToastrService, 
-    private snackBar: MatSnackBar, private loaderService: LoaderService) {
+    private snackBar: MatSnackBar, private loaderService: LoaderService,
+    private solutionService: SolutionService,) {
       const decodedToken = this.jwtHelper.decodeToken(localStorage.getItem("access_token"));
       this.dataChange = new BehaviorSubject<ProblemSummary[]>([]);
       if(decodedToken.sub !== "1"){
@@ -99,6 +102,16 @@ export class CPMSDatabase {
           this.dataChange.next(copiedData);
           this.toastr.warning('Problem deleted!', 'Warning');
           this.snackBar.open('Problem deleted!', null, {
+            duration: 2000,
+          });
+        });
+  }
+
+  submitSolution(solution: Solution): any {
+    this.solutionService.submitSolution(solution)
+        .subscribe(() => {
+          this.toastr.success('Solution submitted!', 'Success');
+          this.snackBar.open('Solution submitted!', null, {
             duration: 2000,
           });
         });
