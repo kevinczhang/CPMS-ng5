@@ -3,7 +3,7 @@ import { Http, Response, RequestOptions, RequestOptionsArgs, Headers } from '@an
 import { Observable } from 'rxjs/Rx';
 
 import { Problem } from '../model/problem';
-import { ProblemJSON } from '../model/problemJSON';
+import { ProblemDetail } from '../model/problemDetail';
 import { AppConstants } from '../shared/app-constants';
 import { ProblemSummary } from '../model/problemSummary';
 
@@ -47,9 +47,9 @@ export class ProblemService {
     return problems;
   }
 
-  updateProblem(newProblem: Problem): Observable<Problem> {
-    let problemJSON: ProblemJSON = new ProblemJSON(newProblem, this.constants);
-    let problem = this.http.put(this.baseUrl + newProblem.ID, problemJSON, this.options)
+  updateProblem(newProblem: ProblemDetail): Observable<ProblemDetail> {
+    let problemJSON: ProblemDetail = new ProblemDetail(newProblem, this.constants);
+    let problem = this.http.put(this.baseUrl + newProblem.id, problemJSON, this.options)
       .map((res: Response) => {
         res = res.json();
       }).catch(
@@ -58,8 +58,8 @@ export class ProblemService {
       return Observable.of(newProblem);
   }
 
-  addProblem(newProblem: Problem): Observable<Problem> {
-    let problemJSON: ProblemJSON = new ProblemJSON(newProblem, this.constants);
+  addProblem(newProblem: ProblemDetail): Observable<ProblemDetail> {
+    let problemJSON: ProblemDetail = new ProblemDetail(newProblem, this.constants);
     let problem = this.http.post(this.baseUrl, problemJSON, this.options)
       .map((res: Response) => {        
         res = res.json();
@@ -75,10 +75,10 @@ export class ProblemService {
                     .catch(this.handleError);
   }
 
-  getOneProblem(id: string): Observable<Problem> {
+  getOneProblem(id: string): Observable<ProblemDetail> {
     let problem = this.http.get(this.baseUrl + id, this.options)
       .map((res: Response) => {
-        return new Problem(res.json().payload);
+        return new ProblemDetail(res.json().payload, this.constants);
       });
     return problem;
   }

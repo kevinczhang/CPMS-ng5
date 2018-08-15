@@ -3,7 +3,6 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Location } from '@angular/common';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
 import { Guid } from "guid-typescript";
 
 import { CPMSDatabase } from "../shared/cpms-database";
@@ -12,6 +11,7 @@ import { Tag } from "../model/tag";
 import { AppConstants } from '../shared/app-constants';
 import { ProblemService } from '../services/problem.service';
 import { UserService } from '../services/user.service';
+import { ProblemDetail } from '../model/problemDetail';
 
 @Component({
   selector: 'app-edit-problem',
@@ -104,45 +104,36 @@ export class EditProblemComponent implements OnInit {
         this.problemService.getOneProblem(passedInId)
           .subscribe(p => {
             // Set default values by converting to array
-            let tagNums = p.TAGS;
+            let tagNums = p.topics;
             for (var i in tagNums) {
-              this.defaultTags.push((this.tags.indexOf(tagNums[i])).toString());
+              this.defaultTags.push(String(tagNums[i]));
             }
-            let companyNums = p.COMPANIES;
+            let companyNums = p.companies;
             for (var i in companyNums) {
-              this.defaultCompanies.push((this.companies.indexOf(companyNums[i])).toString());
+              this.defaultCompanies.push(companyNums[i].toString());
             }
-            let specialTagNums = p.SPECIALTAGS;
+            let specialTagNums = p.tags;
             for (var i in specialTagNums) {
-              this.defaultSpecialTags.push((this.specialTags.indexOf(specialTagNums[i])).toString());
+              this.defaultSpecialTags.push(specialTagNums[i].toString());
             }
-            this.rForm.get('id').setValue(p.ID);
-            this.rForm.get('source').setValue(p.SOURCE);
-            this.rForm.get('type').setValue(p.TYPE);
-            this.rForm.get('number').setValue(p.NUMBER);
-            this.rForm.get('level').setValue(p.DIFFICULTY);
-            this.rForm.get('title').setValue(p.TITLE);
+            this.rForm.get('id').setValue(p.id);
+            this.rForm.get('source').setValue(p.source);
+            this.rForm.get('type').setValue(p.type);
+            this.rForm.get('number').setValue(p.number);
+            this.rForm.get('level').setValue(p.level);
+            this.rForm.get('title').setValue(p.title);
             this.rForm.get('topics').setValue(this.defaultTags);
             this.rForm.get('companies').setValue(this.defaultCompanies);
             this.rForm.get('tags').setValue(this.defaultSpecialTags);
-            this.rForm.get('familiarity').setValue(p.FAMILIARITY);
-            this.rForm.get('description').setValue(p.DESCRIPTION);
-            this.rForm.get('solution').setValue(p.SOLUTION);
+            this.rForm.get('familiarity').setValue(p.familiarity);
+            this.rForm.get('description').setValue(p.description);
+            if(p.solutions && p.solutions.length > 0){
+              this.rForm.get('solution').setValue(p.solutions[0].content);
+            }            
             this.rForm.get('solution_language').setValue('Java');
-            this.rForm.get('note').setValue(p.NOTE);
+            this.rForm.get('note').setValue(p.note);
             
-            this.familiarityText = this.getFamiliarityTextBasedOnNumber(p.FAMILIARITY);
-
-            // if(!this.isAdmin){
-            //   this.rForm.get('source').disable();
-            //   this.rForm.get('type').disable();
-            //   this.rForm.get('difficulty').disable();
-            //   this.rForm.get('topics').disable();
-            //   this.rForm.get('companies').disable();
-            //   this.rForm.get('tags').disable();
-            //   this.rForm.get('familiarity').disable();
-            // }
-            
+            this.familiarityText = this.getFamiliarityTextBasedOnNumber(p.familiarity);            
           });
       }      
     });
@@ -168,9 +159,9 @@ export class EditProblemComponent implements OnInit {
   }
 
   addOrUpdateProblem(problem: any) {
-    let newProblem: Problem = new Problem(problem);
+    let newProblem: ProblemDetail = new ProblemDetail(problem);
 
-    if (this._cpmsDatabase.data.find(x => x.id === newProblem.ID)) {
+    if (this._cpmsDatabase.data.find(x => x.id === newProblem.id)) {
       this._cpmsDatabase.updateProblem(newProblem);
     } else {
       console.log("This is a new problem.");
