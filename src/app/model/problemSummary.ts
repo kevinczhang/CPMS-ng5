@@ -8,9 +8,9 @@ export class ProblemSummary {
   number: number;
   level: string;
   createdBy: number;
-  companies: string[];
-  topics: string[];
-  tags: string[];
+  companies: string[] = [];
+  topics: string[] = [];
+  tags: string[] = [];
   familiarity: number;
   createdByAdmin: boolean;
 
@@ -27,15 +27,15 @@ export class ProblemSummary {
       this.topics = r.TAGS;
       this.familiarity = r.FAMILIARITY;
     } else {
-      this.id = r.id;
+      this.id = String(r.id);
       this.source = r.source;
       this.title = r.title;
       this.number = r.number;
       this.level = r.level;
       this.createdBy = r.createdBy;
-      this.companies = r.companies;
-      this.topics = r.topics;
-      this.tags = r.tas;
+      this.companies = (r.companies instanceof Array) ? r.companies : [];
+      this.topics = (r.topics instanceof Array) ? r.topics : [];
+      this.tags = (r.tags instanceof Array) ? r.tags : [];
       this.familiarity = r.familiarity;
       this.createdByAdmin = r.createdByAdmin;
     }    

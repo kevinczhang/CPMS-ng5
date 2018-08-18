@@ -30,7 +30,7 @@ export class CPMSDatabase {
   ) {
       const decodedToken = this.jwtHelper.decodeToken(localStorage.getItem("access_token"));
       this.dataChange = new BehaviorSubject<ProblemSummary[]>([]);
-      if(userService.isAdmin){
+      if(!userService.isAdmin){
         this.problemService.getProblems().subscribe(problems => {
           const copiedData = this.data.slice();
           for (let i = 0; i < problems.length; i++) {        

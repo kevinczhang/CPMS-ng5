@@ -82,8 +82,8 @@ export class ViewProblemComponent implements OnInit {
 
             this.rForm.get('id').setValue(p.id);
             this.rForm.get('familiarity').setValue(p.familiarity);
-            this.rForm.get('answer').setValue(p.solution);
-            this.rForm.get('solution').setValue(p.submissions && p.submissions.length > 0 ? p.submissions[0] : "");
+            this.rForm.get('answer').setValue((p.solutions && p.solutions.length > 0) ? p.solutions[0].content : "");
+            this.rForm.get('solution').setValue((p.submissions && p.submissions.length > 0) ? p.submissions[0].content : "");
             this.familiarityText = this.getFamiliarityTextBasedOnNumber(p.familiarity);
             this.rForm.get('note').setValue(p.note);
             this.rForm.get('solution_language').setValue('Java');                     

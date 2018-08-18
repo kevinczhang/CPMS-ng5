@@ -59,8 +59,8 @@ export class ProblemService {
   }
 
   addProblem(newProblem: ProblemDetail): Observable<ProblemDetail> {
-    let problemJSON: ProblemDetail = new ProblemDetail(newProblem, this.constants);
-    let problem = this.http.post(this.baseUrl, problemJSON, this.options)
+    //let problemJSON: ProblemDetail = new ProblemDetail(newProblem, this.constants);
+    let problem = this.http.post(this.baseUrl, newProblem, this.options)
       .map((res: Response) => {        
         res = res.json();
       }).catch(

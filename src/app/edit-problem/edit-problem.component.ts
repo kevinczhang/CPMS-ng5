@@ -106,15 +106,15 @@ export class EditProblemComponent implements OnInit {
             // Set default values by converting to array
             let tagNums = p.topics;
             for (var i in tagNums) {
-              this.defaultTags.push(String(tagNums[i]));
+              this.defaultTags.push(String(this.tags.indexOf(tagNums[i])));
             }
             let companyNums = p.companies;
             for (var i in companyNums) {
-              this.defaultCompanies.push(companyNums[i].toString());
+              this.defaultCompanies.push(String(this.companies.indexOf(companyNums[i])));
             }
             let specialTagNums = p.tags;
             for (var i in specialTagNums) {
-              this.defaultSpecialTags.push(specialTagNums[i].toString());
+              this.defaultSpecialTags.push(String(this.specialTags.indexOf(specialTagNums[i])));
             }
             this.rForm.get('id').setValue(p.id);
             this.rForm.get('source').setValue(p.source);
