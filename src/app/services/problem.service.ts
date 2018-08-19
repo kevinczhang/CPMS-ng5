@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Http, Response, RequestOptions, RequestOptionsArgs, Headers } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 
-import { Problem } from '../model/problem';
 import { ProblemDetail } from '../model/problemDetail';
 import { AppConstants } from '../shared/app-constants';
 import { ProblemSummary } from '../model/problemSummary';
@@ -69,7 +68,7 @@ export class ProblemService {
     return Observable.of(newProblem);
   }
 
-  deleteProblem(id: string): Observable<Problem> {
+  deleteProblem(id: string): Observable<any> {
     return this.http.delete(this.baseUrl + id, this.options)
                     .map((res: Response) => res.json())
                     .catch(this.handleError);
