@@ -1,14 +1,14 @@
 <div class="problem-description">
     <form class="example-form" [formGroup]="rForm" (ngSubmit)="addOrUpdateProblem(rForm.value)">      
       <table class="example-full-width" cellspacing="0">
-        <tr *ngIf="isAdmin">
+        <tr>
           <td colspan="2">
               <mat-form-field class="example-full-width">
                   <input matInput placeholder="Problem Id" formControlName="id" readonly>
               </mat-form-field>
           </td>          
           <td>
-              <button *ngIf="isAdmin" mat-raised-button color="primary" type="submit" [disabled]="!rForm.valid">
+              <button mat-raised-button color="primary" type="submit" [disabled]="!rForm.valid">
                 Save
               </button>
           </td>          

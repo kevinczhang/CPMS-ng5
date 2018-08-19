@@ -6,5 +6,7 @@ export class Solution {
     familiarity: number;
 
     constructor(r : any) {
+        this.solution = r.solution;
+        this.solution_language = r.solution_language;        
     }
 }
