@@ -3,7 +3,6 @@ import { BehaviorSubject, Observable } from "rxjs";
 
 import { MatPaginator } from "@angular/material";
 
-import { Problem } from "../model/problem";
 import { CPMSDatabase } from "./cpms-database";
 import { LoaderService }  from '../services/loader.service';
 import { ProblemSummary } from "../model/problemSummary";

@@ -6,7 +6,6 @@ import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms'
 import { Guid } from "guid-typescript";
 
 import { CPMSDatabase } from "../shared/cpms-database";
-import { Problem } from "../model/problem";
 import { Tag } from "../model/tag";
 import { AppConstants } from '../shared/app-constants';
 import { ProblemService } from '../services/problem.service';
@@ -47,12 +46,12 @@ export class ViewProblemComponent implements OnInit {
     private userService: UserService
   ) {
     // Initialize the variables
-    this.isAdmin = userService.isAdminUser();
+    this.isAdmin = this.userService.isAdminUser();
     this.editorConfig = this.app_constants.userEditorConfig;
     this.languageOptions = this.app_constants.languageOptions;
 
     // Define FormControl and formGroup
-    this.rForm = fb.group({
+    this.rForm = this.fb.group({
       'id': new FormControl('', [Validators.required]),
       'familiarity': new FormControl('', [Validators.required]),
       'answer': new FormControl('', [Validators.required]),

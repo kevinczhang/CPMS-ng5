@@ -4,7 +4,6 @@ import { ToastrService } from 'ngx-toastr';
 import { MatSnackBar } from '@angular/material';
 import { JwtHelper } from 'angular2-jwt';
 
-import { Problem } from "../model/problem";
 import { ProblemService }  from '../services/problem.service';
 import { SolutionService }  from '../services/solution.service';
 import { ProblemSummary } from "../model/problemSummary";

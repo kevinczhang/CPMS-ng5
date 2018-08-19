@@ -6,7 +6,6 @@ import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms'
 import { Guid } from "guid-typescript";
 
 import { CPMSDatabase } from "../shared/cpms-database";
-import { Problem } from "../model/problem";
 import { Tag } from "../model/tag";
 import { AppConstants } from '../shared/app-constants';
 import { ProblemService } from '../services/problem.service';
@@ -20,7 +19,6 @@ import { ProblemDetail } from '../model/problemDetail';
 })
 export class EditProblemComponent implements OnInit {
 
-  problem: Problem;
   difficultyOptions: any[];
   sourceOptions: any[];
   typeOptions: any[];
