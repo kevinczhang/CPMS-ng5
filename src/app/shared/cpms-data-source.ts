@@ -6,6 +6,7 @@ import { MatPaginator } from "@angular/material";
 import { CPMSDatabase } from "./cpms-database";
 import { LoaderService }  from '../services/loader.service';
 import { ProblemSummary } from "../model/problemSummary";
+import { BlockUI, NgBlockUI } from "ng-block-ui";
 
 /**
  * Data source to provide what data should be rendered in the table. Note that the data source
@@ -15,6 +16,8 @@ import { ProblemSummary } from "../model/problemSummary";
  * should be rendered.
  */
 export class CPMSDataSource extends DataSource<any> {
+
+  @BlockUI() blockUI: NgBlockUI;
   
   _filterChange = new BehaviorSubject('');
   _sorterChange = new BehaviorSubject<[string, string]>(null);
@@ -111,6 +114,7 @@ export class CPMSDataSource extends DataSource<any> {
       let pageSize = problemsLeft < this._paginator.pageSize ? problemsLeft : this._paginator.pageSize;
       if(this.filteredData.length > 0){
         this.loaderService.hide();
+        this.blockUI.stop();
       }
       return this.filteredData.splice(startIndex, pageSize);
     });

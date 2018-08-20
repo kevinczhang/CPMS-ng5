@@ -11,6 +11,7 @@ import { AppConstants } from '../shared/app-constants';
 import { ProblemService } from '../services/problem.service';
 import { UserService } from '../services/user.service';
 import { ProblemDetail } from '../model/problemDetail';
+import { BlockUI, NgBlockUI } from 'ng-block-ui';
 
 @Component({
   selector: 'app-edit-problem',
@@ -18,6 +19,8 @@ import { ProblemDetail } from '../model/problemDetail';
   styleUrls: ['./edit-problem.component.css']
 })
 export class EditProblemComponent implements OnInit {
+
+  @BlockUI() blockUI: NgBlockUI;
 
   difficultyOptions: any[];
   sourceOptions: any[];
@@ -161,9 +164,11 @@ export class EditProblemComponent implements OnInit {
 
     if (this._cpmsDatabase.data.find(x => x.id === newProblem.id)) {
       this._cpmsDatabase.updateProblem(newProblem);
+      this.blockUI.start("Updating question.");
     } else {
       console.log("This is a new problem.");
       this._cpmsDatabase.addNewProblem(newProblem);
+      this.blockUI.start("Adding new question.");
     }
     this.location.back();
   }

@@ -5,9 +5,12 @@ import { Observable } from 'rxjs/Rx';
 import { ProblemDetail } from '../model/problemDetail';
 import { AppConstants } from '../shared/app-constants';
 import { ProblemSummary } from '../model/problemSummary';
+import { BlockUI, NgBlockUI } from 'ng-block-ui';
 
 @Injectable()
 export class ProblemService {
+
+  @BlockUI() blockUI: NgBlockUI;
   baseUrl : string;
   constants: AppConstants;
   options: RequestOptions;
@@ -86,6 +89,7 @@ export class ProblemService {
         let errMsg = (error.message) ? error.message :
             error.status ? `${error.status} - ${error.statusText}` : 'Server error';
         console.error(errMsg);
+        this.blockUI.stop();
         return Observable.throw(errMsg);
     }
 }

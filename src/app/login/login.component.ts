@@ -4,6 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { AuthenticationService } from '../services/authentication.service';
 import { UserService } from '../services/user.service';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'login',
@@ -27,7 +28,8 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private authenticationService: AuthenticationService,
-    private userService: UserService
+    private userService: UserService,
+    private toastr: ToastrService
   ) {
     this.redirectUrl = this.activatedRoute.snapshot.queryParams['redirectTo'];
     // Define FormControl and formGroup
@@ -58,6 +60,7 @@ export class LoginComponent implements OnInit {
         },
         error => {
           this.error = 'Username or password is incorrect';
+          this.toastr.error(this.error, 'Warning');
           this.loading = false;
         }
       );
