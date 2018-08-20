@@ -61,3 +61,13 @@
   .mat-column-Action {
     flex: 0 0 260px;
   }
+
+  .button-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .button-row button {
+    margin-right: 8px;
+  }

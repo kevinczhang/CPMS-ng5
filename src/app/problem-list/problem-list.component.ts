@@ -66,7 +66,7 @@ export class ProblemListComponent implements OnInit {
     private route: ActivatedRoute
   ) {
     this.isAdmin = userService.isAdminUser();
-    this.displayedColumns = this.isAdmin ? app_constants.adminDisplayedColumns : app_constants.adminDisplayedColumns;
+    this.displayedColumns = app_constants.adminDisplayedColumns;
     this.difficultyOptions = app_constants.difficultyOptions;
     this.sourceOptions = app_constants.sourceOptions;
     this.companyOptions = app_constants.companies;
@@ -80,9 +80,8 @@ export class ProblemListComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      let passedInId: string = params['id'];
       this.loaderService.show();
-      this.dataSource = new CPMSDataSource(this.cpmsDatabase, this.paginator, this.loaderService, passedInId);
+      this.dataSource = new CPMSDataSource(this.cpmsDatabase, this.paginator, this.loaderService);
       if (!this.dataSource)
         return;
       Observable.fromEvent(this.filter.nativeElement, 'keyup')
@@ -109,7 +108,17 @@ export class ProblemListComponent implements OnInit {
       this.problemDifficulty || this.problemCompany || this.problemTopic) ? 'Has options' : '';
   }
 
-  private deleteProblem(id: any) {
+  clearAdvancedFilter() {
+    this.problemSource = null;
+    this.problemTitle = null;
+    this.problemNumber = null;
+    this.problemDifficulty = null;
+    this.problemCompany = null;
+    this.problemTopic = null;
+    this.applyAdvancedFilter();
+  }
+
+  deleteProblem(id: any) {
     let dialogRef = this.dialog.open(DeletionConfirmDialog, {
       width: '250px'
     });

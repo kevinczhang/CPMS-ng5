@@ -6,7 +6,6 @@ import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms'
 import { Guid } from "guid-typescript";
 
 import { CPMSDatabase } from "../shared/cpms-database";
-import { Problem } from "../model/problem";
 import { Tag } from "../model/tag";
 import { AppConstants } from '../shared/app-constants';
 import { ProblemService } from '../services/problem.service';
@@ -47,12 +46,12 @@ export class ViewProblemComponent implements OnInit {
     private userService: UserService
   ) {
     // Initialize the variables
-    this.isAdmin = userService.isAdminUser();
+    this.isAdmin = this.userService.isAdminUser();
     this.editorConfig = this.app_constants.userEditorConfig;
     this.languageOptions = this.app_constants.languageOptions;
 
     // Define FormControl and formGroup
-    this.rForm = fb.group({
+    this.rForm = this.fb.group({
       'id': new FormControl('', [Validators.required]),
       'familiarity': new FormControl('', [Validators.required]),
       'answer': new FormControl('', [Validators.required]),
@@ -70,21 +69,22 @@ export class ViewProblemComponent implements OnInit {
       } else {
         this.problemService.getOneProblem(passedInId)
           .subscribe(p => {
-            this.description = p.DESCRIPTION;
-            this.title = p.TITLE;
-            this.source = p.SOURCE;
-            this.type = p.TYPE;
-            this.difficulty = p.DIFFICULTY;
-            this.number = p.NUMBER; 
-            this.tags = p.TAGS;
-            this.companies = p.COMPANIES;    
-            this.specialTags = p.SPECIALTAGS;
+            this.description = p.description;
+            this.title = p.title;
+            this.source = p.source;
+            this.type = p.type;
+            this.difficulty = p.level;
+            this.number = p.number; 
+            this.tags = p.topics;
+            this.companies = p.companies;    
+            this.specialTags = p.tags;
 
-            this.rForm.get('id').setValue(p.ID);
-            this.rForm.get('familiarity').setValue(p.FAMILIARITY);
-            this.rForm.get('answer').setValue(p.SOLUTION);
-            this.familiarityText = this.getFamiliarityTextBasedOnNumber(p.FAMILIARITY);
-            this.rForm.get('note').setValue(p.NOTE);
+            this.rForm.get('id').setValue(p.id);
+            this.rForm.get('familiarity').setValue(p.familiarity);
+            this.rForm.get('answer').setValue((p.solutions && p.solutions.length > 0) ? p.solutions[0].content : "");
+            this.rForm.get('solution').setValue((p.submissions && p.submissions.length > 0) ? p.submissions[0].content : "");
+            this.familiarityText = this.getFamiliarityTextBasedOnNumber(p.familiarity);
+            this.rForm.get('note').setValue(p.note);
             this.rForm.get('solution_language').setValue('Java');                     
           });
       }      
@@ -109,15 +109,8 @@ export class ViewProblemComponent implements OnInit {
     })
   }
 
-  addOrUpdateProblem(problem: any) {
-    let newProblem: Problem = new Problem(problem);
-
-    if (this._cpmsDatabase.data.find(x => x.id === newProblem.ID)) {
-      this._cpmsDatabase.updateProblem(newProblem);
-    } else {
-      console.log("This is a new problem.");
-      this._cpmsDatabase.addNewProblem(newProblem);
-    }
+  submitSolution(solution: any) {
+    this._cpmsDatabase.submitSolution(solution);
     this.location.back();
   }
 

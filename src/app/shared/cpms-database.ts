@@ -4,23 +4,32 @@ import { ToastrService } from 'ngx-toastr';
 import { MatSnackBar } from '@angular/material';
 import { JwtHelper } from 'angular2-jwt';
 
-import { Problem } from "../model/problem";
 import { ProblemService }  from '../services/problem.service';
+import { SolutionService }  from '../services/solution.service';
 import { ProblemSummary } from "../model/problemSummary";
 import { LoaderService } from "../services/loader.service";
+import { Solution } from "../model/solution";
+import { UserService } from "../services/user.service";
+import { ProblemDetail } from "../model/problemDetail";
 
 @Injectable()
-export class CPMSDatabase {
+export class CPMSDatabase {  
   /** Stream that emits whenever the data has been modified. */
   dataChange: BehaviorSubject<ProblemSummary[]>;
   get data(): ProblemSummary[] { return this.dataChange.value; }
   jwtHelper: JwtHelper = new JwtHelper();
 
-  constructor(private problemService: ProblemService, private toastr: ToastrService, 
-    private snackBar: MatSnackBar, private loaderService: LoaderService) {
+  constructor(
+    private problemService: ProblemService, 
+    private toastr: ToastrService, 
+    private snackBar: MatSnackBar, 
+    private loaderService: LoaderService,
+    private solutionService: SolutionService,
+    private userService: UserService
+  ) {
       const decodedToken = this.jwtHelper.decodeToken(localStorage.getItem("access_token"));
       this.dataChange = new BehaviorSubject<ProblemSummary[]>([]);
-      if(decodedToken.sub !== "1"){
+      if(!userService.isAdmin){
         this.problemService.getProblems().subscribe(problems => {
           const copiedData = this.data.slice();
           for (let i = 0; i < problems.length; i++) {        
@@ -41,7 +50,7 @@ export class CPMSDatabase {
     }
 
   /** Adds a new user to this database. */
-  addProblem(problem : Problem) {
+  addProblem(problem : ProblemDetail) {
     const copiedData = this.data.slice();
     let problemSummary = new ProblemSummary(problem);
     copiedData.push(problemSummary);
@@ -53,14 +62,14 @@ export class CPMSDatabase {
   }
 
   // Update this database
-  updateExistingProblem(problem : Problem){
+  updateExistingProblem(problem : ProblemDetail){
     const copiedData = this.data.slice();
-    let updateProblem = copiedData.find(p => p.id === problem.ID);
+    let updateProblem = copiedData.find(p => p.id === problem.id);
     if(!updateProblem) return;
-    updateProblem.number = problem.NUMBER ? problem.NUMBER : updateProblem.number;
-    updateProblem.source = problem.SOURCE ? problem.SOURCE : updateProblem.source;
-    updateProblem.title = problem.TITLE ? problem.TITLE : updateProblem.title;
-    updateProblem.level = problem.DIFFICULTY ? problem.DIFFICULTY : updateProblem.level;    
+    updateProblem.number = problem.number ? problem.number : updateProblem.number;
+    updateProblem.source = problem.source ? problem.source : updateProblem.source;
+    updateProblem.title = problem.title ? problem.title : updateProblem.title;
+    updateProblem.level = problem.level ? problem.level : updateProblem.level;    
     this.dataChange.next(copiedData);
     this.toastr.success('Problem updated!', 'Success');
     this.snackBar.open('Problem updated!', null, {
@@ -69,7 +78,7 @@ export class CPMSDatabase {
   }
 
   // Update by calling service
-  updateProblem(problem : Problem){
+  updateProblem(problem : ProblemDetail){
     let newProblem = problem;
     this.problemService.updateProblem(problem)
         .subscribe(problem => {
@@ -78,7 +87,7 @@ export class CPMSDatabase {
   }
 
   // Update by calling service
-  addNewProblem(problem : Problem){
+  addNewProblem(problem : ProblemDetail){
     let newProblem = problem;
     this.problemService.addProblem(problem)
         .subscribe(problem => {
@@ -99,6 +108,16 @@ export class CPMSDatabase {
           this.dataChange.next(copiedData);
           this.toastr.warning('Problem deleted!', 'Warning');
           this.snackBar.open('Problem deleted!', null, {
+            duration: 2000,
+          });
+        });
+  }
+
+  submitSolution(solution: Solution): any {
+    this.solutionService.submitSolution(solution)
+        .subscribe(() => {
+          this.toastr.success('Solution submitted!', 'Success');
+          this.snackBar.open('Solution submitted!', null, {
             duration: 2000,
           });
         });
