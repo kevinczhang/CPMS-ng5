@@ -13,6 +13,7 @@ import { AceEditorModule } from 'ng2-ace-editor';
 import { NgxEditorModule } from 'ngx-editor';
 import { ToastrModule } from 'ngx-toastr';
 import { AuthConfig, AuthHttp } from 'angular2-jwt';
+import { BlockUIModule } from 'ng-block-ui';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -77,6 +78,7 @@ export function authHttpServiceFactory(http: Http) {
     AceEditorModule,
     NgxEditorModule,
     ToastrModule.forRoot(), // ToastrModule added
+    BlockUIModule.forRoot() // NG Blcking spinner
   ],
   exports: [
     LoaderComponent

@@ -5,6 +5,7 @@ import {AuthenticationService} from '../services/authentication.service';
 import {UserService} from '../services/user.service';
 import { FormGroup, FormBuilder, FormControl, Validators, FormGroupDirective, NgForm, AbstractControl } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'signup',
@@ -31,7 +32,9 @@ export class SignupComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private authenticationService: AuthenticationService,
-    private userService: UserService) {
+    private userService: UserService,
+    private toastr: ToastrService
+  ) {
 
     // Define FormControl and formGroup
     this.rForm = fb.group({
@@ -59,12 +62,15 @@ export class SignupComponent implements OnInit {
 
           if (result) {
             this.router.navigate(['/']);
+            this.toastr.success("Thanks for sign up!", 'Success');
           } else {
             this.error = 'User account creation failed.';
+            this.toastr.error("Sorry, we can't sign you up!", 'Warning');
           }
         },
         error => {
           this.error = 'User account creation failed.';
+          this.toastr.error("Sorry, we can't sign you up!", 'Warning');
           this.loading = false;
         }
       );

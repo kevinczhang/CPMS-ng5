@@ -10,6 +10,7 @@ import { Tag } from "../model/tag";
 import { AppConstants } from '../shared/app-constants';
 import { ProblemService } from '../services/problem.service';
 import { UserService } from '../services/user.service';
+import { BlockUI, NgBlockUI } from 'ng-block-ui';
 
 @Component({
   selector: 'app-view-problem',
@@ -17,6 +18,8 @@ import { UserService } from '../services/user.service';
   styleUrls: ['./view-problem.component.css']
 })
 export class ViewProblemComponent implements OnInit {
+
+  @BlockUI() blockUI: NgBlockUI;
  
   editorConfig: any;
   familiarityText: string;
@@ -110,6 +113,7 @@ export class ViewProblemComponent implements OnInit {
   }
 
   submitSolution(solution: any) {
+    this.blockUI.start("Submitting your solution");
     this._cpmsDatabase.submitSolution(solution);
     this.location.back();
   }

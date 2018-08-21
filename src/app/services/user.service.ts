@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {JwtHelper} from 'angular2-jwt';
 
 import {TOKEN_NAME} from '../shared/auth.constant';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable()
 export class UserService {
@@ -9,7 +10,9 @@ export class UserService {
   accessToken: string;
   isAdmin: boolean;
 
-  constructor() {
+  constructor(
+    private toastr: ToastrService
+  ) {
     let accessToken = localStorage.getItem(TOKEN_NAME);
     if(accessToken){
       const decodedToken = this.jwtHelper.decodeToken(accessToken);
@@ -25,6 +28,7 @@ export class UserService {
     this.accessToken = accessToken;
 
     localStorage.setItem(TOKEN_NAME, accessToken);
+    this.toastr.success("Welcome " + decodedToken.userName, 'success');
   }
 
   logout() {

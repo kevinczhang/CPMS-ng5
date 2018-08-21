@@ -11,6 +11,7 @@ import { LoaderService } from "../services/loader.service";
 import { Solution } from "../model/solution";
 import { UserService } from "../services/user.service";
 import { ProblemDetail } from "../model/problemDetail";
+import { BlockUI, NgBlockUI } from "ng-block-ui";
 
 @Injectable()
 export class CPMSDatabase {  
@@ -18,6 +19,7 @@ export class CPMSDatabase {
   dataChange: BehaviorSubject<ProblemSummary[]>;
   get data(): ProblemSummary[] { return this.dataChange.value; }
   jwtHelper: JwtHelper = new JwtHelper();
+  @BlockUI() blockUI: NgBlockUI;
 
   constructor(
     private problemService: ProblemService, 
@@ -83,6 +85,7 @@ export class CPMSDatabase {
     this.problemService.updateProblem(problem)
         .subscribe(problem => {
           this.updateExistingProblem(newProblem);
+          this.blockUI.stop();
           });
   }
 
@@ -92,6 +95,7 @@ export class CPMSDatabase {
     this.problemService.addProblem(problem)
         .subscribe(problem => {
           this.addProblem(newProblem);
+          this.blockUI.stop();
         });
   }
 
@@ -110,6 +114,7 @@ export class CPMSDatabase {
           this.snackBar.open('Problem deleted!', null, {
             duration: 2000,
           });
+          this.blockUI.stop();
         });
   }
 
@@ -120,6 +125,7 @@ export class CPMSDatabase {
           this.snackBar.open('Solution submitted!', null, {
             duration: 2000,
           });
+          this.blockUI.stop();
         });
   }
 

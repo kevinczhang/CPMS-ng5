@@ -25,6 +25,7 @@ import { LoaderState } from '../loader/loader';
 import { Subscription } from 'rxjs';
 import { UserService } from '../services/user.service';
 import { ActivatedRoute } from '@angular/router';
+import { BlockUI, NgBlockUI } from 'ng-block-ui';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -32,6 +33,8 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./problem-list.component.css']
 })
 export class ProblemListComponent implements OnInit {
+
+  @BlockUI() blockUI: NgBlockUI;
 
   displayedColumns: string[];
   dataSource: CPMSDataSource;
@@ -81,6 +84,7 @@ export class ProblemListComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.loaderService.show();
+      this.blockUI.start("Please wait");
       this.dataSource = new CPMSDataSource(this.cpmsDatabase, this.paginator, this.loaderService);
       if (!this.dataSource)
         return;
@@ -127,6 +131,7 @@ export class ProblemListComponent implements OnInit {
       console.log('The dialog was closed with result: ' + result);
       if (result === 'Y') {
         this.cpmsDatabase.deleteProblem(id);
+        this.blockUI.start("Deleting question.");
       }
     });
   }
