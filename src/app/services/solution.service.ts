@@ -3,7 +3,7 @@ import { AppConstants } from "../shared/app-constants";
 import { Http, RequestOptions, Headers, Response } from "../../../node_modules/@angular/http";
 import { Observable } from "../../../node_modules/rxjs/Observable";
 import { Solution } from "../model/solution";
-
+import { TOKEN_NAME } from '../shared/auth.constant';
 
 @Injectable()
 export class SolutionService {
@@ -12,20 +12,23 @@ export class SolutionService {
     options: RequestOptions;
 
     constructor(private http: Http, private app_constants: AppConstants) {
-        this.baseUrl = app_constants.baseUrl + '/solution/';
-        this.constants = app_constants;
-        const headers = new Headers({
-            Authorization: 'Bearer ' + localStorage.getItem("access_token")
-        });
-        this.options = new RequestOptions();
-        this.options.headers = headers;
+        this.baseUrl = this.app_constants.baseUrl + '/solution/';      
+        this.options = new RequestOptions();        
     }
 
-    submitSolution(newSolution: Solution): Observable<Solution> {    
+    submitSolution(newSolution: Solution): Observable<Solution> {
+        this.setHeader();
         let solution = this.http.post(this.baseUrl, newSolution, this.options)
           .map((res: Response) => {
             return new Solution(res.json().payload);
           });
         return solution;
       }
+
+    private setHeader() {
+        const headers = new Headers({
+            Authorization: 'Bearer ' + localStorage.getItem(TOKEN_NAME)
+        });
+        this.options.headers = headers;
+    }
 }
