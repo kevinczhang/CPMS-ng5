@@ -71,7 +71,9 @@ export class CPMSDatabase {
     updateProblem.number = problem.number ? problem.number : updateProblem.number;
     updateProblem.source = problem.source ? problem.source : updateProblem.source;
     updateProblem.title = problem.title ? problem.title : updateProblem.title;
-    updateProblem.level = problem.level ? problem.level : updateProblem.level;    
+    updateProblem.level = problem.level ? problem.level : updateProblem.level;
+    updateProblem.companies = problem.companies ? problem.companies : updateProblem.companies;
+    updateProblem.tags = problem.tags ? problem.tags : updateProblem.tags;    
     this.dataChange.next(copiedData);
     this.toastr.success('Problem updated!', 'Success');
     this.snackBar.open('Problem updated!', null, {
