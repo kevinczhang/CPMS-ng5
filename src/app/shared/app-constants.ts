@@ -36,9 +36,9 @@ export class AppConstants {
       "Binary Indexed Tree", "Segment Tree", "Binary Search Tree", "Memorization",
       "Minimax", "Recursion", "Reservoir Sampling"];
 
-    readonly companies = [null, "Facebook", "Amazon", "Bloomberg", "Google", "Microsoft", "Yelp", "Linkedin"];
+    readonly companies = ["Facebook", "Amazon", "Bloomberg", "Google", "Microsoft", "Yelp", "Linkedin"];
     
-    readonly specialTags = [null, "Remember", "CodeSnippet", "Recent"];
+    readonly specialTags = ["Remember", "CodeSnippet", "Recent"];
     
     adminEditorConfig = {
         editable: true,
