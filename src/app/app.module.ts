@@ -33,11 +33,15 @@ import { ProblemService } from './services/problem.service';
 import { SolutionService } from './services/solution.service';
 import { LoaderService } from './services/loader.service';
 
+
 import { TOKEN_NAME } from './shared/auth.constant';
 import { UserService } from './services/user.service';
 import { AuthenticationService } from './services/authentication.service';
 import { AuthGuard } from './guards/auth-guard.service';
 import { AdminAuthGuard } from './guards/admin-auth-guard.service';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { PasswordResetService } from './services/password-reset.service';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 export function authHttpServiceFactory(http: Http) {
   return new AuthHttp(new AuthConfig({
@@ -61,7 +65,9 @@ export function authHttpServiceFactory(http: Http) {
     DeletionConfirmDialog,
     LoaderComponent,
     ViewProblemComponent,
-    EditProblemComponent
+    EditProblemComponent,
+    ResetPasswordComponent,
+    ChangePasswordComponent
   ],
   imports: [
     CommonModule,
@@ -90,7 +96,7 @@ export function authHttpServiceFactory(http: Http) {
     AuthenticationService,
     UserService,
     AuthGuard,
-    AdminAuthGuard,],
+    AdminAuthGuard, PasswordResetService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

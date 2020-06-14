@@ -16,16 +16,18 @@
         </tr>
         <tr>
           <mat-form-field class="example-full-width">
-            <input autocomplete="" matInput placeholder="Enter your password" [formControl]="password" [type]="hide ? 'password' : 'text'">
+            <input autocomplete="" matInput placeholder="Enter your password" [formControl]="password"
+              [type]="hide ? 'password' : 'text'">
             <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
             <mat-error *ngIf="password.hasError('required')">
               Password is
               <strong>required</strong>
             </mat-error>
-          </mat-form-field> 
+          </mat-form-field>
         </tr>
         <tr>
           <button mat-raised-button color="primary" type="submit" [disabled]="!rForm.valid">Login</button>
+          <button mat-raised-button color="primary" type="button" (click)="resetPassword()">Forget Password</button>
         </tr>
       </table>
     </mat-card>

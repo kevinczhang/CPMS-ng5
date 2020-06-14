@@ -5,27 +5,27 @@ export class AppConstants {
     readonly sources: string[] = ['LeetCode', 'Facebook', 'CodeSnippet', 'LintCode'];
     readonly types: string[] = ['Algorithm', 'Database', 'OODesign', 'SystemDesign'];
     readonly levels: string[] = ['Easy', 'Medium', 'Hard' ];
-    
+
     readonly difficultyOptions = [
         { value: 'Easy', viewValue: 'Easy' },
-        { value: 'Medium', viewValue: 'Medium' }, 
+        { value: 'Medium', viewValue: 'Medium' },
         { value: 'Hard', viewValue: 'Hard' }];
 
     readonly languageOptions = [
         { value: 'Java', viewValue: 'Java' },
-        { value: 'C#', viewValue: 'C#' }, 
+        { value: 'C#', viewValue: 'C#' },
         { value: 'Python', viewValue: 'Python' }];
 
     readonly sourceOptions = [
         { value: 'LeetCode', viewValue: 'LeetCode' },
-        { value: 'Facebook', viewValue: 'Facebook' }, 
-        { value: 'CodeSnippet', viewValue: 'CodeSnippet' }, 
+        { value: 'Facebook', viewValue: 'Facebook' },
+        { value: 'CodeSnippet', viewValue: 'CodeSnippet' },
         { value: 'LintCode', viewValue: 'LintCode' }];
-    
+
     readonly typeOptions = [
         { value: 'Algorithm', viewValue: 'Algorithm' },
-        { value: 'Database', viewValue: 'Database' }, 
-        { value: 'OODesign', viewValue: 'OO Design' }, 
+        { value: 'Database', viewValue: 'Database' },
+        { value: 'OODesign', viewValue: 'OO Design' },
         { value: 'SystemDesign', viewValue: 'System Design' }];
 
     readonly tags = ["Array", "Hash Table", "Linked List", "Math", "Two Pointer", "String",
@@ -37,9 +37,9 @@ export class AppConstants {
       "Minimax", "Recursion", "Reservoir Sampling"];
 
     readonly companies = ["Facebook", "Amazon", "Bloomberg", "Google", "Microsoft", "Yelp", "Linkedin"];
-    
+
     readonly specialTags = ["Remember", "CodeSnippet", "Recent"];
-    
+
     adminEditorConfig = {
         editable: true,
         spellcheck: false,

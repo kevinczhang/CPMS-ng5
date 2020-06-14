@@ -87,7 +87,7 @@ export class ProblemListComponent implements OnInit {
       this.blockUI.start("Please wait");
       this.dataSource = new CPMSDataSource(this.cpmsDatabase, this.paginator, this.loaderService);
       if (!this.dataSource)
-        return;
+        return;      
       Observable.fromEvent(this.filter.nativeElement, 'keyup')
         .debounceTime(150)
         .distinctUntilChanged()
