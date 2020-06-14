@@ -15,6 +15,7 @@ export class ChangePasswordComponent implements OnInit {
   password = new FormControl('', [Validators.required]);
   confirmPassword = new FormControl('', [Validators.required]);
   loading = false;
+  hide = true;
 
   constructor(private fb: FormBuilder, private router: Router, private route: ActivatedRoute,
     private passwordResetService: PasswordResetService, private toastr: ToastrService) {
