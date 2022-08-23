@@ -30,3 +30,11 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 npm install -g rimraf
 rimraf node_modules
+
+
+## Make sure to install node with additional tools.
+
+
+## Can't use latest angular cli 
+npm install -g @angular/cli@6.0.8
+
